@@ -1,0 +1,224 @@
+<%- include('adminlayout/adminheader.ejs') %>
+
+  <body>
+    <%- include('adminlayout/modals.ejs') %>
+
+      <section id="sidebar" class="hide">
+        <a href="#" class="brand">Ours.</a>
+        <ul class="side-menu " style="padding: 0%;">
+          <li><a href="" class="active"><i class='bx bx-bar-chart-square icon'></i> Dashboard</a></li>
+
+          <li>
+            <a href="/admin/products"><i class='bx bx-receipt icon'></i> Products </a>
+          </li>
+          <li><a href="/admin/customers"><i class='bx bx-group icon'></i> Customer </a></li>
+
+          <li> <a href="/admin/orders"><i class='bx bx-box icon'></i> Orders </a></li>
+
+          <li><a data-bs-toggle="modal" data-bs-target="#Modalsignout"><i class='bx bx-log-out icon'></i> SignOut</a>
+          </li>
+        </ul>
+      </section>
+
+      <section id="content">
+        <nav>
+          <i class='bx bx-menu toggle-sidebar'></i>
+          <h5 class="title">Dashboard</h5>
+          <form action="#">
+            <div class="form-group search">
+              <input type="text" placeholder="Search...">
+              <i class='bx bx-search icon'></i>
+            </div>
+          </form>
+          <div>
+            <a href="/admin/adminsales" class="btn btn-dark mr-5">Sales Report</a>
+          </div>
+          <a href="#" class="nav-link">
+            <i class='bx bx-bell icon'></i>
+            <span class="badge"></span>
+          </a>
+          <span class="divider"></span>
+          <div class="profile">
+            <img
+              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+              alt="">
+          </div>
+        </nav>
+        <div class="container-fluid bg-light mt-3"
+          style="width: 93%; border-radius: 8px; align-items: center; display: block;">
+          <!-- For demo purpose -->
+
+        </div>
+
+
+
+
+        <div class="container p-0">
+
+          <div class="">
+            <div class="row">
+              <div class=" d-flex justify-content-around p-0">
+
+                <div id="totalSalesChart" class="rounded d-flex justify-content-center bg-white"
+                  style="width: 20rem; height:8rem;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                  <div class="w-25 d-flex justify-content-center align-items-center">
+                    <div class=" d-flex justify-content-center align-items-center bg-warning p-3"
+                      style="border-radius: 50%;height:3.3rem;"><img src="/images/rupees.svg" alt=""
+                        style="width: 20px;"></div>
+
+                  </div>
+                  <div class="w-75 d-flex flex-column  justify-content-center ">
+                    <p class=" text-muted mb-0">Total Sales</p>
+                    <span>₹ <%= totalSalesAmount%></span>
+                  </div>
+                </div>
+
+                <div class="rounded d-flex justify-content-center bg-white" id="totalOrders"
+                  style="width: 20rem; height:8rem; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                  <div class="w-25 d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center bg-success p-3"
+                      style="border-radius: 50%;height:3.3rem;"><img src="/images/cart.svg" alt="" style="width: 20px;">
+                    </div>
+                  </div>
+                  <div class="w-75 d-flex flex-column justify-content-center">
+                    <p class=" text-muted mb-0">Total Orders</p>
+                    <span>
+                      <%= orderCount %>
+                    </span>
+                  </div>
+                </div>
+
+
+                <div class="rounded d-flex justify-content-center bg-white" id="totalUsers"
+                  style="width: 20rem; height:8rem; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                  <div class="w-25 d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center bg-primary p-3"
+                      style="border-radius: 50%;height:3.3rem;"><img src="/images/products.svg" alt=""
+                        style="width: 20px;"></div>
+                  </div>
+                  <div class="w-75 d-flex flex-column justify-content-center">
+                    <p class=" text-muted mb-0">Total Products</p>
+                    <span>
+                      <%= productCount %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="container p-0 mt-3 d-flex justify-content-around ">
+            <div class=" bg-white rounded m-4 p-3" style="width: 72%; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+              <canvas id="myCharts"></canvas>
+
+              <div id="userCounts" data-blocked-count="<%= blockedUserCount %>"
+                data-non-blocked-count="<%= nonBlockedUserCount %>"></div>
+              <input type="hidden" name="monthlySales" id="monthlySales" value="<%= JSON.stringify(monthSales) %>">
+            </div>
+
+            <div class="" style="width: 28%;height: 26.6rem;">
+              <div class="w-100 mt-4 rounded" style="height:100%;">
+
+                <canvas id="myChart" class="rounded " style="width: 94%; height: 60%;"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
+
+
+
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <script>
+
+
+
+
+
+
+
+        //////////////////////////////////////////////////////////
+        const ctxi = document.getElementById('myCharts');
+
+
+        let monthlySales = document.getElementById('monthlySales').value;
+        let monthlySalesArray = JSON.parse(monthlySales);
+        let monthlySalesAmount = []
+        for (let i = 0; i <= 12; i++) {
+          for (let j = 0; j < monthlySalesArray.length; j++) {
+            if ((monthlySalesArray[j].month - 1) == i) {
+              monthlySalesAmount[i] = monthlySalesArray[j].monthlySales
+              break
+            }
+          }
+          if (!monthlySalesAmount[i]) {
+            monthlySalesAmount[i] = 0
+          }
+        }
+
+
+        new Chart(ctxi, {
+          type: 'bar',
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+              label: `Sales of Month on ${monthlySalesArray[0].year}`,
+              data: monthlySalesAmount,
+              borderWidth: 1,
+              backgroundColor: "#1fe074"
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+
+        //////////////////////////////////////////////////
+
+
+
+
+        const userCountsElement = document.getElementById('userCounts');
+        const blockedUserCount = parseInt(userCountsElement.getAttribute('data-blocked-count'));
+        const nonBlockedUserCount = parseInt(userCountsElement.getAttribute('data-non-blocked-count'));
+        const totalUserCount = blockedUserCount + nonBlockedUserCount;
+        // Now you can use these counts for your chart
+        const ctx = document.getElementById('myChart');
+        const userChart = document.getElementById('totalUsers');
+
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Blocked Users', 'Non-Blocked Users', "All Users"],
+            datasets: [{
+              data: [blockedUserCount, nonBlockedUserCount, totalUserCount], // Use the actual counts
+              backgroundColor: ['#f00', '#1fe074', "#0069c0"], // Customize colors
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false, // To maintain the aspect ratio within the container
+          }
+        });
+
+
+
+
+
+
+
+      </script>
+
+
+      <%- include('adminlayout/adminfooter.ejs') %>

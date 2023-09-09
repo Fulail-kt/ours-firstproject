@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/css/adminlogin.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>Ours.</title>
+</head>
+
+<body>
+ 
+ 
+
+      <section class="">
+        <div class="container py-1 ">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div class="">
+                <div class="card-body  text-center mt-5">
+
+                  <h3 class="mb-5 mt-5"><u>ADMIN LOG IN</u></h3>
+
+                  <% if (logoutMessage) { %>
+                    <p style="color: green;">
+                      <%= logoutMessage %>
+                    </p>
+                  <% } %>
+
+                  <% if (messag.success){%>
+                    <p style="color: green;">
+                      <%=messag.success%>
+                    </p>
+                    <%}%>
+                      <% if (messag.error){%>
+                        <p style="color: red;">
+                          <%=messag.error%>
+                        </p>
+                        <%}%>
+
+                          <form class="p-3 mt-4" action="/admin/login" method="post">
+                            <div class="form-outline mb-4">
+                              <input type="email" placeholder="EMAIL" name="email" id="email"
+                                class="form-control form-control-lg" />
+
+                            </div>
+                            <div class="form-outline mb-4">
+                              <input type="password" placeholder="PASSWORD" name="password" id="pswd"
+                                class="form-control form-control-lg" />
+                            </div>
+                            <!-- Checkbox -->
+                            <!-- <div class=" d-flex justify-content-end mb-4">
+                              <a href="">Forgot password</a> -->
+
+                </div>
+                <div class="w-100 d-flex justify-content-center"><button class="btn btn-login btn-lg btn-block"
+                    type="submit" style="width: 84%;">SIGN IN</button></div>
+                </form>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </section>
+
+
+    <%- include('adminlayout/adminfooter.ejs') %>

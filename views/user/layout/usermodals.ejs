@@ -1,0 +1,410 @@
+<!--Modal: modalwarning------------------------------------------------------->
+
+
+<div class="modal fade top" id="modalwarning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" data-backdrop="true">
+  <div class="modal-dialog modal-frame modal-top modal-notify modal-info d-flex justify-content-center" role="document">
+    <!--Content-->
+    <div class="modal-content modalwarningcontent">
+      <!--Body-->
+      <div class="modal-body warningmodal-body">
+        <div class="row d-flex justify-content-center align-items-center">
+
+          <p class="pt-3 pr-2">You have to login to get access</p>
+
+          <a type="button" href="/login" class="btn btn-outline-success waves-effect text-dark mr-3">Log in <i
+              class="fas fa-unlock-alt"></i></a>
+          <a type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal">Cancel</a>
+        </div>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+
+
+<!--Modal: modalwarning-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- sidebar cart ------------------------------------------------------------------>
+
+
+
+
+
+<div class="overlay_cart" id="overlay_cart"></div>
+
+<div id="sidecart" class="sidecart">
+  <% if (user && cartitems) { %>
+    <div class="cart_content">
+      <div class="cart_header">
+        <div class="header_title">
+          <p>Cart</p>
+          <span class="badge">
+            <%= cartitems.length %>
+          </span>
+        </div>
+        <div>
+          <span id="close_btn" class="close-btn">
+            <img src="/images/cancelX.svg" style="width: 17px;" alt="">
+          </span>
+        </div>
+      </div>
+
+      <div class="cart_items_container" style="height: 95%;">
+        <% let totalCartPrice=0; %>
+          <%let Stock;%>
+          
+
+
+              <% for (const cartItem of cartitems) { %>
+                <% const product=cartItem.cartitems; %>
+              
+                  <% const productTotalPrice=product.price * product.quantity; %>
+                    <% totalCartPrice +=productTotalPrice; %>
+                      <% Stock=product.stock%>
+                      <% const size = cartItem.cartitems.size; %>
+                      
+                        <div class="row ml-0 cart_item">
+                          <!-- <div class="remove_item">
+                              <a href="/cart-delete/<%= product._id %>">
+                                <i style="color: black;" class='bx bx-x'></i>
+                              </a>
+                            </div> -->
+                          <div class="col-md-3 item_img">
+                            <img src="/uploads/<%= product.images[0] %>" alt="">
+                          </div>
+                          <div class="col-md-9 item_details">
+                            <p>
+                              <%= product.title %> 
+                            </p>
+
+                            <p id="size" style="font-size: 12px;">Size : <%= size %></p>
+                            <p style="font-size: 12px;">Color : <%= product.color %> </p>
+
+
+                            <div class="qty d-flex justify-content-between align-items-center w-100">
+                              <div class="d-flex">
+                                <button class="btn btn-dark m-0 p-0" style="width: 12px"
+                                  onclick="decreaseQuantity('<%= product._id %>')">-</button>
+                                <p class="quantity" data-product-id="<%= product._id %>">
+                                  <%= product.quantity %>
+                                </p>
+                                <button class="btn btn-dark m-0 p-0"
+                                  onclick="increaseQuantity('<%= product._id %>')">+</button>
+                              </div>
+                              <input type="hidden" name="" id="singleprd" value="<%= product.price%>">
+                              <div class="w-50 d-flex justify-content-end priceForQty" data-product="<%=product._id%>" id="singleprdprice">
+                                ₹ <%= product.price * product.quantity %>/-
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <% }%>
+                          <% if(cartitems.length < 1){ %>
+                            <div class="d-flex h-100 justify-content-center align-items-center">
+                              <p>Your Cart is Empty</p>
+                            </div>
+                            <% }%>
+      </div>
+
+      <div class="cart_actions">
+        <div class="subtotal">
+          <p>subtotal</p>
+          <p><span id="totalCart">
+              <%= totalCartPrice %>/-
+            </span></p>
+        </div>
+
+        <% if (cartitems.length < 1) { %>
+          <a class="btn text-white" style="opacity: 0.7;">PROCED TO CHECKOUT</a>
+          
+        <% } else if (Stock < 1) { %>
+          <p class="text-danger">Some products are out of stock. Please remove them from the cart.</p>
+          <a class="btn text-white" style="opacity: 0.7;">PROCED TO CHECKOUT</a>
+          
+        <% } else { %>
+          <a class="btn btn-dark" href="/checkout">PROCEED TO CHECKOUT</a>
+        <% } %>
+
+      </div>
+    </div>
+    <% } %>
+</div>
+
+
+
+
+
+<!-- Modal: modalCart -->
+
+
+
+
+
+
+
+
+
+
+<!-- menu icon-sidebar ------------------------------------------------------------------------>
+
+
+
+
+<div class="overlay_menu" id="overlay_menu"></div>
+
+<div class=" menubar" id="menubar" data-backdrop="true">
+
+  <div class="menu-content">
+
+    <div class="menu-header d-flex w-100">
+
+
+      <div class="menu-user d-flex justify-content-end mt-2  ">
+
+
+        <div>
+          <% if (user) {%>
+            <p>HI <%= user.name%>
+            </p>
+            <% } else { %>
+              <p><a class=" text-decoration-none  text-white" href="/login">LOG IN</a></p>
+              <%}%>
+        </div>
+
+      </div>
+      <div class="menu-icon d-flex justify-content-end"><span id="menuclose_btn" class="menuclose-btn"><img
+            src="/images/cancelX.svg" style="width: 17px;" alt=""></span>
+      </div>
+
+    </div>
+
+    <div class="container-fluid menu-body">
+
+      <ul class="p-4">
+        <li><a href="#new-section">New</a></li>
+        <li><a href="/myaccount">My Account</a></li>
+        <li><a href="">Custmer Support</a></li>
+        <li><a href="">About Us</a></li>
+      </ul>
+
+    </div>
+
+    <div class="menu-footer bg-light rounded">
+      <ul class="d-flex footer-icon">
+        <li><i class="bx bxl-facebook-square"></i></li>
+        <li><i class="bx bxl-instagram-alt"></i></li>
+        <li><i class="bx bxl-pinterest-alt"></i></li>
+        <li><i class="bx bxl-twitter"></i></li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!----------------------------- modal usersignout -->
+
+<div class="modal fade" id="Modalsignoutuser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+    <div class="modal-content " style="width: 24rem; border-radius: 10px;">
+      <div class="modal-header d-flex  bg-danger">
+        <h5 class="modal-title text-white" style="margin-left: 30%;" id="exampleModalLabel">CONFIRMATION</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body  d-flex justify-content-center">
+        <p><u>Are you Sure Want to SignOut?</u></p>
+      </div>
+      <div class="modal-footer d-flex m-1 p-0 justify-content-around">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">NO</button>
+
+        <a class="text-secondary btn btn-outline-danger waves-effect custom-button" href="/logout">YES</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!--Modal: searchmodal-->
+  <div class="modal fade   top w-100" id="searchmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" data-backdrop="true" style="padding-right: 0%!important ;">
+    <div class="modal-dialog modal-top d-flex justify-content-center modal-notify modal-success w-100 bg-light" style="max-width:97vw !important;"    role="document">
+      <!--Content-->
+      <div class="modal-content bg-light" >
+        <!--Body-->
+        <div class="modal-body d-flex align-item-center">
+          <div class="d-flex pr-2 align-item-center justify-content-end w-25" ><span class=" d-flex justify-content-start"><img src="/images/search 85.svg" alt=""></span></div>
+         
+
+           
+             
+           <div class="w-100 d-flex align-item-center justify-content-center "><input type="text" class="w-100 border-0 bg-light pl-2  " placeholder="Search here!" style="outline:none;" name="searchValue" id="searchInput"></div>
+           
+           
+          
+          <div class="w-25 pl-2 d-flex justify-content-start"> <a type="button" class="btn btn-outline-success waves-effect" data-dismiss="modal">Search</a></div>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
+  <!--Modal: modalCoupon-->
+
+  <!--Section: Live preview-->
+
+
+
+
+
+
+
+<!-- Modal -->
+
+
+
+
+<script>
+
+
+
+
+
+
+
+  // function changeQuantity(productId) {
+  //   console.log()
+  //     const quantityElement = document.getElementById(`quantity-${productId}`);
+  //     const currentQuantity = parseInt(quantityElement.textContent);
+  //     const newQuantity = currentQuantity + 1;
+  //     quantityElement.textContent = newQuantity;
+
+  //     // Send AJAX request to update quantity in the database
+  //     fetch(`/update-quantity/${productId}?quantity=${newQuantity}`)
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         // Handle the response as needed
+  //       })
+  //       .catch(error => {
+  //         console.error('Error updating quantity:', error);
+  //       });
+  //   }
+
+
+
+  // Function to update quantity dynamically using AJAX
+// Function to update the total cart price
+
+
+// Function to handle quantity updates
+
+function updateQuantity(productId, action) {
+  fetch("/update-quantity", {
+  method: "PATCH",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    productId: productId,
+    action: action,
+  }),
+})
+.then(response => {
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json(); // Parse the response body as JSON
+})
+.then(data => {
+  // This is the data received from the server
+  // Access 'success' and 'quantity' properties from 'data'
+  const { success, quantity, total } = data;
+  console.log(data); // 'true' if the request was successful
+  const quantityElement = document.querySelector(`.quantity[data-product-id="${productId}"]`);
+    quantityElement.textContent = quantity;
+
+    // Update price
+    const priceElement = document.querySelector(`.priceForQty[data-product="${productId}"]`);
+    priceElement.textContent = `₹${total}/-`;
+  // document.getElementById('singleprdprice').innerHTML=`₹ ${quantity*singleprd}`
+  let updatedTotalAmount = 0;
+const prdsTotal = document.getElementsByClassName("priceForQty");
+
+for (let i = 0; i < prdsTotal.length; i++) {
+  const priceText = prdsTotal[i].textContent;
+  const price = parseFloat(priceText.replace("₹", "").replace("/-", ""));
+  updatedTotalAmount += price;
+}
+
+const totalCartElement = document.getElementById('totalCart');
+totalCartElement.textContent = `₹${updatedTotalAmount.toFixed(2)}/-`;
+                // $("#totalCart").text("₹" + updatedTotalAmount.toFixed(2) + "/-");
+ 
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+}
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+
+//     const data = await response.json();
+
+    
+//     if (data.success) {
+//       const quantityElement = document.querySelector(`.quantity[data-product-id="${productId}"]`);
+//       quantityElement.textContent = data.quantity;
+     
+//     }
+//   } catch (error) {
+//     console.error("Error updating quantity:", error);
+//   }
+// }
+
+// Plus button click event
+function increaseQuantity(productId) {
+  updateQuantity(productId, "increase");
+}
+
+// Minus button click event
+function decreaseQuantity(productId) {
+  updateQuantity(productId, "decrease");
+}
+
+
+
+
+
+
+</script>
+<!-- <script src="/javascript/adminscript.js"></script> -->
+
+</body>
+
+</html>

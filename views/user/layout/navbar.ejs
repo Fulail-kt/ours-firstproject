@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <div class="menu" id="menu-btn">
+      <img src="/images/menu.svg" alt="logo" class="hamburger" />
+    </div>
+    <div class="d-flex justify-content-between w-100">
+      <div class="firstnav d-flex">
+        <div>
+          <a class="navbar-brand" href="#"><b><u>Ours.</u></b></a>
+        </div>
+
+        <div>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link nav-text" href="/">
+                  <i class="bx bxs-home d-md-none"></i>
+                  <!-- Hide on screen width >= 700px -->
+                  <span class="d-none d-md-inline">Home</span>
+                  <!-- Hide font on screen width < 700px -->
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link nav-text" href="#new-section">
+                  <i class="bx bxs-purchase-tag d-md-none"></i>
+                  <span class="d-none d-md-inline"> New</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link nav-text" href="#category-section">
+                  <i class="bx bxs-category d-md-none"></i>
+                  <span class="d-none d-md-inline"> Category</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex pt-2" style="padding-right: 20px;">
+        <ul class="navbar-nav pr-3 icon-nav">
+          <li data-toggle="modal" data-target="#searchmodal">
+            <img src="/images/search 85.svg" alt="srch" class="nav-icon" style="width: 22px" />
+          </li>
+
+          <% if (user) { %>
+            <li><a href="/myaccount"><img src="/images/user.svg" alt="prfl" class="nav-icon" /></li></a>
+
+            <li>
+              <a href="/wishlist"><img src="/images/heart.svg" alt="fvrt" class="nav-icon" /></a>
+            </li>
+            <li >
+              <a id="cart-btn">
+                <img src="/images/my orders.svg" alt="cart" class="nav-icon" style="margin-right: 0" />
+              </a>
+            </li>
+            <% } else { %>
+              <li data-toggle="modal" data-target="#modalwarning">
+                <img src="/images/user.svg" alt="prfl" class="nav-icon" />
+              </li>
+              <li data-toggle="modal" data-target="#modalwarning" >
+                <img src="/images/heart.svg" alt="fvrt" class="nav-icon" />
+              </li>
+
+              <li data-toggle="modal" data-target="#modalwarning">
+                <img src="/images/my orders.svg" alt="cart" class="nav-icon" style="margin-right: 0" />
+              </li>
+              <%}%>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="box-nav bg-light" style="position: relative;width: 100%; height: 56px;">
+</div>
+<div class="d-flex">
+    <div class="side-line bg-light  position-relative" style="width: 61px; min-height: 92vh;"></div>
+
+    <!-- Button trigger modal -->
+
+
+<!-- Modal -->

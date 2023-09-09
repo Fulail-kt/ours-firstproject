@@ -1,0 +1,276 @@
+
+                 
+
+
+                 
+
+<!-- ----------------------------------PRODUCT ---- CATEGORY MODAL --------------------------------------------------->
+
+                 
+  <!-- Popup using Bootstrap Modal -->
+  <div class="modal fade   modal-div" id="addproduct" tabindex="-1" aria-labelledby="addproductLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-dark m-0 p-2">
+        <div class="d-flex justify-content-center w-100">
+          <h5 class="modal-title text-white" id="addproductLabel"><b>Add Product</b></h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white  text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="productForm" action="/admin/addproduct" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="imageInput">Select Images:</label>
+            <input type="file" class="form-control mb-2" name="images" multiple>
+
+          </div>
+
+          <div class="form-group d-flex justify-content-evenly">
+            <h6>Select Gender:</h6>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" required id="male" value="M"
+                onclick="showCategory('male')">
+              <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" required id="female" value="F"
+                onclick="showCategory('female')">
+              <label class="form-check-label" for="female">Female</label>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center align-content-center mb-3">
+            <div class="form-group justify-content-center" id="categoryContainer" style="display:none;">
+              
+                <label>Select Category:</label>
+                <select class="form-control" id="" name="category">
+                <!-- Male Categories -->
+                
+                <% if (malecategory && malecategory.subcategories && malecategory.subcategories.length > 0) { %>
+                  <% malecategory.subcategories.forEach(subcategory => { %>
+                
+                
+                      <option value="<%= subcategory.name %>"><%=subcategory.name%></option>
+                
+                
+                  <% }); %>
+                <% } else { %>
+                  No subcategories available for male.
+                <% } %>
+
+            </select>
+            </div>
+            <div class="form-group" id="categoryContainerFemale" style="display: none;">
+              <label>Select Category:</label>
+              <select class="form-control" id="orderStatus">
+              <!-- Female Categories -->
+
+              
+              <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) { %>
+                <% femalecategory.subcategories.forEach(subcategory => { %>
+                  <div>
+                  
+                    
+                      <option value="<%= subcategory.name %>"><%=subcategory.name%></option>
+                      
+                                     
+                  </div>
+                <% }); %>
+              <% } else { %>
+                No subcategories available for female.
+              <% } %>
+            </select>
+            </div>
+          </div>
+
+          <div class="form-group d-flex flex-wrap justify-content-around mb-2">
+            <input type="text" required style="width: 30%;" class="tpcs mb-2" name="title" id="titleInput"
+              placeholder="Title">
+            <input type="text" required class="tpcs mb-2" name="price" placeholder="Price">
+            <input type="text" required class="tpcs mb-2" name="color" id="colorInput" placeholder="Color">
+            <input type="number" required class="tpcs mb-2" id="quentity" name="stock" placeholder="Stock" min="1"
+              max="500">
+          </div>
+          <!-- Inside the modal-body, add the checkbox input -->
+          <div class="form-group d-flex justify-content-center">
+            <h6 class="mt-1">Size:</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="size" id="option1" value="S">
+              <label class="form-check-label" for="option1">S</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="size" id="option2" value="M">
+              <label class="form-check-label" for="option2">M</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="size" id="option3" value="L">
+              <label class="form-check-label" for="option3">L</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="size" id="option4" value="XL">
+              <label class="form-check-label" for="option4">XL</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="size" id="option5" value="XXL">
+              <label class="form-check-label" for="option5">XXL</label>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center mb-2">
+            <textarea rows="1" cols="25" name="description" placeholder="Description"></textarea>
+          </div>
+
+
+
+          <div class="modal-footer p-1 m-0 d-flex justify-content-evenly">
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Second Modal - Adding Categories -->
+<div class="modal fade  " style="background-color: rgba(34, 33, 33, 0.589);" id="secondModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header bg-dark ">
+      <!-- ... Header content ... -->
+      <h5 class="modal-title text-white " id="exampleModalLabel"><b>Add Category</b></h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <!-- ... Your form to add categories ... -->
+      <form class='d-flex flex-column justify-content-center '  action="/admin/addcategories" method="post">
+        <div class=" d-flex justify-content-center border border-1">
+          <div class="p-2">
+            <input class="ml-2" type="radio" name="gender" value="M">
+            <label class="" for="">Male</label>
+          </div>
+          <div class="p-2">
+            <input class="ml-2" type="radio" name="gender" value="F">
+            <label class="" for="">Female</label>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="mt-3">
+            <input class="p-1" type="text" name="newsubcategory" placeholder="new categories">
+            <button class="btn btn-success border-0" type="submit" style=>Add category</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer ">
+     
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<!-- -------------------------------------------------------------------------------------------------------------------- -->
+
+
+
+
+<!---------------------------------------------------- user delete confirmation----------------------------------------- -->
+
+
+
+
+<% if (typeof usersdata !== 'undefined') { %>
+
+
+<% usersdata.forEach((user,index)=>{ %>   
+  <div class="modal fade" id="Modaluserdlt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex justify-content-center">
+      <div class="modal-content " style="width: 24rem; border-radius: 10px;">
+        <div class="modal-header d-flex  bg-danger">
+          <h5 class="modal-title text-white" style="margin-left: 30%;" id="exampleModalLabel">CONFIRMATION</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body  d-flex justify-content-center">
+         <p><u>Are you Sure Want to Delete <%=user.name%> ?</u></p>
+        </div>
+        <div class="modal-footer d-flex m-0 p-0 justify-content-around" >
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">NO</button>
+          <button type="button" class="btn btn-outline-danger waves-effect custom-button">
+            <a class="text-secondary" href="/admin/deleteuser/<%=user._id%>">YES</a>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%})%>
+  <%}%>
+
+
+
+<!------------------------------------------------------ order delete ----------------------------------------->
+
+  <% if (typeof orders !== 'undefined') { %>
+
+
+    <% orders.forEach((data, index)=> { %>
+      <div class="modal fade" id="Modalorderdlt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex justify-content-center">
+          <div class="modal-content " style="width: 24rem; border-radius: 10px;">
+            <div class="modal-header d-flex  bg-danger">
+              <h5 class="modal-title text-white" style="margin-left: 30%;" id="exampleModalLabel">CONFIRMATION</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body  d-flex justify-content-center">
+             <p><u>Are you Sure Want to Delete <%=data.orderNumber%> ?</u></p>
+            </div>
+            <div class="modal-footer d-flex m-0 p-0 justify-content-around" >
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">NO</button>
+              <button type="button" class="btn btn-outline-danger waves-effect custom-button">
+                <a class="text-secondary"  href="/admin/deleteorder/<%=data._id%>">YES</a>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%})%>
+      <%}%>
+
+
+      
+
+
+      <!--=--------------------------------------------- admin logout warning  -->
+
+
+   
+          <div class="modal fade" id="Modalsignout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+              <div class="modal-content " style="width: 24rem; border-radius: 10px;">
+                <div class="modal-header d-flex  bg-danger">
+                  <h5 class="modal-title text-white" style="margin-left: 30%;" id="exampleModalLabel">CONFIRMATION</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body  d-flex justify-content-center">
+                 <p><u>Are you Sure Want to SignOut?</u></p>
+                </div>
+                <div class="modal-footer d-flex m-0 p-0 justify-content-around" >
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">NO</button>
+                  <button type="button" class="btn btn-outline-danger waves-effect custom-button">
+                    <a class="text-secondary"  href="/admin/adminlogout">YES</a>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+ 

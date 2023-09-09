@@ -1,0 +1,383 @@
+<%- include('adminlayout/adminheader.ejs') %>
+
+  <body>
+
+    <%- include('adminlayout/modals.ejs') %>
+
+
+
+      <section id="sidebar" class="hide">
+        <a href="#" class="brand">Ours.</a>
+        <ul class="side-menu " style="padding: 0%;">
+          <li><a href="/admin/dashboard" class=""><i class='bx bx-bar-chart-square icon'></i> Dashboard</a></li>
+
+          <li>
+            <a href="#" class="active"><i class='bx bx-receipt icon'></i> Products </a>
+          </li>
+          <li><a href="/admin/customers"><i class='bx bx-group icon'></i> Customer </a></li>
+          <li><a href="/admin/orders"><i class='bx bx-box icon'></i> Orders</a></li>
+          <li><a data-bs-toggle="modal" data-bs-target="#Modalsignout"><i class='bx bx-log-out icon'></i> SignOut</a>
+          </li>
+        </ul>
+
+      </section>
+
+
+     
+      
+
+      <section id="content">
+        <nav>
+          <i class='bx bx-menu toggle-sidebar'></i>
+          <h5 class="title">Products</h5>
+          <form action="#">
+            <div class="form-group search">
+              <input type="text" placeholder="Search...">
+              <i class='bx bx-search icon'></i>
+            </div>
+            <% {console.log(products) } %>
+          </form>
+          <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="modalnotification">
+            <i class='bx bx-bell icon'></i>
+            <span class="badge"></span>
+          </a>
+          <span class="divider"></span>
+          <div class="profile">
+            <img
+              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+              alt="">
+          </div>
+        </nav>
+        <div class="container-fluid bg-light mt-3"
+          style="width: 93%; border-radius: 8px; align-items: center; display: block;">
+          <!-- For demo purpose -->
+
+
+
+          <div class="container">
+
+
+
+
+            <div class="row">
+
+              <div class="d-flex justify-content-center position-absolute">
+                <% if (alertMessage.error){%>
+                  <p class="p-1 text-light rounded-pill bg-danger">
+                    <%=alertMessage.error%>
+                  </p>
+                  <%}%>
+              </div>
+              <div class=" d-flex justify-content-end align-item-center " style="width: 96%;">
+                <div class="btn-group add-btn" role="group">
+                  <button id="showButton1" class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#addproduct">Add Product</button>
+                  <button id="showButton2" class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#secondModal">Add Category</button>
+                 
+                  <button class="btn btn-secondary"><a  class="text-white" href="/admin/coupons">Show Coupons</a></button>
+                </div>
+
+              </div>
+              <div class="col-lg-11 mx-auto bg-white rounded shadow mt-3 mb-3" style="width: 90%;">
+
+
+
+
+
+                <!-- Fixed header table-->
+                <div class="table-responsive">
+                  <table class="table table-responsive table-fixed ">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="col">No</th>
+                        <th scope="col" class="col">Title</th>
+                        <th scope="col" class="col">Price</th>
+                        <th scope="col" class="col">Color</th>
+                        <th scope="col" class="col">Size</th>
+                        <th scope="col" class="col">Category</th>
+                        <th scope="col" class="col">Quantity</th>
+                        <th scope="col" class="col">Description</th>
+                        <th scope="col" class="col">Images</th>
+                        <th scope="col" class="col">Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% products.forEach((product, index)=> { %>
+                        <tr>
+                          <th scope="row" class="col-3">
+                            <%= index + 1 %>
+                          </th>
+                          <td class="col-3">
+                            <%= product.title %>
+                          </td>
+                          <td class="col-3">
+                            <%= product.price %>
+                          </td>
+                          <td class="col-3">
+                            <%= product.color %>
+                          </td>
+                          <td class="col-3">
+                            <%= product.size %>
+                          </td>
+                          <td class="col-3">
+                           
+                           <%=product.category%> (<%= product.gender %>)
+                            
+                          </td>
+                          <td class="col-3">
+                            <%= product.stock %>
+                          </td>
+                          <td class="col-3">
+                            <%= product.description %>
+                          </td>
+                          <td class="col-3">
+
+                            <img src="/uploads/<%= product.images[0] %>" alt=""
+                              style="height: 80px; width: 100px; object-fit: contain;">
+
+
+
+
+                          </td>
+
+                          <td class="col ">
+                            <div class="d-flex flex-column align-items-center justify-content-center my-3 ">
+                              <div>
+                                <p class="mx-2"><i class="bx bxs-edit" style="color: rgb(206, 132, 63);"
+                                    data-bs-toggle="modal" data-bs-target="#modaleditproduct<%= product._id %>"></i></p>
+                              </div>
+                              <!-- <a onclick="return confirm('Are You sure Want to Delete <%=product.title%>')"
+                            href="/admin/deleteproduct/<%=product._id%>"  class="mx-2" style="color: red;"><i
+                              class="bx bx-trash-alt ml-2"></i></a> -->
+
+
+                              <form action="/admin/deleteproduct/<%= product._id %>" method="post">
+                                <input type="hidden" name="product" value="<%= product._id %>">
+                                <button type="submit"
+                                  class="btn btn-<%= product.deleted ? 'danger' : 'success' %> m-0 pl-0 pr-0  "
+                                  style=" height: 26px;">
+
+                                  <p style="font-size: 13px;
+                                    margin-top: -4px;">
+                                    <%= product.deleted ? 'Unlist' : 'List' %>
+                                  </p>
+
+                                </button>
+                              </form>
+                            </div>
+                          </td>
+
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+
+
+        </div> <!-- container div -->
+      </section>
+
+      <% products.forEach((product, index)=> { %>
+        <!-- Modal -->
+        <div class="modal fade" id="modaleditproduct<%= product._id %>" tabindex="-1"
+          aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" style="margin-left: 38%; " id="exampleModalLabel">Edit Product</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+
+              <div class="modal-body modaleditproduct">
+
+                <form id="productForm" action="/admin/editproduct/<%=product._id%>" method="post"
+                  enctype="multipart/form-data">
+
+
+
+                  <div class="d-flex justify-content-around w-100">
+                    <div class=""><input type="text" required name="title" id="titleInput" placeholder="Title"
+                        value="<%= product.title %>"></div>
+                    <div class=" d-flex justify-content-center"><input type="text" name="description" id=""
+                        placeholder="Description" value="<%=product.description%>"></div>
+                  </div>
+                  <div class="d-flex justify-content-around mt-2">
+                    <div><input type="text" required name="price" placeholder="Price" value="<%= product.price %>"
+                        style="width: 6.8rem;"></div>
+                    <div><input type="text" required name="color" id="colorInput" placeholder="Color"
+                        value="<%= product.color %>" style="width: 6.8rem;"></div>
+                    <div><input type="number" required id="quentity" name="stock" placeholder="Stock" min="1" max="500"
+                        value="<%= product.stock %>" style="width: 6.8rem;"></div>
+                  </div>
+
+
+
+                  <div class="form-group d-flex justify-content-around mt-2">
+                    <h6>Select Gender:</h6>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" required id="male" value="M" <% if (product.gender==='M' ) { %> checked <% } %>>
+                      <label class="form-check-label" for="male">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" required id="female" value="F" <% if (product.gender==='F' ) { %> checked <% } %>>
+                      <label class="form-check-label" for="female">Female</label>
+                    </div>
+                  </div>
+
+                  <div class="form-group d-flex justify-content-center mt-2" id="categoryContainer" style="display:none;">
+                    <label>Select Category:</label>
+                    <select class="form-control" name="category">
+                      
+                      
+                      
+                            <div>
+                              <option value="<%= product.category %>"><%=product.category%></option>
+                              <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) { %>
+                                <% femalecategory.subcategories.forEach(subcategory => { %>
+                                  <div>
+                                  
+                                    
+                                      <option value="<%= subcategory.name %>"><%=subcategory.name%></option>
+                                      
+                                                     
+                                  </div>
+                                <% }); %>
+                              <% } %>
+                            </div>
+                      
+                      
+                      
+                    </select>
+                  </div>
+
+
+                  
+
+
+                  <div class="form-group d-flex justify-content-center mt-2">
+                    <h6 class="mt-1">Size:</h6>
+                    <% if (product.size) { %>
+                      <% ['S', 'M' , 'L' , 'XL' , 'XXL' ].forEach(size=> { %>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="size" id="option<%= size %>"
+                            value="<%= size %>" <% if (product.size.includes(size)) { %> checked <% } %>>
+                            <label class="form-check-label" for="option<%= size %>">
+                              <%= size %>
+                            </label>
+                        </div>
+                        <% }); %>
+                          <% } else { %>
+                            Sizes not available for this product.
+                            <% } %>
+                  </div>
+                  <div class="d-flex justify-content-around mt-2">
+                  
+                    <div><input type="file"  name="images" multiple onchange="viewImage(event)"></div>
+                  </div>
+
+                  <div class="d-flex mt-1 justify-content-around m-5 mb-1">
+                    <% for (let i = 0; i < product.images.length; i++) { %>
+                      <div class="d-flex"><img id="imgView" src="/uploads/<%= product.images[i] %>" alt=""
+                        style="width: 40px; transition: transform 0.5s; transform-origin: center;"
+                        onmouseover="this.style.transform = 'scale(3.6)';"
+                        onmouseout="this.style.transform = 'scale(1)';">
+                      
+                      </div>
+
+                          <!-- Add a "Delete" button/icon -->
+                          <a class="" onclick="deleteImage('<%= i %>');" style="font-size: 12px; padding: 0.1rem 0.25rem;">Del</a>
+
+      <!-- Add a hidden input field to flag the image for deletion -->
+      <input type="hidden" name="deleteImage_<%= i %>" id="deleteImage_<%= i %>" value="0">
+                    <% } %>
+                  </div>
+
+                  <div class="d-flex justify-content-center mt-2"><button type="submit"
+                      class="btn btn-outline-success waves-effect">Save changes</button></div>
+
+                </form>
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+              </div>
+            </div>
+          </div>
+        </div>
+        <%}) %>
+
+
+
+
+
+          <!------------------------------------------- coupon modal----------------------l -->
+
+
+
+
+          <!-- Button trigger modal -->
+
+
+
+
+
+
+
+
+          <!-- Button trigger modal -->
+        
+
+         
+
+
+
+
+
+<script>
+  
+function deleteImage(index) {
+  console.log(`Delete button clicked for index ${index}`);
+  // Toggle the hidden input field value between 0 and 1
+  const deleteInput = document.getElementById(`deleteImage_${index}`);
+  deleteInput.value = (deleteInput.value === "1") ? "0" : "1";
+}
+
+</script>
+
+
+
+
+          <script>
+
+
+            function viewImage(event) {
+              document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
+            }
+
+// Add event listener to gender radio buttons
+  const maleRadio = document.getElementById('male');
+  const femaleRadio = document.getElementById('female');
+  const categoryContainer = document.getElementById('categoryContainer');
+
+  maleRadio.addEventListener('click', function () {
+    categoryContainer.style.display = 'block';
+  });
+
+  femaleRadio.addEventListener('click', function () {
+    categoryContainer.style.display = 'block';
+  });
+          </script>
+
+
+
+          <%- include('adminlayout/adminfooter.ejs') %>

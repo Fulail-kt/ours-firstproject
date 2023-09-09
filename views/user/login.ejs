@@ -1,0 +1,113 @@
+
+<%- include('layout/header.ejs')%>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light " style="height: 56px;">
+        <div class="menu"><a href="">  <img src="/images/menu.svg" alt="logo" class="hamburger "></a></div>
+        <a class="navbar-brand " style="margin-left: 80px;" href="#">Ours</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link nav-text" style="margin-left: 60px;"  href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-text" href="#">New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-text" href="#">Category</a>
+              </li>
+          </ul>
+          
+          <ul class="navbar-nav pr-5 icon-nav ">
+            <li><img src="/images/search 85.svg" alt="srch" class="nav-icon"  style="width: 22px;"></li>
+            <li><img src="/images/heart.svg" alt="fvrt" class="nav-icon"></li>
+            <li><img src="/images/user.svg" alt="prfl" class="nav-icon"></li>
+            <li><img src="/images/shopping cart.svg" alt="cart" class="nav-icon" style="margin-right: 0;"></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="d-flex">
+          <div class="side-border bg-light d-md-flex "></div>
+          <div class="login-part ">
+
+            <section class="">
+                <div class="container py-1 ">
+                  <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                      <div class="" >
+                        <div class="card-body  text-center">
+              
+                          <h3 class="mb-4 mt-5"><u>LOG IN</u></h3>
+                          <% if (message.success){%> <p style="color: green;"><%=message.success%></p> <%}%>
+                          <% if (message.error){%> <p style="color: red;"><%=message.error%></p> <%}%>
+                          <form class="p-3 mt-4" action="login" method="post" >
+                            <div class="form-outline mb-4">
+                              <input type="email" placeholder="EMAIL" name="email" id="email" class="form-control form-control-lg" />
+                            
+                            </div>
+                            <div class="form-outline mb-4">
+                              <input type="password" placeholder="PASSWORD" name="password" id="pswd" class="form-control form-control-lg" />
+                            </div>
+                            <!-- Checkbox -->
+                            <div style="cursor: pointer; color: blue;" data-bs-toggle="modal" data-bs-target="#exampleModal" class=" d-flex justify-content-end mb-4">
+                              <a >Forgot password</a>
+                            
+                            </div>
+                            <button class="btn btn-login btn-lg btn-block mb-lg-3" type="submit">SIGN IN</button>
+                          </form>
+                          <!-- <hr class="my-4"> -->
+              
+                          <h6 class="d-flex justify-content-center"><a href="/signup">Create account</a></h6>
+                          <div class="sign-icons d-flex justify-content-center"><a href=""><img src="/images/FACEBOOK.svg" alt=""></a>
+                        <a href="/auth/google" class="ml-3 mr-3"><img src="/images/google-svgrepo-com.svg" alt=""></a>
+                    <a href=""><img src="/images/twitter-svgrepo-com.svg" alt="">
+                    </a></div>
+              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+
+               <!-- forgot-password  modal----------------------- -->
+
+
+<div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+   aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+  <div class="modal-dialog  modal-dialog-centered" style="width: 300px;">
+      <div class="modal-content text-center">
+          <div class="modal-header h5 text-white bg-primary justify-content-center">
+              Password Reset
+          </div>
+          <div class="modal-body px-5">
+              <form action="/reset-password" method="POST" enctype="">
+                <p class="py-2">
+                    Enter your email address and we'll send you an email with instructions to reset your password.
+                </p>
+                <div class="form-outline">
+                    <input type="email" id="typeEmail" name="email" class="form-control my-2" />
+                    <label class="form-label" for="typeEmail">Email</label>
+                </div>
+                <button  type="submit" class="btn btn-primary w-100">Reset password</button>
+              </form>
+              <div class="d-flex justify-content-between mt-4">
+                  <a class="" href="/login">Login</a>
+                  <a class="" href="/signup">Register</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+             
+
+
+
+
+
+
+              <%- include('layout/footer.ejs')%>

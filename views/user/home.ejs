@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+ 
+  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="/css/home.css" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+  <title>Ours.</title>
+</head>
+
+<body>
+  <%- include('layout/navbar.ejs')%>
+
+  <%- include('layout/usermodals.ejs')%>
+
+
+      <div class="product-section w-100">
+        <div class=" " style="width: 100%; height: 89vh;">
+         <img src="https://www.snitch.co.in/cdn/shop/files/re_10d5b2ce-58e3-49c0-aa74-b7bca37417f4_1512x.jpg?v=1692343875" style="width:100%; height:100%;" alt="">
+        </div>
+
+        <div class="container-fluid">
+          <div id="new-section" class="d-flex justify-content-center w-100 mt-5">
+            <h2><u>NEW ARRIVALS</u></h2>
+          </div>
+
+          <div class="row rowproduct d-flex m-5">
+
+            <% if (newProduct) { %>
+              <% for (let i = 0; i < newProduct.length; i++) { %>
+                <div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center mt-3">
+                  <div class="product-grid d-flex flex-column justify-content-center">
+                    <div class="product-image d-flex justify-content-center align-content-center">
+                      <a href="/productview/<%= newProduct[i]._id %>" class="image d-flex">
+                        <img src="/uploads/<%= newProduct[i].images[0] %>" alt="<%= newProduct[i].title %> Image" />
+                      </a>
+                      <ul class="product-links">
+                        <li>
+                          <a href="#"><i class="fas fa-heart"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="product-content">
+                      <h3 class="title"><a href="#">
+                        <%= newProduct[i].title %>
+                      </a></h3>
+                      <div class="price">₹ <%= newProduct[i].price %></div>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+                <% } else { %>
+                  <p>No products available.</p>
+                <% } %>
+            
+          </div>
+          <div class="w-100 d-flex justify-content-center">
+            <span class="btn btn-dark"><a href="/allproduct?new=on" class="text-white">VIEW ALL</a></span>
+          </div>
+
+          <div class="d-flex justify-content-center w-100 mt-4">
+            <h2><u>MOST TRENDING</u></h2>
+          </div>
+        </div>
+
+        <div class="row rowproduct d-flex m-5">
+          <% for(let i=0; i < product.length;i++) { %>
+            <div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center mt-3">
+              <div class="product-grid d-flex flex-column justify-content-center">
+                <div class="product-image d-flex justify-content-center align-content-center">
+                 
+                    <a href="/productview/<%=product[i]._id%>" class="image d-flex">
+                      <img src="/uploads/<%=product[i].images[0]%>" style="width: 223px; height: 319px" />
+                    </a>
+                 
+                  <ul class="product-links">
+                    <li>
+                      <a href="/add-wishlist/<%=product._id%>"><i class="fas fa-heart"></i></a>
+                    </li>
+                  </ul>
+                 
+                </div>
+                <div class="product-content">
+                  <h3 class="title"><a href="">
+                      <%=product[i].title%>
+                    </a></h3>
+                  <div class="price">₹ <%=product[i].price%></div>
+                </div>
+              </div>
+            </div>
+            <% }; %>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+          <span class="btn btn-dark">VIEW ALL</span>
+        </div>
+
+        <div id="category-section" class="d-flex justify-content-center w-100 mt-4 category-section">
+          <h2><u>ALL CATEGORY</u></h2>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <div class="col-lg-11 w-100 d-flex justify-content-center mt-5 " >
+            <div class="col-lg-6 d-flex justify-content-center align-items-center category-male bg-dark rounded-start" style="height: 150px; width: 50%">
+
+              <div class="row text-white d-flex align-items-center ">
+                <!-- <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div> -->
+
+
+                <% if (malecategory && malecategory.subcategories && malecategory.subcategories.length > 0) {
+                  let indexCounter = 0;
+                  malecategory.subcategories.forEach(subcategory => { %>
+                    <!-- <label>
+                      <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>">
+                      <%= subcategory.name %>
+                    </label> -->
+
+                    <div class="col-md-3 d-flex justify-content-around">
+                      <div style="width: 100px;" class="bg-secondary d-flex
+                       justify-content-center mt-1 p-2"><a class="text-white" href="/allproduct?category=<%= subcategory.name %>" style="font-size: 13px;"><%= subcategory.name %></a></div>
+                    </div>
+
+                    <% indexCounter++;
+                  });
+                } %>
+                <!-- <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div><div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="bg-secondary mt-2 p-2">Men</div>
+                </div> -->
+
+              </div>
+             </div>
+
+              <div class="col-lg-6 d-flex justify-content-center align-items-center category-female w-50 bg-secondary rounded-end"style="height: 150px; width: 50%">
+              
+                <div class="row text-white d-flex align-items-center ">
+                  <!-- <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div><div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div>
+  
+                  <div class="col-md-2">
+                    <div class="bg-dark mt-2 p-2">Women</div>
+                  </div> -->
+
+
+                  <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) {
+                    let indexCounter = 0;
+                    femalecategory.subcategories.forEach(subcategory => { %>
+                      <!-- <label>
+                        <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>">
+                        <%= subcategory.name %>
+                      </label> -->
+  
+                      <div class="col-md-3 d-flex justify-content-around">
+                        <div style="width: 100px;" class="bg-dark d-flex
+                         justify-content-center mt-1 p-2"><a class="text-white" href="/allproduct?category=<%= subcategory.name %>" style="font-size: 13px;"><%= subcategory.name %></a></div>
+                      </div>
+  
+                      <% indexCounter++;
+                    });
+                  } %>
+  
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="footer w-100 bg-dark mt-5" style="height: 150px">
+          <% if (user) { %>
+            <div class="w-100 h-50"><a href="/logout">Logout</a></div>
+            <% } %>
+        </div>
+      </div>
+    </div>
+
+
+  
+
+
+    <style>
+     
+    </style>
+
+
+
+
+
+
+
+
+
+
+    <script>
+      const openBtn = document.querySelector("#cart-btn");
+      const cart = document.querySelector("#sidecart");
+      const closeBtn = document.querySelector("#close_btn");
+      const overlaycart = document.getElementById("overlay_cart");
+
+      // overlaycart.addEventListener('click',closeCart)
+      openBtn.addEventListener("click", openCart);
+      closeBtn.addEventListener("click", closeCart);
+
+      function openCart() {
+        cart.classList.add("open");
+        overlaycart.style.display = "block";
+        document.body.classList.add("no-scroll");
+      }
+
+      function closeCart() {
+        cart.classList.remove("open");
+        overlaycart.style.display = "none";
+        document.body.classList.remove("no-scroll");
+      }
+    </script>
+    <script>
+      const menuOpenBtn = document.querySelector("#menu-btn");
+    const menu = document.querySelector("#menubar");
+    const menuclosebtn = document.querySelector("#menuclose_btn");
+    const overlay = document.getElementById("overlay_menu");
+    const add_cart=document.getElementById('add_cart')
+   
+
+    menuOpenBtn.addEventListener("click", openMenu);
+    menuclosebtn.addEventListener("click", closeMenu);
+    overlay.addEventListener('click',closeMenu)
+    add_cart.addEventListener('click',openMenu)
+
+
+    function openMenu() {
+        menu.classList.add("open");
+        overlay.style.display = "block"; // Show the overlay
+        document.body.classList.add("no-scroll");
+    }
+
+    function closeMenu() {
+        menu.classList.remove("open");
+        overlay.style.display = "none"; // Hide the overlay
+        document.body.classList.remove("no-scroll");
+    }
+
+
+    function changeQuentity(proId){
+      
+    }
+
+   
+
+
+
+   
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+
+
+
+<%- include('layout/header.ejs')%>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="menu"><a href="">  <img src="/images/menu.svg" alt="logo" class="hamburger "></a></div>
+        <a class="navbar-brand " style="margin-left: 80px;" href="#">Ours</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link nav-text" style="margin-left: 60px;"  href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-text" href="#">New</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-text" href="#">Category</a>
+              </li>
+          </ul>
+          
+          <ul class="navbar-nav pr-5 icon-nav ">
+            <li><img src="/images/search 85.svg" alt="srch" class="nav-icon"  style="width: 22px;"></li>
+            <li><img src="/images/heart.svg" alt="fvrt" class="nav-icon"></li>
+            <li><img src="/images/user.svg" alt="prfl" class="nav-icon"></li>
+            <li><img src="/images/shopping cart.svg" alt="cart" class="nav-icon" style="margin-right: 0;"></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="d-flex">
+          <div class="side-border bg-light d-md-flex "></div>
+          <div class="login-part ">
+
+            <section class="">
+                <div class="container py-1 ">
+                  <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                      <div class="" >
+                        <div class="card-body  text-center">
+              
+                          <h3 class="mb-4 mt-5" ><u>CREATE ACCOUNT</u></h3>
+
+                          <% if (message.success){%> <p style="color: green;"><%=message.success%></p> <%}%>
+                          <% if (message.error){%> <p style="color: red;"><%=message.error%></p> <%}%>
+                        
+ <form class="p-1 mt-3 " action="signup" method="post" onsubmit="confirmPswd(event)" >
+                            <div class="form-outline mb-4 ">
+                              <input type="text" name="name" required placeholder="FULL NAME" id="name" class="form-control form-control-lg" />
+                        
+                            </div>
+                            <div class="form-outline mb-4">
+                              <input type="email" name="email" required placeholder="EMAIL"  id="email" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-outline mb-4">
+                              <input type="tel" name="phone" required placeholder="PHONE"  id="phone" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-outline mb-4">
+                              <input type="password" name="password" required placeholder="PASSWORD" id="oswd" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-outline mb-4">
+                              <input type="password" required placeholder="CONFIRM PASSWORD" id="c-pswd" class="form-control form-control-lg" />
+                            </div>
+
+    
+                            
+                            
+                            <button class="btn btn-login btn-lg btn-block mb-lg-3" type="submit">SIGN IN</button>
+                           </form>   
+                          
+                          
+                          
+                           
+                          
+                          
+                          
+                          
+                         
+
+
+
+
+                          <h6 class="d-flex justify-content-center"><a href="/login">Log in</a></h6>
+                          <div class="sign-icons d-flex justify-content-center"><a href=""><img src="/images/FACEBOOK.svg" alt=""></a>
+                        <a href="" class="ml-3 mr-3"><img src="/images/google-svgrepo-com.svg" alt=""></a>
+                    <a href=""><img src="/images/twitter-svgrepo-com.svg" alt="">
+                    </a></div>
+              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+      
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script>
+      function confirmPswd(e) {
+        e.preventDefault();
+        
+        const password = e.target.querySelector('#oswd').value;
+        const confirmPassword = e.target.querySelector('#c-pswd').value;
+    
+        if (password === confirmPassword) {
+          e.target.submit();
+        } else {
+          window.alert("Password must be the same");
+        }
+      }
+
+
+      document.addEventListener("DOMContentLoaded", function() {
+    const sendOTPButton = document.getElementById("sendOTP");
+    const otpPopup = document.getElementById("otpPopup");
+    const verifyOTPButton = document.getElementById("verifyOTP");
+    const otpInput = document.getElementById("otpInput");
+    const signupForm = document.getElementById("signupForm");
+
+    sendOTPButton.addEventListener("click", function() {
+      // Perform backend logic to send OTP to the provided email
+      
+      // Show the OTP popup
+      otpPopup.style.display = "block";
+    });
+
+    verifyOTPButton.addEventListener("click", function() {
+      // Perform backend logic to verify the entered OTP
+      
+      // Hide the OTP popup
+      otpPopup.style.display = "none";
+      
+      // Submit the signup form
+      signupForm.submit();
+    });
+  });
+
+</script>
+
+<%- include('layout/footer.ejs')%>

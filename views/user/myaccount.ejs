@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+    <title>Ours.</title>
+</head>
+
+<body>
+    <%- include('layout/usermodals.ejs')%>
+
+
+        <%- include('layout/navbar.ejs')%>
+
+
+
+
+
+
+            <div class="d-flex w-100">
+
+                <div class="sidepanel">
+
+                    <div class="header_myac d-flex flex-column justify-content-start ">
+                        <p class="hello" style="font-weight: 700;font-size:1.7rem"> Hello <span
+                                style="font-weight: 300;font-size:1.5rem">
+                                <%=user.name%>
+                            </span></p>
+                        <p style="font-size:.7rem; color: grey;font-weight:500;"><b>Wellcome to your Account</b></p>
+                    </div>
+                    <div class="body_myac">
+                        <div class="text_myac">
+                            <div class="active"> <a href="/myaccount"> <i class="bx bx-user"></i> My Account </a></div>
+                            <div> <a href="/myorders"> <i class="bx bx-basket"></i> My Orders </a></div>
+                            <div><a href="/wishlist"><i class="bx bx-heart"></i>My Wishlist</a></div>
+                            <div style="cursor: pointer;"> <a data-bs-toggle="modal" data-bs-target="#Modalsignoutuser">
+                                    <i class="bx bx-log-out"></i> Sign Out</a></div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="sidepanel_fk"></div>
+
+
+                <div class="user_info  " id="profile">
+
+                    <div class="page_head">
+                        <h3>My account</h3>
+                    </div>
+
+                    <div class="semi_head mb-3 d-flex justify-content-between">
+                        <h5>Contact Details</h5>
+                        <a href="" id="edit-profilebtn">Edit</a>
+                    </div>
+
+                    <div class="userinfo_list">
+
+                        <label for="">Your Name</label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p>
+                                <%=user.name%>
+                            </p>
+
+                        </div>
+                        <hr>
+                        <label for="">Email Address</label>
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <p>
+                                <%= user.email %>
+                            </p>
+
+
+                        </div>
+                        <hr>
+
+                        <label for="">Phone Number</label>
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <p>
+                                <%=user.phone%>
+                            </p>
+
+
+                        </div>
+                        <hr>
+
+                        <label for="">Password</label>
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <p>********</p>
+
+
+
+                        </div>
+                        <hr>
+
+
+                    </div>
+
+
+                    <div class="semi_head mt-4 mb-3 d-flex justify-content-between align-items-center">
+                        <h5>Address</h5>
+                        <a href="" id="address_btn">Add new</a>
+                    </div>
+                    <% if (user.address && user.address.length> 0) { %>
+
+
+                        <div class="address_list" id="address_list">
+                            <div class="row">
+                                <% user.address.forEach(address=> { %>
+                                    <div class="col-md-6">
+                                        <div class="add_list bg-light p-3">
+                                            <h3>
+                                                <%= address.name %>
+                                            </h3>
+                                            <p>
+                                                <%= address.contact %>
+                                            </p>
+                                            <p>
+                                                <%= address.house %>, <%= address.city %>, <%= address.district %>,<%=
+                                                                address.state %><br>
+                                                                <%=address.post%>
+                                            </p>
+                                            <div>
+                                                <a class="btn btn-outline-danger"
+                                                    href="/delete-address?id=<%=address._id%>">remove</a>
+                                                <button class="btn btn-outline-primary" data-toggle="modal"
+                                                    data-target="#editAddressModal<%= address._id %>">edit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                        <% } else { %>
+                            <!-- Display a message if no addresses are found -->
+                            <p>No addresses found.</p>
+                            <% } %>
+
+                                <!-- edit address----------------------------------------------- -->
+
+                                <% if (user.address && user.address.length> 0) { %>
+
+                                    <% user.address.forEach(address=> { %>
+                                        <!-- Your existing HTML code -->
+
+                                        <!-- Add new Bootstrap modal for editing addresses -->
+                                        <div class="modal fade" id="editAddressModal<%= address._id %>" tabindex="-1"
+                                            role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+                                            data-backdrop="static">
+                                            <div class="modal-dialog d-flex justify-content-center modal-dialog-centered"
+                                                role="document">
+                                                <div class="modal-content" style="width: 22rem;">
+                                                    <form action="/edit-address?Id=<%=address._id%>" method="post">
+                                                        <div class="modal-header text-center">
+                                                            <h4 class="modal-title w-100 font-weight-bold">Update Address
+                                                            </h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="modal-body d-flex justify-content-around flex-column mx-3">
+
+                                                            <input class="m-1" type="text" value="<%=address.name%>"
+                                                                name="name" placeholder="Name" id="editName">
+                                                            <input class="m-1" type="tel" value="<%=address.contact%>"
+                                                                name="contact" placeholder="Contact" id="editContact">
+                                                            <input class="m-1" type="text" value="<%=address.house%>"
+                                                                name="house" placeholder="Address" id="editHouse">
+                                                            <input class="m-1" type="text" value="<%=address.city%>"
+                                                                name="city" placeholder="City" id="editCity">
+                                                            <input class="m-1" type="text" value="<%=address.district%>"
+                                                                name="district" placeholder="District"
+                                                                id="editDistrict">
+                                                            <input class="m-1" type="text" value="<%=address.state%>"
+                                                                name="state" placeholder="State" id="editState">
+                                                            <input class="m-1" type="text" value="<%=address.post%>"
+                                                                name="post" placeholder="Post" id="editPost">
+
+                                                        </div>
+                                                        <div class="modal-footer d-flex justify-content-center">
+                                                            <button type="submit" class="btn btn-unique">Save<i
+                                                                    class="fas fa-paper-plane-o ml-1"></i></button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Your remaining HTML and template code -->
+
+                                        <% }); %>
+                                            <% } %>
+
+
+
+
+
+                </div>
+
+                <!-------------------------------------- for edit profile-------------------- -->
+                <div class="w-100 m-auto" id="edit-profile" style="display: none;">
+
+
+                    <div class="ml-5 mr-5">
+                        <div class="d-flex justify-content-center">
+                            <h2>EDIT PROFILE</h2>
+                        </div>
+                        <form action="/update-profile" method="POST">
+
+
+
+                            <div class="d-flex justify-content-between w-100"><label for="">Your Name</label>
+                                <div class=" d-flex justify-content-end w-75 pr-2"><span id="editprofilecloseBtn"
+                                        class="bg-danger d-flex justify-content-center align-items-center"
+                                        style="width: 20px; height: 20px; border-radius: 25%; color:  white; cursor: pointer;">&times;</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <input style="border: none;" class="w-100" type="text" name="name"
+                                    value="<%=user.name%>">
+
+                            </div>
+                            <hr>
+                            <label for="">Email Address</label>
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+
+                                <input style="border: none;" readonly name="email" class="w-100" type="text"
+                                    value="<%= user.email %>">
+
+
+                            </div>
+                            <hr>
+
+                            <label for="">Phone Number</label>
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+
+                                <input style="border: none;" name="phone" class="w-100" type="text"
+                                    value=" <%=user.phone%>">
+
+
+                            </div>
+                            <hr>
+
+                            <label for="">Password</label>
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <input style="border: none;" name="password" class="w-100" value="******">
+
+
+
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-center "><input style="border: none;"
+                                    class="btn btn-success" type="submit" value="SAVE"></div>
+                        </form>
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- add addresss---------------------------------------------------------- -->
+
+
+                <div class="justify-content-center align-items-center" id="address"
+                    style="display:none;margin: 0 auto;">
+
+
+
+                    <div
+                        class="address-section  d-flex justify-content-center justify-content-around  align-items-around mt-5 ">
+
+
+                        <div class="address_body    d-flex flex-column align-items-center  justify-content-center">
+                            <div class=" d-flex justify-content-end w-100 pr-3"><span id="profile_btn"
+                                    class="bg-danger d-flex justify-content-center align-items-center"
+                                    style="width: 20px; height: 20px; border-radius: 25%; color:  white; cursor: pointer;">&times;</span>
+                            </div>
+                            <div class="add_address d-flex justify-content-center">
+                                <h2>ADD NEW ADDRESS</h2>
+                            </div>
+                            <form id="address_item" action="/add-address"  method="post" onsubmit="event.preventDefault(); addAddress()"  >
+
+                                <div class=" justify-content-between">
+                                    <label for="">Full Name:</label><br>
+                                    <input type="text" name="name" required style="width: 100%;">
+                                </div>
+                                <div class="d-flex w-100 justify-content-between ">
+                                    <div>
+                                        <label for="">Address</label><br>
+                                        <input name="house" type="text" required>
+                                    </div>
+                                    <div>
+                                        <label for="">Contact</label><br>
+                                        <input name="contact" type="tel" required>
+                                    </div>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between ">
+                                    <div>
+                                        <label for="">Postel Code</label><br>
+                                        <input name="postel" type="text" required>
+                                    </div>
+                                    <div>
+                                        <label for="">City</label><br>
+                                        <input name="city" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between ">
+                                    <div>
+                                        <label for="">State</label><br>
+                                        <input name="state" type="text" required>
+                                    </div>
+                                    <div>
+                                        <label for="">District</label><br>
+                                        <input name="district" type="text" required>
+                                    </div>
+                                </div>
+
+                                <div class="w-100 d-flex justify-content-center"><button type="submit"
+                                        class="btn btn-success">Submit</button></div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+
+            <style>
+                .address_item {
+                    width: 90%;
+                }
+
+                .address_body {
+                    height: 23rem;
+                    width: 37rem;
+                }
+
+                .user_info .semi_head h5 {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #666666;
+                }
+
+                hr {
+                    margin: 0 0 1rem 0;
+                }
+
+                .userinfo p {
+                    margin: 0;
+                }
+
+                .userinfo_list label {
+                    font-weight: 600;
+                    letter-spacing: 0.11rem;
+                }
+
+                .userinfo_list p {
+                    margin: 0;
+                }
+
+                .sidepanel {
+                    width: 220px;
+                    height: 100vh;
+                    position: fixed;
+                    border-right: 1px solid rgb(201, 201, 201);
+                }
+
+                .sidepanel_fk {
+                    width: 20%;
+                    height: 100%;
+                }
+
+                .sidepanel .body_myac ul li a {
+                    color: black;
+                    text-decoration: none;
+
+
+                }
+
+                .header_myac {
+                    padding: 1rem 1rem 0 1rem;
+
+                }
+
+                .header_myac .hello {
+                    margin-bottom: 0;
+                }
+
+                .sidepanel .body_myac .text_myac div {
+                    padding: .6rem;
+                    list-style: none;
+
+
+
+
+                }
+
+
+                .sidepanel .body_myac .text_myac .active {
+                    background-color: rgba(240, 240, 240, 0.856);
+                    border-left: 1px solid black;
+                }
+
+                .sidepanel .body_myac .text_myac div:hover {
+                    background-color: rgba(240, 240, 240, 0.856);
+
+                }
+
+                .sidepanel .body_myac .text_myac div a {
+                    color: black;
+                    padding: 1.2rem;
+                    text-decoration: none;
+
+                }
+
+                .hidden {
+                    display: none;
+                }
+
+                .sidepanel .body_myac .text_myac div a i {
+                    padding-right: .9rem;
+
+                }
+
+                .user_info {
+
+                    margin-top: 3rem;
+                    width: 75%;
+                }
+
+                .add_list {
+                    border-radius: 15px;
+                }
+            </style>
+
+
+
+
+
+
+
+
+
+
+
+            <script>
+                const openBtn = document.querySelector("#cart-btn");
+                const cart = document.querySelector("#sidecart");
+                const closeBtn = document.querySelector("#close_btn");
+                const overlaycart = document.getElementById("overlay_cart");
+
+                // overlaycart.addEventListener('click',closeCart)
+                openBtn.addEventListener("click", openCart);
+                closeBtn.addEventListener("click", closeCart);
+
+                function openCart() {
+                    cart.classList.add("open");
+                    overlaycart.style.display = "block";
+                    document.body.classList.add("no-scroll");
+                }
+
+                function closeCart() {
+                    cart.classList.remove("open");
+                    overlaycart.style.display = "none";
+                    document.body.classList.remove("no-scroll");
+                }
+            </script>
+            <script>
+                const menuOpenBtn = document.querySelector("#menu-btn");
+                const menu = document.querySelector("#menubar");
+                const menuclosebtn = document.querySelector("#menuclose_btn");
+                const overlay = document.getElementById("overlay_menu");
+
+
+                menuOpenBtn.addEventListener("click", openMenu);
+                menuclosebtn.addEventListener("click", closeMenu);
+                overlay.addEventListener('click', closeMenu)
+
+
+                function openMenu() {
+                    menu.classList.add("open");
+                    overlay.style.display = "block"; // Show the overlay
+                    document.body.classList.add("no-scroll");
+                }
+
+                function closeMenu() {
+                    menu.classList.remove("open");
+                    overlay.style.display = "none"; // Hide the overlay
+                    document.body.classList.remove("no-scroll");
+                }
+                document.addEventListener("DOMContentLoaded", function () {
+                    const addressBtn = document.getElementById("address_btn");
+                    const profileSection = document.getElementById("profile");
+                    const addressSection = document.getElementById("address");
+                    const profileBtn = document.getElementById("profile_btn");
+
+
+                    addressBtn.addEventListener("click", function (event) {
+                        event.preventDefault(); // Prevent any default link behavior
+                        profileSection.classList.add("hidden"); // Hide the profile section
+                        addressSection.style.display = "block"; // Show the address section
+                    });
+
+
+                    profileBtn.addEventListener("click", function () {
+                        profileSection.classList.remove("hidden"); // Show the profile section
+                        addressSection.style.display = "none"; // Hide the address section
+                    });
+                });
+
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const edit_profileBtn = document.getElementById("edit-profilebtn");
+                    const editprofilesSection = document.getElementById("edit-profile");
+                    const profileSection = document.getElementById("profile");
+                    const editcloseBtn = document.getElementById("editprofilecloseBtn");
+
+
+                    edit_profileBtn.addEventListener("click", function (event) {
+                        event.preventDefault(); // Prevent any default link behavior
+                        profileSection.classList.add("hidden"); // Hide the profile section
+                        editprofilesSection.style.display = "block"; // Show the address section
+                    });
+
+
+                    editcloseBtn.addEventListener("click", function () {
+                        profileSection.classList.remove("hidden"); // Show the profile section
+                        editprofilesSection.style.display = "none"; // Hide the address section
+                    });
+                });
+
+
+
+
+    function addAddress() {
+    const formData = $('#address_item').serialize(); // Serialize the form data
+
+    fetch('/add-address', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded", // Set the content type to URL-encoded
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        window.location.reload()
+        console.log(data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+
+            </script>
+
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+</body>
+
+</html>

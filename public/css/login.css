@@ -1,0 +1,55 @@
+body{
+    margin: 0;
+    padding: 0;
+    /* box-sizing: border-box; */
+}
+
+.nav-icon{
+    width: 25px;
+    margin-right: 30px;
+}
+
+.nav-text{
+    margin-right: 60px;
+}
+
+.menu{
+  background-color: black;
+  /* background-image: 10px; */
+  padding: 13.5px;
+  position: absolute;
+  left: -1px;
+height: 56px;
+}
+.hamburger{
+    width: 30px;
+}
+
+.side-border{
+    width: 57px;
+    height: 100vh;
+    position: relative;
+}
+.login-part{
+    width: 100%;
+   
+}
+.sign-icons img {
+    width: 40px;
+    margin: 15px;
+}
+html,body {
+    overflow: hidden;
+  }
+.btn-login{
+   background-color: #30373E;
+   color: aliceblue;
+   /* font-size: 60px; */
+}  
+nav.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+  }
