@@ -9,6 +9,7 @@ const nocache = require('nocache');
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 
 
@@ -68,8 +69,9 @@ app.use((req, res, next) => {
 
 
 
+const port = process.env.PORT || 3000;
 
 
-app.listen(8888, () => {
+app.listen(port, () => {
   console.log('server connected')
 })

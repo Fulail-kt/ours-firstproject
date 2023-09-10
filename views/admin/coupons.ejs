@@ -121,7 +121,7 @@
 
   <div class="modal fade" id="modaleditcoupon<%= coupon._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <form action="/admin/create-coupon" method="post">
+      <form action="/admin/update-coupon/<%=coupon._id%>" method="post">
         <div class="modal-content">
           <div class="modal-header bg-dark">
             <h5 class="modal-title text-white" id="exampleModalLabel">Update Coupon</h5>

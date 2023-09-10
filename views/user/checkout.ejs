@@ -9,11 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="/css/home.css" />
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  
   <title>Ours.</title>
 </head>
 
@@ -47,40 +44,44 @@
 
                         <div class="rounded-left text-white "
                           style="width: 50%; height: 36rem; background-color: #343a40;">
-                          <div id="shipping-address">
-                            <div class="card-header">
-                              <h4>Shipping Address</h4>
+                          <div id="shipping-address " >
+                            <div class="card rounded-0  bg-gradient bg-secondary text-black-50">
+                              <div class="card-header">
+                                <h4>Shipping Address</h4>
+                              </div>
                             </div>
-                            <div class="chekout-body1 w-100  mr-2">
+                            <div class="chekout-body1 w-100">
                               <div class="checkout-head1 w-100 d-flex  justify-content-center">
-                                <h5 class="font-weight-light">SELECT ADDRESS</h5>
+                                <h5 class="fw-light">SELECT ADDRESS</h5>
                               </div>
                               <div class="checkout-page h-100  w-100" id="page1">
                                 <div class="page1-body m-1">
                                   <% if(user && user.address.length> 0) { %>
                                     <% user.address.forEach(address=> { %>
-                                      <label class="mb-0 mt-1 ml-3 mr-3 p-1 addressLabels d-flex justify-content-around"
-                                        for="addressRadio<%= address._id %>"
-                                        style="border: #7777 1px solid; border-radius: 5px;">
-                                        <input type="radio" required id="addressRadio<%= address._id %>"
-                                          name="selectedAddress" value="<%= address._id %>" style="display: none;">
-                                        <div class="address-details">
-                                          <div class="d-flex justify-content-start">
-                                            <h5 class="">
-                                              <%= address.name %>
-                                            </h5>
+                                      <div class="text-monospace " style="margin-left: 5rem; margin-right: 5rem;">
+                                        <label class=" addressLabels d-flex justify-content-around"
+                                          for="addressRadio<%= address._id %>"
+                                          style="border: #7777 2px solid; border-radius: 5px;">
+                                          <input type="radio" required id="addressRadio<%= address._id %>"
+                                            name="selectedAddress" value="<%= address._id %>" style="display: none;">
+                                          <div class="address-details">
+                                            <div class="d-flex justify-content-start">
+                                              <h5 class="">
+                                                <%= address.name %>
+                                              </h5>
+                                            </div>
+                                            <p>
+                                              <%= address.house %>, <%= address.city %>, <%= address.district %>, <%=
+                                                      address.state %>,<br>
+                                                      <%= address.post %>, <%= address.contact %>
+                                            </p>
                                           </div>
-                                          <p>
-                                            <%= address.house %>, <%= address.city %>, <%= address.district %>, <%=
-                                                    address.state %>,<br>
-                                                    <%= address.post %>, <%= address.contact %>
-                                          </p>
-                                        </div>
-                                      </label>
+                                        </label>
+                                      </div>
                                       <% }) %>
                                         <% } %>
                                           <div class="mt-1">
-                                            <a id="new-address" data-toggle="tooltip" data-placement="bottom"
+                                            <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressModal" id="new-address"  
                                               title="ADD ADDRESS"><i class='bx bx-plus-circle'></i>Add
                                               address</a>
                                           </div>
@@ -95,7 +96,7 @@
                                 <!-- Content of the second page -->
                                 <div class="h-75">
                                   <div class="d-flex  justify-content-center">
-                                    <h6 class="font-weight-light">Please select payment method to complete the order
+                                    <h6 class="fw-light">Please select payment method to complete the order
                                     </h6>
                                   </div>
                                   <div class="d-flex justify-content-around mt-2">
@@ -115,7 +116,7 @@
                                 </div>
                                 <div class="foot d-flex justify-content-center mt-2">
                                   <button class="btn btn-secondary" disabled id="confirmBtn" type="submit"
-                                    onclick="MainFormSubmit()">Confirm
+                                   >Confirm
                                     Order</button>
                                 </div>
                               </div>
@@ -129,52 +130,7 @@
 
 
 
-                          <div id="new-addressSection" class="new-addressSection  bg-danger"  style="width: 100%;  height: 100%; display: none;">
-  
-
-
-                            <div class="h-100 p-5">
-                              <form id="address_item" action="/add-address"  method="post" onsubmit="event.preventDefault(); addAddress()"  >
-                                <div class=" justify-content-center">
-                                    <label for="name">Full Name:</label>
-                                    <input type="text" id="name" name="name" required style="width: 80%;">
-                                </div>
-                                <div class="d-flex w-100 justify-content-around ">
-                                    <div>
-                                        <label for="">Address</label><br>
-                                        <input name="house" type="text" required>
-                                    </div>
-                                    <div>
-                                        <label for="">Contact</label><br>
-                                        <input name="contact" type="tel" required>
-                                    </div>
-                                </div>
-                                <div class="d-flex w-100 justify-content-around ">
-                                    <div>
-                                        <label for="">Postel Code</label><br>
-                                        <input name="postel" type="text" required>
-                                    </div>
-                                    <div>
-                                        <label for="">City</label><br>
-                                        <input name="city" type="text" required>
-                                    </div>
-                                </div>
-                                <div class="d-flex w-100 justify-content-around ">
-                                    <div>
-                                        <label for="">State</label><br>
-                                        <input name="state" type="text" required>
-                                    </div>
-                                    <div>
-                                        <label for="">District</label><br>
-                                        <input name="district" type="text" required>
-                                    </div>
-                                </div>
-                                <div class="w-100 d-flex justify-content-center"><button type="submit"
-                                        class="btn btn-success" onclick="InnerFormSubmit()">Submit</button></div>
-                              
-                             </form>
-                            </div>
-                          </div>
+                          
                         </div>
 
                         <!-- order address -addd -->
@@ -183,8 +139,10 @@
 
 
                         <div class="bg-secondary rounded-right  text-black" style="width:50%; height: 36rem; ">
-                          <div class="card-header">
-                            <h4>Order Summary</h4>
+                          <div class="card   bg-dark rounded-0 bg-gradient text-capitalize text-white-50">
+                            <div class="card-header">
+                              <h4>order summary</h4>
+                            </div>
                           </div>
                           <div class="chekout-body2 w-100  ">
 
@@ -197,9 +155,9 @@
                                         style=" background-color: #C0C0C0; border-radius: 5px;">
                                         <input type="hidden" name="productId" value="<%=product._id%>">
                                         <div class="col-3 bill-img d-flex justify-content-start "
-                                          style=" width: 100%; object-fit: cover;">
+                                          style=" object-fit: cover;">
                                           <img src="/uploads/<%= product.images[0] %>" alt=""
-                                            class="bg-light w-75 rounded">
+                                            class="bg-light w-75 rounded" style="width: 100%;">
                                         </div>
                                         <div class="col-9 p-0 m-0 bill-details">
                                           <p>
@@ -229,8 +187,13 @@
                               <div>
                                 <%const prevTotal=subtotal%>
                                   <input type="hidden" id="prevTotal" value="<%= prevTotal %>">
-                                  <div class="bill-total mt-2 d-flex justify-content-center">
-                                    <p class="p-0 font-monospace" id="subtotal"><b>Subtotal: ₹ <%= subtotal %></b></p>
+                                  <div class="text-center">
+                                    <p class="mb-0 font-monospace" id="discount"><b></b>
+                                    </p>
+                                  </div>
+                                  <input type="hidden" id="discountinput" name="discountinput" value="">
+                                  <div class="bill-total d-flex justify-content-center">
+                                    <p class="p-0 mt-0 pt-0 font-monospace" id="subtotal"><b>Subtotal: ₹ <%= subtotal %></b></p>
                                     <input type="hidden" name="totalamount" value="<%= subtotal %>" id="totalamount">
                                   </div>
                                   <div
@@ -242,7 +205,7 @@
                                         type="button">Apply</button>
                                     </div>
                                   </div>
-                                  <input type="hidden" name="couponCode" id="couponCode">
+                                  <!-- <input type="hidden" name="couponCode" id="couponCode"> -->
                                   <div class="w-100 d-flex justify-content-center">
                                     <p class="text-success" id="alert_tag"></p>
                                   </div>
@@ -320,27 +283,9 @@
 
                 <h3 class="text-center">Notification</h3>
                 <i class="fa fa-check text-center"></i>
-                <p class="r3 px-md-5 px-sm-1 text-center">Congratulations! Your order has been successfully completed.
+                <p class="r3 px-md-5 px-sm-1 text-center text-monospace"><b>Congratulations! Your order has been successfully completed.</b>
                 </p>
 
-
-                <div class="col-9 p-0 m-0 bill-details">
-                  <p>
-                    <%= product.title %>
-                  </p>
-
-
-                  <p class="" style="font-size: 12px;">Size : <%= product.size %>
-                  </p>
-                  <p class="" style="font-size: 12px;">Color : <%= product.color %>
-                  </p>
-                  <p class="" style="font-size: 12px;">Price: <%= product.price %>
-                  </p>
-                  <p class="" style="font-size: 12px;">Quantity: <%= product.quantity %>
-                  </p>
-                  <input type="hidden" name="qty" value="<%= product.quantity %>" id="">
-                  <input type="hidden" name="price" id="" value="<%= product.price %>">
-                </div>
 
                 <div class="text-center mb-3"> <button class="btn btn-warning w-50 rounded-pill b1"><a
                       class="text-white" href="/myorders">See Your orders</a></button> </div>
@@ -352,6 +297,90 @@
 
           <% } %>
 
+
+
+
+
+    
+
+          <!-- /////// ADD ADDRESS -->
+
+
+
+          <div class="modal fade " id="addressModal"  tabindex="-1" role="dialog" aria-labelledby="addressModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content bg-dark text-white-50">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="addressModalLabel">Add New Address</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                     
+                  </div>
+                  <div class="modal-body">
+                    <form id="address_item" action="/add-address"  method="post" onsubmit="event.preventDefault(); addAddress()" style="outline: none;" >
+                      <div class="d-flex justify-content-center ">
+                        <div class="  d-flex justify-content-between " style="width: 76%;">
+                            <label for="name">Full Name:</label>
+                            <input type="text" id="name" name="name" placeholder="Full Name" required style="width: 77%;">
+                        </div>
+                      </div>
+                      <div class="d-flex w-100 justify-content-around ">
+                          <div>
+                              <label for="">Address</label><br>
+                              <input name="house" type="text" placeholder="eg: Abc house" required>
+                          </div>
+                          <div>
+                              <label for="">Contact</label><br>
+                              <input name="contact" type="tel" placeholder="eg: 9876543210" required>
+                          </div>
+                      </div>
+                      <div class="d-flex w-100 justify-content-around ">
+                          <div>
+                              <label for="">Postel Code</label><br>
+                              <input name="postel" type="text" placeholder="eg: 676090 " required>
+                          </div>
+                          <div>
+                              <label for="">City</label><br>
+                              <input name="city" type="text" placeholder="City eg: calicut" required>
+                          </div>
+                      </div>
+                      <div class="d-flex w-100 justify-content-around ">
+                          <div>
+                              <label for="">State</label><br>
+                              <input name="state" type="text" placeholder="State" required>
+                          </div>
+                          <div>
+                              <label for="">District</label><br>
+                              <input name="district" type="text" placeholder="District" required>
+                          </div>
+                      </div>
+                      
+                    
+                      <div class="mt-2 text-end">
+                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                         <button type="submit" class="btn btn-success">Submit</button>
+                     </div>
+                   </form>
+                  </div>
+                
+              </div>
+          </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <style>
               @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
 
@@ -362,9 +391,7 @@
               }
 
 
-              .modal-content:hover {
-                box-shadow: 2px 2px 2px black;
-              }
+              /*  */
 
               .fa {
                 color: #FFD700;
@@ -406,7 +433,7 @@
 
               .page1-body {
                 overflow-y: auto;
-                height: 260px;
+                max-height: 260px;
 
               }
 
@@ -488,10 +515,7 @@
 
               ///////////////////////////////////////
 
-              function InnerFormSubmit() {
-    // Handle inner form submission here
-    document.getElementById('address_item').submit(); // Submit the inner form
-}
+
 
 
     function addAddress() {
@@ -684,10 +708,10 @@
 
 
 
-              document.getElementById('applyCouponBtn').addEventListener('click', function () {
-                var couponCode = document.getElementById('coupon').value;
-                document.getElementById('couponCode').value = couponCode;
-              });
+              // document.getElementById('applyCouponBtn').addEventListener('click', function () {
+              //   var couponCode = document.getElementById('coupon').value;
+              //   document.getElementById('couponCode').value = couponCode;
+              // });
 
 
 
@@ -696,6 +720,15 @@
                 const selectedCoupon = document.getElementById('coupon').value;
                 const totalamountInput = document.getElementById('totalamount');
                 const prevTotal = document.getElementById('prevTotal').value
+
+                
+                const discountElement = document.getElementById('discount');
+                const  subtotalElement=document.getElementById('subtotal');
+                subtotalElement.style.fontFamily = '"Courier New", monospace';
+                discountElement.style.fontFamily = '"Courier New", monospace';
+                const discountInput = document.getElementById('discountinput');
+                
+
 
                 // Send a request to your server to apply the selected coupon
                 const response = await fetch('/apply-coupon', {
@@ -708,11 +741,18 @@
 
                 const data = await response.json();
 
+                console.log(data)
                 if (data.success) {
                   // Update the displayed subtotal with the discounted price
                   document.getElementById('subtotal').innerHTML = `<b>Subtotal: ₹ ${data.discountedPrice}</b>`;
                   totalamountInput.value = data.discountedPrice; // Update the totalamount field
                   document.getElementById('alert_tag').innerHTML = `${data.message}`;
+                  
+                  discountElement.innerHTML=`<b>Discount: ₹ ${data.discount}<b>`;
+
+                    
+                discountInput.value = data.discount;
+
                 } else {
                   // Display an error message for invalid coupons
                   document.getElementById('alert_tag').innerHTML = `${data.message}`;
@@ -787,15 +827,12 @@
             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-              integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-              crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
               integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
               crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-              integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-              crossorigin="anonymous"></script>
+           
+          
 </body>
 
 </html>

@@ -45,6 +45,9 @@ const orderSchema = new mongoose.Schema({
   payment: {
     type: String
   },
+  discount:{
+    type: String
+  },
   address: [{
     name: String,
     house: String,

@@ -757,31 +757,28 @@ const razorpay = new Razorpay({
 
 
 const confirm_order = async (req, res) => {
-  const address = req.body.selectedAddress;
-  const selectedPaymentOption = req.body.selectedPaymentOption;
-  const userId = req.session.userId;
-  const productId = req.body.productId;
-  const quantity = req.body.qty;
-  const price=req.body.price;
-  let totalAmount = parseFloat(req.body.totalamount);
-  const couponCode=req.body.couponCode;
-
   try {
+    const address = req.body.selectedAddress;
+    const selectedPaymentOption = req.body.selectedPaymentOption;
+    const userId = req.session.userId;
+    const productId = req.body.productId;
+    const quantity = req.body.qty;
+    const price = req.body.price;
+    const discount = req.body.discountinput;
+
+    console.log(req.body);
+
+    let totalAmount = parseFloat(req.body.totalamount);
+    const couponCode = req.body.coupon;
+
     const coupon = await Coupon.findOne({ code: couponCode });
     const couponId = coupon ? coupon._id : null;
 
-  
+   
 
-    
-  // const user=await User.findOne({_id:userId})
-  const addressdata = await User.findOne({_id:userId},{address: { $elemMatch:{_id:address}}  } )
+    const addressdata = await User.findOne({ _id: userId }, { address: { $elemMatch: { _id: address } } });
 
-
-
-  const addressObjects = [];
-
-  addressdata.address.forEach((address) => {
-    const addressObject = {
+    const addressObjects = addressdata.address.map(address => ({
       name: address.name,
       house: address.house,
       post: address.post,
@@ -789,167 +786,103 @@ const confirm_order = async (req, res) => {
       state: address.state,
       district: address.district,
       contact: address.contact
-    };
-  
-    addressObjects.push(addressObject);
-  });
+    }));
 
+    const product = await Product.findById(productId);
 
-  const product=await Product.findById(productId)
-    
     let products = [];
 
-    // console.log(productId)
-if(selectedPaymentOption=="COD"){
-
-  if (Array.isArray(productId)) {
-    // Handling multiple products
-    productId.forEach((product, index) => {
-      products.push({
-        product: new mongoose.Types.ObjectId(product),
-        quantity: parseInt(quantity[index]),
-        price:parseInt(price[index])
-      });
-    });
-  }else{
-    products.push({
-      product: new mongoose.Types.ObjectId(productId),
-      quantity: parseInt(quantity),
-      price:parseInt(price)
-    });
-  }
-
-
-  
-
-    const orderNumber = shortid.generate();
-    const order = new Order({
-      orderNumber,
-      products,
-      customer: userId,
-      totalAmount,
-      status: 'pending',
-      payment: selectedPaymentOption,
-      address:addressObjects,
-      orderId:orderNumber
-    });
-
-    await order.save();
-
-    await User.findByIdAndUpdate(userId, {
-      $pull: { cart: { product: { $in: products.map(item => item.product) } } }
-    })
-
-
-    if (product && product.stock >= quantity) {
-      // Subtract the ordered quantity from the product's stock
-      product.stock -= quantity;
-
-      // Save the updated product back to the database
-      await product.save();
-    }
-
-    
-
-    const userdata = await User.findOneAndUpdate(
-      { _id: userId },
-      { $push: { usedCoupons: couponId } },
-      { new: true }
-    );
-
-    req.session.ordered=true 
-    res.json({ codSuccess: true })
-
-}else if(selectedPaymentOption=="ONLINE"){
-
-
-  const amount=totalAmount
-
-  if(amount>0){
-    const userId=req.session.userId
-    const user=await User.findById(userId)
-
-
-    req.session.orderlist=req.body;
-
-const randomOrderID=Math.floor(Math.random()*1000000).toString()
-  const options={
-    amount:amount*100,
-    currency:"INR",
-    receipt:randomOrderID,
-  }
-  
-
-  razorpay.orders.create(options,
-    (err)=>{
-      if(!err){
-      res.status(200).send({
-        razorSuccess:true,
-        msg:"order created",
-        amount:amount*100,
-        key_id:"rzp_test_BWSV0bS6jQoy1z",
-        name:addressdata.address[0].name,
-        contact:addressdata.address[0].contact,
-        email:user.email,
-      })
-
-      }else{
-        console.error("Razorpay Error:", err);
-         res.status(400).send({ razorSuccess: false, msg: 'Error creating order with Razorpay' });
+    if (selectedPaymentOption === "COD") {
+      if (Array.isArray(productId)) {
+        productId.forEach((product, index) => {
+          products.push({
+            product: new mongoose.Types.ObjectId(product),
+            quantity: parseInt(quantity[index]),
+            price: parseInt(price[index])
+          });
+        });
+      } else {
+        products.push({
+          product: new mongoose.Types.ObjectId(productId),
+          quantity: parseInt(quantity),
+          price: parseInt(price)
+        });
       }
+
+      const orderNumber = shortid.generate();
+      const order = new Order({
+        orderNumber,
+        products,
+        customer: userId,
+        totalAmount,
+        status: 'pending',
+        payment: selectedPaymentOption,
+        address: addressObjects,
+        orderId: orderNumber,
+        discount: discount
+      });
+
+      await order.save();
+
+      await User.findByIdAndUpdate(userId, {
+        $pull: { cart: { product: { $in: products.map(item => item.product) } } }
+      });
+
+      if (product && product.stock >= quantity) {
+        product.stock -= quantity;
+        await product.save();
+      }
+
+      const userdata = await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: { usedCoupons: couponId } },
+        { new: true }
+      );
+
+      req.session.ordered = true;
+      res.json({ codSuccess: true });
+    } else if (selectedPaymentOption === "ONLINE") {
+      const amount = totalAmount;
+
+      if (amount > 0) {
+        const userId = req.session.userId;
+        const user = await User.findById(userId);
+
+        req.session.orderlist = req.body;
+
+        const randomOrderID = Math.floor(Math.random() * 1000000).toString();
+        const options = {
+          amount: amount * 100,
+          currency: "INR",
+          receipt: randomOrderID,
+        };
+
+        razorpay.orders.create(options, (err) => {
+          if (!err) {
+            res.status(200).send({
+              razorSuccess: true,
+              msg: "order created",
+              amount: amount * 100,
+              key_id: "rzp_test_BWSV0bS6jQoy1z",
+              name: addressdata.address[0].name,
+              contact: addressdata.address[0].contact,
+              email: user.email,
+            });
+          } else {
+            console.error("Razorpay Error:", err);
+            res.status(400).send({ razorSuccess: false, msg: "Error creating order with Razorpay" });
+          }
+        });
+      }
+    } else {
+      // Handle other payment options or scenarios
+      res.status(404).send("Invalid payment option");
     }
-    )
-
-
-  }else{
-
-    
-  }
-
-    // if (Array.isArray(productId)) {
-    //   // Handling multiple products
-    //   productId.forEach((product, index) => {
-    //     products.push({
-    //       product: new mongoose.Types.ObjectId(product),
-    //       quantity: parseInt(quantity[index])
-    //     });
-    //   });
-    // } else {
-    //   // Handling a single product
-    //   products.push({
-    //     product: new mongoose.Types.ObjectId(productId),
-    //     quantity: parseInt(quantity)
-    //   });
-    // }
-
-    // const orderNumber = shortid.generate();
-    // const order = new Order({
-    //   orderNumber,
-    //   products,
-    //   customer: userId,
-    //   totalAmount,
-    //   status: 'pending',
-    //   payment: selectedPaymentOption,
-    //   address,
-    //   orderId:orderNumber
-    // });
-
-    // await order.save();
-
-    // await User.findByIdAndUpdate(userId, {
-    //   $pull: { cart: { product: { $in: products.map(item => item.product) } } }
-    // })
-
-  }else{
-    res.status("404")
-  }
-
   } catch (error) {
     console.error("Error saving order:", error);
     res.status(500).send("An error occurred while saving the order.");
   }
 };
-
 
 
 
@@ -961,12 +894,21 @@ const verifyPayment= async (req,res)=>{
 
     const userId=req.session.userId
     const user=await User.find({userId})
+
     let orderData= req.session.orderlist
     const productId=orderData.productId
     const quantity = orderData.qty;
     const selectedPaymentOption=orderData.selectedPaymentOption;
-    const address=orderData.selectedAddress
+    const address=orderData.selectedAddress;
+    const discount=orderData.discountinput;
   const price=orderData.price;
+
+  const couponCode = orderData.coupon;
+
+    const coupon = await Coupon.findOne({ code: couponCode });
+    const couponId = coupon ? coupon._id : null;
+
+  
 
     console.log(orderData)
     let totalAmount = parseFloat(orderData.totalamount);
@@ -1017,7 +959,8 @@ let products=[];
         status: 'pending',
         payment: selectedPaymentOption,
         address:addressObjects,
-        orderId:orderNumber
+        orderId:orderNumber,
+        discount:discount
       });
   
       await order.save();
@@ -1033,6 +976,12 @@ let products=[];
         // Save the updated product back to the database
         await product.save();
       }
+
+      const userdata = await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: { usedCoupons: couponId } },
+        { new: true }
+      );
   
 res.status(200).json({success:true})
 
@@ -1175,18 +1124,19 @@ const apply_coupon=async (req, res) => {
         }
 
 
-        const discount = coupon.discount;
+        let discount = coupon.discount;
         let discountedPrice;
 
         if (coupon.type === "OFF") {
           const discounted = prevtotal * (discount / 100);
           discountedPrice = Math.floor(prevtotal - discounted);
+          discount=coupon.discount+"%"
         } else if (coupon.type === "FLAT") {
           discountedPrice = prevtotal - discount;
         }
 
         // Respond with the discounted price
-        res.json({ success: true, discountedPrice, message: 'Coupon added' });
+        res.json({ success: true, discountedPrice, message: 'Coupon added',discount });
 
       }
       else {

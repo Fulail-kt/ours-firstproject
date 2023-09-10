@@ -19,8 +19,8 @@ const googleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 
 passport.use(new googleStrategy({
-  clientID: "182537685640-13cmg9sc8t6oat1bgvqo0onf0jaig3tq.apps.googleusercontent.com",
-  clientSecret: "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",
+  clientID:process.env.CLIENT_ID,
+  clientSecret:process.env.CLIENT_SECRET,
   callbackURL: "/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
   console.log(accessToken);
@@ -154,13 +154,6 @@ router.patch("/cancel-order/:id", userController.cancelOrder)
 
 
 
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: "mfkt07@gmail.com",
-    pass: "omkjsvjcmwaapxjo",
-  },
-});
 
 
 

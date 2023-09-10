@@ -46,8 +46,6 @@ router.get('/adminlogout',admin.adminlogout)
 router.post("/update-status/:id", admin.orderStatus);
 
 
-
-
 router.post('/updaterole/:id',admin.updateroles);
 router.post('/updatestatus/:id',admin.updateStatus)
 router.post("/addcategories",admin.addcategories);
@@ -57,7 +55,7 @@ router.get('/updateuser/:id',admin.updateUser)
 
 router.get("/coupons",auth.isAdminLoggedIn,admin.getAllCoupons)
 router.post("/create-coupon",auth.isAdminLoggedIn,admin.createCoupon)
-router.put("/coupons/:id",auth.isAdminLoggedIn,admin.updateCoupons)
+router.post("/update-coupon/:id",auth.isAdminLoggedIn,admin.updateCoupons)
 router.post("/unlist-coupon/:id",auth.isAdminLoggedIn,admin.unListCoupons)
 
 module.exports = router;
