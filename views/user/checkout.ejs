@@ -107,12 +107,20 @@
                                         id="cashRadio" style="display: none;">
                                     </div>
                                     <div class="d-flex text-white justify-content-center rounded p-1 option"
-                                      data-option="card" style="width: 200px; background: #1d1d1d;">
+                                      data-option="online" style="width: 200px; background: #1d1d1d;">
                                       <h5>Pay via Online</h5>
                                       <input type="radio" required name="selectedPaymentOption" value="ONLINE"
-                                        id="cardRadio" style="display: none;">
+                                        id="onlineRadio" style="display: none;">
                                     </div>
                                   </div>
+                                 
+                                  <%if(user.wallet.balance>0){%>
+                                    <div class="text-center">
+                                      <input type="checkbox" name="wallet" id="wallet" value="<%=user.wallet.balance%>" disabled>
+                                      <span>Your wallet: ₹ <%=user.wallet.balance%></span>
+                                    </div>
+                                  <%}%>
+                                 
                                 </div>
                                 <div class="foot d-flex justify-content-center mt-2">
                                   <button class="btn btn-secondary" disabled id="confirmBtn" type="submit"
@@ -218,20 +226,6 @@
 
                       </div>
 
-                      <!-- <div class="checkout-body main-page2" id="main-page2" style="display: none;">
-    
-                  <div class="d-flex flex-column justify-content-center w-100 h-100 text-warning align-items-center">
-                    <div>
-                      <h3>Congratulation your Order is Confirmed</h3>
-                    </div>
-                    <div><img src="/images/gift-svgrepo-com.svg" alt="" style="width: 60px;"></div>
-    
-                  </div>
-    
-    
-                  <div class="d-flex justify-content-center mt-5"><a class="btn btn-successs" href="/myorders">See Orders</a></div>
-    
-                </div> -->
                     </div>
 
 
@@ -249,29 +243,6 @@
 
 
 
-
-
-
-      <!-- <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header d-flex justify-content-center">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Congratulations!</h1>
-            </div>
-            <div class="modal-body d-flex justify-content-center">
-              <h5 class="text-warning">Your order has been confirmed. Thank you for shopping with us!</h5>
-
-              <div class="d-flex justify-content-center">
-                <p><a href="/myorders">YOUR ORDER</a></p>
-              </div>
-            </div>
-            <div class="modal-footer">
-
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <% for (const cartItem of cartitems) { %>
         <% const product=cartItem.cartitems; %>
@@ -454,10 +425,7 @@
 
 
             <script>
-   function MainFormSubmit() {
-    // Handle inner form submission here
-    document.getElementById('checkoutForm').submit(); // Submit the inner form
-}
+
 
               function confirmOrder() {
                 $.ajax({
@@ -468,7 +436,7 @@
                     if (res.codSuccess) {
                       $('#myModal').modal('show');
 
-                    } else if (res.razorSuccess) {
+                    }else if (res.razorSuccess) {
                       const order = {
                         "key": "" + res.key_id + "",
                         "amount": "" + res.amount + "",
@@ -491,6 +459,8 @@
 
                       const done = razorpay.open();
 
+                    }else if(res.walletSuccess){
+                      $('#myModal').modal('show');
                     } else {
                       window.location.href = `/checkout`
                     }
@@ -538,6 +508,35 @@
 }
               
             
+
+            </script>
+
+            <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  const walletCheckbox = document.getElementById('wallet');
+  const subtotalElement = document.getElementById('subtotal');
+  const totalAmountInput = document.getElementById('totalamount');
+  const applyCoupon = document.getElementById('applyCouponBtn');
+  const walletAmount = parseFloat(walletCheckbox.value);
+  const previousamount = document.getElementById('prevTotal').value
+
+  walletCheckbox.addEventListener('change', function() {
+    const isChecked = this.checked;
+    const subtotal = parseFloat(subtotalElement.innerText.split('₹')[1]);
+
+    if (isChecked) {
+      const remainingAmount = Math.max(0, previousamount - walletAmount);
+      subtotalElement.innerHTML = `<b>Subtotal: ₹ ${remainingAmount}<b>`;
+      totalAmountInput.value = remainingAmount;
+      applyCoupon.disabled = true; // Disable coupon button
+    } else {
+      subtotalElement.innerHTML = `<b>Subtotal: ₹ ${previousamount}<b>`;
+      totalAmountInput.value = subtotal;
+      applyCoupon.disabled = false; // Enable coupon button
+    }
+  });
+});
 
             </script>
 
@@ -707,12 +706,18 @@
 
 
 
+              // if wallet checked
+
+
+
+              
 
               // document.getElementById('applyCouponBtn').addEventListener('click', function () {
               //   var couponCode = document.getElementById('coupon').value;
               //   document.getElementById('couponCode').value = couponCode;
               // });
 
+              ///////////////
 
 
 
@@ -782,39 +787,62 @@
 
 
               document.addEventListener("DOMContentLoaded", function () {
+  const cashDiv = document.querySelector('[data-option="cash"]');
+  const onlineDiv = document.querySelector('[data-option="online"]');
+  const paymentbutton = document.getElementById('paymentbutton');
+ 
 
-                const cashDiv = document.querySelector('[data-option="cash"]');
-                const cardDiv = document.querySelector('[data-option="card"]');
-                const paymentbutton = document.getElementById('paymentbutton')
-                const address = document.getElementById('')
+  // Get the radio buttons
+  const cashRadio = document.getElementById('cashRadio');
+  const onlineRadio = document.getElementById('onlineRadio');
 
-                // Get the radio buttons
-                // const cashRadio = document.getElementById('cashRadio');
-                // const cardRadio = document.getElementById('cardRadio');
+  // Function to update the selected div's style
+  function updateSelectedStyle(selectedDiv, unselectedDiv) {
+    selectedDiv.classList.add('selected');
+    unselectedDiv.classList.remove('selected');
+  }
 
-                // Function to update the selected div's style
-                function updateSelectedStyle(selectedDiv, unselectedDiv) {
-                  selectedDiv.classList.add('selected');
-                  unselectedDiv.classList.remove('selected');
-                }
+  // Add click event listeners to the divs
+  cashDiv.addEventListener('click', () => {
+    cashRadio.click(); // Trigger the radio button click
+    updateSelectedStyle(cashDiv, onlineDiv);
 
-                // Add click event listeners to the divs
-                cashDiv.addEventListener('click', () => {
-                  cashRadio.click(); // Trigger the radio button click
-                  updateSelectedStyle(cashDiv, cardDiv);
-                });
+  });
 
-                cardDiv.addEventListener('click', () => {
-                  cardRadio.click(); // Trigger the radio button click
-                  updateSelectedStyle(cardDiv, cashDiv);
-                  paymentbutton.style.display = 'block';
+ 
 
-                });
+  onlineDiv.addEventListener('click', () => {
+    onlineRadio.click(); // Trigger the radio button click
+    updateSelectedStyle(onlineDiv, cashDiv);
+    paymentbutton.style.display = 'block';
+    
+  });
 
-                // Initially select the 'cash' option and update the style
-                updateSelectedStyle(cashDiv, cardDiv);
-                cashRadio.checked = true;
-              });
+  // Initially select the 'cash' option and update the style
+  updateSelectedStyle(cashDiv, onlineDiv);
+  cashRadio.checked = true;
+  
+});
+
+
+
+const onlinepay = document.querySelector('#onlineRadio');
+const cashpay = document.getElementById('cashRadio');
+const walletCheckbox = document.getElementById('wallet');
+
+onlinepay.addEventListener("click",()=>{
+walletCheckbox.disabled=false
+
+})
+
+
+
+cashpay.addEventListener("click",()=>{
+// walletCheckbox.style.display='none'
+walletCheckbox.disabled=true
+walletCheckbox.checked=false
+})
+
 
             </script>
 

@@ -64,8 +64,20 @@ const isLoggedIn = (req, res, next) => {
   }
 
 
+  const cartCheck= async (req,res,next)=>{
+
+    const userId=req.session.userId;
+    const user= await User.findById(userId)
+
+    if(user.cart.length > 0){
+      next()
+    }else{
+      res.redirect('/')
+    }
+  }
+
 
 
   module.exports={
-    isLoggedIn,isAdminLoggedIn,loggedout,otpsession,isBlocked
+    isLoggedIn,isAdminLoggedIn,loggedout,otpsession,isBlocked,cartCheck
   }

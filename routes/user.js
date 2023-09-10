@@ -128,7 +128,7 @@ router.get('/logout', userController.logoutGet)
 
 router.patch('/update-quantity', userController.update_quantity);
 
-router.get('/checkout', auth.isLoggedIn, userController.checkout)
+router.get('/checkout', auth.isLoggedIn, auth.cartCheck, userController.checkout)
 
 router.post('/confirm-order', userController.confirm_order);
 

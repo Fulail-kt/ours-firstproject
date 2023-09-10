@@ -1,4 +1,6 @@
 const mongoose=require("mongoose")
+const { Decimal128 } = require('mongodb');
+
 
 const userSchema=mongoose.Schema({
     name:{
@@ -64,6 +66,15 @@ const userSchema=mongoose.Schema({
             
         }
     ],
+    wallet: {
+
+        balance: {
+            type: Decimal128,
+      default: 0.0
+        },
+        transactions: [String]
+
+    },
     usedCoupons: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Coupon' }],
     resetPasswordToken:{type:String},
     resetPasswordExpires:Date

@@ -279,7 +279,7 @@ const LoadCustomers = async (req, res) => {
 const LoadOrder = async (req, res) => {
   try {
 
-    const requested=await order.find({status:"return request"})
+    const requested = await order.find({ status: "return request" })
     const orders = await order
       .find({})
       .sort({ orderDate: -1 })
@@ -296,7 +296,7 @@ const LoadOrder = async (req, res) => {
     res.render("admin/orders", {
       orders,
       malecategory: false,
-      femalecategory: false,requested,
+      femalecategory: false, requested,
     });
   } catch (e) {
     console.log(e.message);
@@ -499,18 +499,64 @@ const unListCoupons = async (req, res) => {
 
 
 const orderStatus = async (req, res) => {
-  const orderId = req.params.id
+  const orderId = req.params.id;
+  const userId = req.session.userId;
   const newStatus = req.body.newValue;
   console.log(newStatus)
 
   try {
     // Find the order by orderId and update the status
+    const userData = await user.findById(userId)
+    const orderData = await order.findById(orderId)
+
+    const totalAmount = orderData.totalAmount;
+
     const updatedOrder = await order.findByIdAndUpdate(
       orderId,
       { $set: { status: newStatus } },
       { new: true }
     );
 
+    if (newStatus === "refund") {
+
+      userData.wallet.balance += totalAmount;
+
+      // Add the transaction ID to the transactions array
+      userData.wallet.transactions.push(orderData._id.toString());
+
+      await userData.save();
+
+
+    } else if (newStatus === "cancelled") {
+
+      if (orderData.payment === "ONLINE") {
+        userData.wallet.balance += totalAmount;
+
+        // Add the transaction ID to the transactions array
+        userData.wallet.transactions.push(orderData._id.toString());
+
+        await userData.save();
+
+
+      }
+    }
+    const productsToUpdate = orderData.products;
+
+    // Update the stock for each product in the productsToUpdate array
+    for (const productData of productsToUpdate) {
+      const productId = productData.product;
+      const quantity = productData.quantity;
+
+      // Find the product in the products collection
+      const product = await products.findById(productId);
+
+      if (product) {
+        // Increment the stock by the canceled quantity
+        product.stock += quantity;
+        await product.save();
+      }
+    }
+    
 
     if (!updatedOrder) {
       return res.status(404).send("Order not found.");
@@ -530,7 +576,7 @@ const adminSales = async (req, res) => {
 
   const from = req.query.from
   const to = req.query.to
-  let selectedStatus=''
+  let selectedStatus = ''
   let salesReport
 
   try {
@@ -600,13 +646,13 @@ const adminSales = async (req, res) => {
       const toDate = new Date(to);
 
       salesReport = salesReport.filter((prd) => {
-          const orderDate = new Date(prd.order_date);
-          return orderDate >= fromDate && orderDate <= toDate;
+        const orderDate = new Date(prd.order_date);
+        return orderDate >= fromDate && orderDate <= toDate;
       });
       console.log(salesReport)
-  }
+    }
 
-    res.render("admin/adminsales",{ salesReport, selectedStatus })
+    res.render("admin/adminsales", { salesReport, selectedStatus })
 
   } catch (e) {
 
@@ -614,32 +660,32 @@ const adminSales = async (req, res) => {
 };
 
 
-const salesReportDownload= async (req,res)=>{
+const salesReportDownload = async (req, res) => {
 
   try {
     const data = req.body
     let file = [];
     for (let i = 0; i < data.date.length; i++) {
-        const row = {
-            date: data.date[i],
-            order_id: data.order_id[i],
-            consumer: data.consumer[i],
-            product: data.product[i],
-            qty: data.qty[i],
-            payment: data.payment[i],
-            amount: data.amount[i]
-        };
-        file.push(row);
+      const row = {
+        date: data.date[i],
+        order_id: data.order_id[i],
+        consumer: data.consumer[i],
+        product: data.product[i],
+        qty: data.qty[i],
+        payment: data.payment[i],
+        amount: data.amount[i]
+      };
+      file.push(row);
     }
     const json2csv = new Parser()
     const csv = json2csv.parse(file)
 
     res.attachment(`report-${Date.now()}.csv`)
     res.status(200).send(csv)
-} catch (error) {
+  } catch (error) {
     console.log(error.message);
     res.send(500)
-}
+  }
 
 
 }
@@ -650,7 +696,7 @@ const updateUser = async (req, res) => { };
 
 module.exports = {
 
-  adminpost, admindashboard, adminSales,salesReportDownload,
+  adminpost, admindashboard, adminSales, salesReportDownload,
 
   adminlogin, adminlogout,
 
