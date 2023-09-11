@@ -767,6 +767,7 @@ const confirm_order = async (req, res) => {
     const price = req.body.price;
     const discount = req.body.discountinput;
     const wallet = req.body.wallet
+    const prev=req.body.prev
 
     console.log(req.body);
 
@@ -847,17 +848,24 @@ const confirm_order = async (req, res) => {
       // const amount = totalAmount;
       let amount = totalAmount;
 
-      if (totalAmount > 0) {
+      if (prev > 0) {
 
+
+        
+
+       
 
         if (wallet) {
+
+          console.log("groter")
           const userId = req.session.userId;
           const user = await User.findById(userId);
           let userWallet = user.wallet.balance;
         
-          if (userWallet >= totalAmount) {
-            userWallet = userWallet - totalAmount;
+          if (userWallet >= prev) {
 
+
+            userWallet = userWallet - prev;
 
         
             if (Array.isArray(productId)) {
@@ -881,7 +889,7 @@ const confirm_order = async (req, res) => {
               orderNumber,
               products,
               customer: userId,
-              totalAmount,
+              totalAmount:prev,
               status: 'pending',
               payment: selectedPaymentOption,
               address: addressObjects,
@@ -934,13 +942,13 @@ const confirm_order = async (req, res) => {
 
 
           } else if (totalAmount > userWallet) {
+
+            console.log("lower")
+
+            
             amount = totalAmount - userWallet;
 
-            const updatedUser = await User.findOneAndUpdate(
-              { _id: userId },
-              { $set: { 'wallet.balance': 0} },
-              { new: true }
-            );
+            
           }
         }
         
@@ -1010,10 +1018,18 @@ const confirm_order = async (req, res) => {
 const verifyPayment = async (req, res) => {
   try {
 
-
-
-
     const userId = req.session.userId
+    
+    await User.findOne({user})
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: { 'wallet.balance': 0} },
+      { new: true }
+    );
+
+
+
+    
     const user = await User.find({ userId })
 
     let orderData = req.session.orderlist

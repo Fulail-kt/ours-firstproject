@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('layout/header.ejs')%>
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="/css/home.css" />
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-
-  <title>Ours.</title>
-</head>
-
-<body>
   <%- include('layout/navbar.ejs')%>
 
     <%- include('layout/usermodals.ejs')%>
@@ -34,7 +18,7 @@
 
               <form action="/allproduct" method="get">
                 <div class="side-filter" id="side-filter">
-                  <h3>Filter Options</h3>
+                  <h5>Filter Options</h5>
                   <div class="filter-group d-flex flex-column">
                     
                     <label for="all"><input type="radio" name="all" >All</label>
@@ -120,27 +104,6 @@
 
 
 
-        <style>
-          .side-filter {
-
-            top: 0;
-            left: -300px;
-            /* Initially hidden off-screen on the left */
-            width: 300px;
-            height: 100%;
-            background-color: #fff;
-            padding: 20px 0 20px 0px;
-
-            /* box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2); */
-            transition: left 0.3s ease;
-            /* Change transition to left */
-          }
-
-          .side-filter.open {
-            left: 58px;
-            /* Displayed on the screen */
-          }
-        </style>
 
 
 
@@ -253,17 +216,5 @@
 
         </script>
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-          integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-          crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-          integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-          crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-          crossorigin="anonymous"></script>
-</body>
-
-</html>
+<%- include('layout/footer.ejs')%>
+   

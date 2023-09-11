@@ -626,6 +626,9 @@ input[type="number"]::-webkit-inner-spin-button,
 
 
 
+
+
+
 .overlay_menu {
   position: fixed;
   top: 0;
@@ -637,6 +640,396 @@ input[type="number"]::-webkit-inner-spin-button,
  
   z-index: 13; /* Higher than most content */
 }
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+
+
+
+              
+
+
+/*  */
+
+.fa {
+  color: #FFD700;
+  /* Dark Yellow */
+
+  font-size: 90px;
+  padding: 30px 0px;
+}
+
+.b1 {
+  background-color: #2b84be;
+  box-shadow: 0px 4px #337095;
+  font-size: 17px;
+}
+
+
+
+a,
+a:hover {
+  text-decoration: none;
+}
+
+.selected {
+  background-color: #2e8d6d !important;
+}
+
+.bill-details p {
+  padding: 0;
+  margin: 0%;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.page1-body {
+  overflow-y: auto;
+  max-height: 260px;
+
+}
+
+.chekout-body2 {
+  width: 40%;
+  overflow: auto;
+
+}
+
+.disabled {
+  opacity: 0.5;
+  /* Reduce opacity to indicate disabled state */
+  pointer-events: none;
+  /* Prevent interaction with the element */
+}
+
+
+
+/* /////////////////////////////////           WISHLIST             //////////////////////////////// */
+
+
+
+.link {
+  visibility: hidden;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.5s ease, padding 0.3s ease;
+
+
+}
+
+.fav-card:hover .fav-details .link {
+  background-color: rgb(82, 81, 81);
+  border-radius: 50%;
+  padding: 2px 6px 2px 6px;
+
+}
+
+.fav-card:hover .fav-details .link {
+  visibility: visible;
+  opacity: 1;
+
+}
+
+
+          .sidepanel {
+              width: 220px;
+              height: 100vh;
+              position: fixed;
+              border-right: 1px solid rgb(201, 201, 201);
+          }
+
+          .sidepanel_fk {
+              width: 20%;
+              height: 100%;
+          }
+
+          .sidepanel .body_myac ul li a {
+              color: black;
+              text-decoration: none;
+
+
+          }
+
+          .header_myac {
+              padding: 1rem 1rem 0 1rem;
+
+          }
+
+          .header_myac .hello {
+              margin-bottom: 0;
+          }
+
+          .sidepanel .body_myac .text_myac div {
+              padding: .6rem;
+              list-style: none;
+
+
+
+
+          }
+
+
+          .sidepanel .body_myac .text_myac .active {
+              background-color: rgba(240, 240, 240, 0.856);
+              border-left: 1px solid black;
+          }
+
+          .sidepanel .body_myac .text_myac div:hover {
+              background-color: rgba(240, 240, 240, 0.856);
+
+          }
+
+          .sidepanel .body_myac .text_myac div a {
+              color: black;
+              padding: 1.2rem;
+              text-decoration: none;
+
+          }
+
+          .hidden {
+              display: none;
+          }
+
+          .sidepanel .body_myac .text_myac div a i {
+              padding-right: .9rem;
+
+          }
+
+          .user_info {
+
+              margin-top: 3rem;
+              width: 75%;
+          }
+
+          .add_list {
+              border-radius: 15px;
+          }
+
+
+/* ////////////////////////////////////////// ALL - PRODUCTS//////////////////////////////////// */
+
+
+
+.side-filter {
+
+  top: 0;
+  left: -300px;
+  /* Initially hidden off-screen on the left */
+  width: 10.rem;
+  height: 100%;
+  background-color: #fff;
+  padding: 20px 0 20px 0px;
+
+  /* box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2); */
+  transition: left 0.3s ease;
+  /* Change transition to left */
+}
+
+.side-filter.open {
+  left: 58px;
+  /* Displayed on the screen */
+}
+
+
+
+
+
+
+/* --------------------------------------MY ACCOUNTS---------------------------------------------------  */
+
+
+
+.address_item {
+  width: 90%;
+}
+
+.address_body {
+  height: 23rem;
+  width: 37rem;
+}
+
+.user_info .semi_head h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #666666;
+}
+
+hr {
+  margin: 0 0 1rem 0;
+}
+
+.userinfo p {
+  margin: 0;
+}
+
+.userinfo_list label {
+  font-weight: 600;
+  letter-spacing: 0.11rem;
+}
+
+.userinfo_list p {
+  margin: 0;
+}
+
+.sidepanel {
+  width: 220px;
+  height: 100vh;
+  position: fixed;
+  border-right: 1px solid rgb(201, 201, 201);
+}
+
+.sidepanel_fk {
+  width: 20%;
+  height: 100%;
+}
+
+.sidepanel .body_myac ul li a {
+  color: black;
+  text-decoration: none;
+
+
+}
+
+.header_myac {
+  padding: 1rem 1rem 0 1rem;
+
+}
+
+.header_myac .hello {
+  margin-bottom: 0;
+}
+
+.sidepanel .body_myac .text_myac div {
+  padding: .6rem;
+  list-style: none;
+
+
+
+
+}
+
+
+.sidepanel .body_myac .text_myac .active {
+  background-color: rgba(240, 240, 240, 0.856);
+  border-left: 1px solid black;
+}
+
+.sidepanel .body_myac .text_myac div:hover {
+  background-color: rgba(240, 240, 240, 0.856);
+
+}
+
+.sidepanel .body_myac .text_myac div a {
+  color: black;
+  padding: 1.2rem;
+  text-decoration: none;
+
+}
+
+.hidden {
+  display: none;
+}
+
+.sidepanel .body_myac .text_myac div a i {
+  padding-right: .9rem;
+
+}
+
+.user_info {
+
+  margin-top: 3rem;
+  width: 75%;
+}
+
+.add_list {
+  border-radius: 15px;
+}
+
+
+  .sidepanel {
+          width: 220px;
+          height: 100vh;
+          position: fixed;
+          border-right: 1px solid rgb(201, 201, 201);
+        }
+
+        .sidepanel_fk {
+          width: 20%;
+          height: 100%;
+        }
+
+        .sidepanel .body_myac ul li a {
+          color: black;
+          text-decoration: none;
+
+
+        }
+
+        .header_myac {
+          padding: 1rem 1rem 0 1rem;
+
+        }
+
+        .header_myac .hello {
+          margin-bottom: 0;
+        }
+
+        .sidepanel .body_myac .text_myac div {
+          padding: .6rem;
+          list-style: none;
+
+
+
+
+        }
+
+
+        .sidepanel .body_myac .text_myac .active {
+          background-color: rgba(240, 240, 240, 0.856);
+          border-left: 1px solid black;
+        }
+
+        .sidepanel .body_myac .text_myac div:hover {
+          background-color: rgba(240, 240, 240, 0.856);
+
+        }
+
+        .sidepanel .body_myac .text_myac div a {
+          color: black;
+          padding: 1.2rem;
+          text-decoration: none;
+
+        }
+
+        .hidden {
+          display: none;
+        }
+
+        .sidepanel .body_myac .text_myac div a i {
+          padding-right: .9rem;
+
+        }
+
+        .user_info {
+
+          margin-top: 3rem;
+          width: 75%;
+        }
+
+        .add_list {
+          border-radius: 15px;
+        }
+
+/* ======================== */
+
+
+
 
 
 /* MEDIA QUERIES--------------------------------------------------------------- */
@@ -698,8 +1091,6 @@ input[type="number"]::-webkit-inner-spin-button,
   .firstnav {
     flex-direction: row-reverse;
   }
-
- 
 
 
 }

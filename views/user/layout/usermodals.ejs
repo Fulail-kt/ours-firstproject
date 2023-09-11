@@ -5,16 +5,22 @@
   aria-hidden="true" data-backdrop="true">
   <div class="modal-dialog modal-frame modal-top modal-notify modal-info d-flex justify-content-center" role="document">
     <!--Content-->
+    <!-- modalwarningcontent -->
     <div class="modal-content modalwarningcontent">
       <!--Body-->
+      <!-- warningmodal-body -->
       <div class="modal-body warningmodal-body">
-        <div class="row d-flex justify-content-center align-items-center">
+        <div class="row w-100 d-flex justify-content-center align-items-center">
 
-          <p class="pt-3 pr-2">You have to login to get access</p>
+          <div class="d-flex justify-content-around" style="width: 60%;">
+            <p class="pt-3 pr-2">You have to login to get access</p>
+          </div>
 
-          <a type="button" href="/login" class="btn btn-outline-success waves-effect text-dark mr-3">Log in <i
-              class="fas fa-unlock-alt"></i></a>
-          <a type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal">Cancel</a>
+          <div class=" d-flex justify-content-between" style="width: 40%;">
+            <a type="button" href="/login" class="btn btn-outline-success waves-effect text-dark ">Log in <i
+                class="fas fa-unlock-alt"></i></a>
+                <a type="button" class="btn btn-outline-danger waves-effect" data-bs-dismiss="modal">Cancel</a>
+          </div>
         </div>
       </div>
     </div>

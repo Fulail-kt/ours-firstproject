@@ -1,359 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/home.css" />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="/css/home.css" />
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <title>Ours.</title>
+  </head>
 
-  <title>Ours.</title>
-</head>
+  <body>
+    <%- include('layout/usermodals.ejs')%> <%- include('layout/navbar.ejs')%>
 
-<body>
-  <%- include('layout/usermodals.ejs')%>
+    <div class="container-fluid">
+      <% if (product) { %>
+      <div class="prd_mainbody d-flex w-100">
+        <div class="image-container mt-5 w-50 d-flex justify-content-center">
+          <div
+            style="width: 5rem"
+            class="semi-image-container mr-1 d-flex flex-column align-items-center justify-content-center"
+          >
+            <% for(let i=0 ; i< product.images.length; i++){%>
+            <img
+              src="/uploads/<%=product.images[i]%>"
+              alt=""
+              style="width: 100%"
+              class="semi-image"
+              data-index="<%= i %>"
+            />
+            <%}%>
+          </div>
+          <div
+            style="width: 20rem"
+            class="main-image-container d-flex flex-column align-items-center justify-content-center"
+          >
+            <img src="" alt="" style="width: 100%" class="main-image" />
+          </div>
+        </div>
 
+        <div class="prd_det w-50 mt-5">
+          <div>
+            <h4 style="font-weight: 400"><%=product.title%></h4>
+            <input
+              type="hidden"
+              name=""
+              id="price"
+              value=" <%=product.price%>"
+            />
+            <p><span>Rs</span> : <%=product.price%></p>
+          </div>
 
-    <%- include('layout/navbar.ejs')%>
+          <hr />
 
-
-
-
-      <div class="container-fluid">
-
-        <% if (product) { %>
-          <div class="prd_mainbody d-flex  w-100">
-            <div class="image-container mt-5 w-50 d-flex justify-content-center">
-              <div style="width: 5rem;"
-                class="semi-image-container mr-1  d-flex flex-column align-items-center justify-content-center">
-                <% for(let i=0 ; i< product.images.length; i++){%>
-                  <img src="/uploads/<%=product.images[i]%>" alt="" style="width:100%" class="semi-image"
-                    data-index="<%= i %>">
-                  <%}%>
-              </div>
-              <div style="width: 20rem;"
-                class="main-image-container d-flex flex-column align-items-center justify-content-center">
-                <img src="" alt="" style="width:100%" class="main-image">
-              </div>
+          <div style="height: 300px">
+            <div class="mt-2">
+              <p class="mb-1"><span>COLOR</span></p>
+              <label
+                for="color"
+                class="color-label text-center font-weight-light"
+                style="
+                  border: 1px solid #bdbdbdda;
+                  display: inline-block;
+                  padding: 2px;
+                  width: 70px;
+                "
+              >
+                <input
+                  type="radio"
+                  id="color"
+                  checked
+                  name="color"
+                  value="<%= product.color %>"
+                  style="display: none"
+                />
+                <%= product.color %>
+              </label>
             </div>
-
-
-
-            <div class="prd_det w-50 mt-5 ">
-
-              <div>
-                <h4 style="font-weight: 400;">
-                  <%=product.title%>
-                </h4>
-                <input type="hidden"  name="" id="price" value=" <%=product.price%>">
-                <p ><span>Rs</span> : <%=product.price%>
-                </p>
-              </div>
-
-              <hr>
-
-              <div style="height: 300px;">
-                <div class="mt-2">
-                  <p class="mb-1"><span>COLOR</span></p>
-                  <label for="color" class="color-label text-center font-weight-light"
-                    style="border: 1px solid #bdbdbdda; display: inline-block; padding: 2px; width: 70px;">
-                    <input type="radio" id="color" checked name="color" value="<%= product.color %>" style="display: none;">
-                    <%= product.color %>
-                  </label>
-                </div>
-                <div class="mt-3">
-                  <p class="mb-1">SIZE</p>
-                  <% for (let i=0; i < product.size.length; i++) { %>
-                    <label for="size_<%= i %>" class="size-label text-center font-weight-light"
-                      style="border: 1px solid #bdbdbdda; display: inline-block; padding: 1px; width: 30px;">
-                      <input type="radio" id="size_<%= i %>"  required name="size" value="<%= product.size[i] %>" class=""
-                        style="display: none;">
-                      <%= product.size[i] %>
-                    </label>
-                    <% } %>
-                </div>
-                <div class="mt-3">
-                  <p class="mb-1 ">STOCK LEFT</p>
-                    <h6 class="font-weight-light"><%= product.stock %></h6>
-                </div>
-                <div class="mt-3">
-                  <p class="mb-1">DESCRIPTION </p>
-                  <p>
-                    <%=product.description%>
-                  </p>
-                </div>
-              </div>
-              
-
-
-
-              <%}%>
-
-              <% if (product.stock < 1) { %>
-                <p class="text-capitalize text-danger">Product is out of stock</p>
-                
-                <a class="text-dark btn btn-secondary text-white">
-                  <i class="bx bx-shopping-bag" ></i> ADD TO CART
-                </a>
-
-                <% if (isWish) { %>
-                  <a class="text-dark btn btn-secondary text-white">
-                    <i class="bx bx-heart"></i> GO TO WISHLIST
-                  </a>
-                <% } else { %>
-                  <a class="text-white btn btn-dark" onclick="addtowish('<%= product._id %>',)" >
-                    <i class="bx bx-heart"></i> ADD TO WISHLIST
-                  </a>
-                <% } %>
-
-              <% } else if (user) { %>
-
-
-                <% if (isCart) { %>
-                  <button id="go-cart-btn" class="btn btn-secondary text-dark">
-                    <i class="bx bx-shopping-bag"></i>GO TO CART
-                  </button>
-                <% } else { %>
-                  
-                  <button id="addToCartButton" class="btn btn-dark" onclick="addtocart('<%= product._id %>')">
-                    <i class="bx bx-shopping-bag"></i> ADD TO CART
-                  </button>
-                <% } %>
-
-
-                <% if (isWish) { %>
-                  <a href="/wishlist"  class="text-dark btn btn-secondary text-white">
-                    <i class="bx bx-heart"></i> GO TO WISHLIST
-                  </a>
-                <% } else { %>
-                  <a class="text-white btn btn-dark" onclick="addtowish('<%= product._id %>')">
-                    <i class="bx bx-heart"></i> ADD TO WISHLIST
-                  </a>
-                <% } %>
-
-
-              <% } else { %>
-                <button class="btn btn-dark" data-toggle="modal" data-target="#modalwarning">
-                  <i class="bx bx-shopping-bag"></i> ADD TO CART
-                </button>
-                <button class="btn btn-dark" data-toggle="modal" data-target="#modalwarning">
-                  <i class="bx bx-heart"></i> ADD TO WISHLIST
-                </button>
+            <div class="mt-3">
+              <p class="mb-1">SIZE</p>
+              <% for (let i=0; i < product.size.length; i++) { %>
+              <label
+                for="size_<%= i %>"
+                class="size-label text-center font-weight-light"
+                style="
+                  border: 1px solid #bdbdbdda;
+                  display: inline-block;
+                  padding: 1px;
+                  width: 30px;
+                "
+              >
+                <input
+                  type="radio"
+                  id="size_<%= i %>"
+                  required
+                  name="size"
+                  value="<%= product.size[i] %>"
+                  class=""
+                  style="display: none"
+                />
+                <%= product.size[i] %>
+              </label>
               <% } %>
-
-
-
+            </div>
+            <div class="mt-3">
+              <p class="mb-1">STOCK LEFT</p>
+              <h6 class="font-weight-light"><%= product.stock %></h6>
+            </div>
+            <div class="mt-3">
+              <p class="mb-1">DESCRIPTION</p>
+              <p><%=product.description%></p>
             </div>
           </div>
 
+          <%}%> <% if (product.stock < 1) { %>
+          <p class="text-capitalize text-danger">Product is out of stock</p>
 
+          <a class="text-dark btn btn-secondary text-white">
+            <i class="bx bx-shopping-bag"></i> ADD TO CART
+          </a>
+
+          <% if (isWish) { %>
+          <a class="text-dark btn btn-secondary text-white">
+            <i class="bx bx-heart"></i> GO TO WISHLIST
+          </a>
+          <% } else { %>
+          <a
+            class="text-white btn btn-dark"
+            onclick="addtowish('<%= product._id %>',)"
+          >
+            <i class="bx bx-heart"></i> ADD TO WISHLIST
+          </a>
+          <% } %> <% } else if (user) { %> <% if (isCart) { %>
+          <button id="go-cart-btn" class="btn btn-secondary text-dark">
+            <i class="bx bx-shopping-bag"></i>GO TO CART
+          </button>
+          <% } else { %>
+
+          <button
+            id="addToCartButton"
+            class="btn btn-dark"
+            onclick="addtocart('<%= product._id %>')"
+          >
+            <i class="bx bx-shopping-bag"></i> ADD TO CART
+          </button>
+          <% } %> <% if (isWish) { %>
+          <a href="/wishlist" class="text-dark btn btn-secondary text-white">
+            <i class="bx bx-heart"></i> GO TO WISHLIST
+          </a>
+          <% } else { %>
+          <a
+            class="text-white btn btn-dark"
+            onclick="addtowish('<%= product._id %>')"
+          >
+            <i class="bx bx-heart"></i> ADD TO WISHLIST
+          </a>
+          <% } %> <% } else { %>
+          <button
+            class="btn btn-dark"
+            data-toggle="modal"
+            data-target="#modalwarning"
+          >
+            <i class="bx bx-shopping-bag"></i> ADD TO CART
+          </button>
+          <button
+            class="btn btn-dark"
+            data-toggle="modal"
+            data-target="#modalwarning"
+          >
+            <i class="bx bx-heart"></i> ADD TO WISHLIST
+          </button>
+          <% } %>
+        </div>
       </div>
+    </div>
 
 
 
+    
+    <script>
+      const sizeLabels = document.querySelectorAll(".size-label");
 
+      sizeLabels.forEach((label) => {
+        const input = label.querySelector('input[type="radio"]');
 
-
-      <script>
-
-
-
-
-        const sizeLabels = document.querySelectorAll('.size-label');
-
-        sizeLabels.forEach(label => {
-          const input = label.querySelector('input[type="radio"]');
-
-          input.addEventListener('change', () => {
-            sizeLabels.forEach(otherLabel => {
-              otherLabel.style.borderColor = '#bdbdbdda'; // Reset border color for all labels
-            });
-
-            if (input.checked) {
-              label.style.borderColor = '#000'; // Set border color for the selected label
-            } else {
-              label.style.borderColor = '#bdbdbdda'; // Reset border color if radio is not checked
-            }
+        input.addEventListener("change", () => {
+          sizeLabels.forEach((otherLabel) => {
+            otherLabel.style.borderColor = "#bdbdbdda"; // Reset border color for all labels
           });
-        });
 
-        const colorLabel = document.querySelector('.color-label');
-        const inputcolor = colorLabel.querySelector('input[type="radio"]');
-
-        inputcolor.addEventListener('change', () => {
-          if (inputcolor.checked) {
-            colorLabel.style.borderColor = '#000'; // Set border color for the selected label
+          if (input.checked) {
+            label.style.borderColor = "#000"; // Set border color for the selected label
           } else {
-            colorLabel.style.borderColor = '#bdbdbdda'; // Reset border color if radio is not checked
+            label.style.borderColor = "#bdbdbdda"; // Reset border color if radio is not checked
+          }
+        });
+      });
+
+      const colorLabel = document.querySelector(".color-label");
+      const inputcolor = colorLabel.querySelector('input[type="radio"]');
+
+      inputcolor.addEventListener("change", () => {
+        if (inputcolor.checked) {
+          colorLabel.style.borderColor = "#000"; // Set border color for the selected label
+        } else {
+          colorLabel.style.borderColor = "#bdbdbdda"; // Reset border color if radio is not checked
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const semiImageContainer = document.querySelector(
+          ".semi-image-container"
+        );
+        const mainImage = document.querySelector(".main-image");
+
+        // Set the initial source of the main image to the first thumbnail image
+        const firstThumbnail = semiImageContainer.querySelector(".semi-image");
+        if (firstThumbnail) {
+          const firstImageURL = firstThumbnail.getAttribute("src");
+          showMainImage(firstImageURL);
+        }
+
+        semiImageContainer.addEventListener("click", function (event) {
+          const clickedImage = event.target;
+          if (clickedImage.classList.contains("semi-image")) {
+            const imageURL = clickedImage.getAttribute("src");
+            showMainImage(imageURL);
           }
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
-          const semiImageContainer = document.querySelector(".semi-image-container");
-          const mainImage = document.querySelector(".main-image");
-
-          // Set the initial source of the main image to the first thumbnail image
-          const firstThumbnail = semiImageContainer.querySelector(".semi-image");
-          if (firstThumbnail) {
-            const firstImageURL = firstThumbnail.getAttribute("src");
-            showMainImage(firstImageURL);
-          }
-
-          semiImageContainer.addEventListener("click", function (event) {
-            const clickedImage = event.target;
-            if (clickedImage.classList.contains("semi-image")) {
-              const imageURL = clickedImage.getAttribute("src");
-              showMainImage(imageURL);
-            }
-          });
-
-          function showMainImage(imageURL) {
-            mainImage.setAttribute("src", imageURL);
-          }
-        });
-
-
-        const openBtn = document.querySelector("#cart-btn");
-        const gocart=document.querySelector("#go-cart-btn")
-        const cart = document.querySelector("#sidecart");
-        const closeBtn = document.querySelector("#close_btn");
-        const overlaycart = document.getElementById("overlay_cart");
-
-        // overlaycart.addEventListener('click',closeCart)
-        openBtn.addEventListener("click", openCart);
-        closeBtn.addEventListener("click", closeCart);
-        gocart.addEventListener("click",openCart)
-        
-        function openCart() {
-          cart.classList.add("open");
-          overlaycart.style.display = "block";
-          document.body.classList.add("no-scroll");
+        function showMainImage(imageURL) {
+          mainImage.setAttribute("src", imageURL);
         }
+      });
 
-        function closeCart() {
-          cart.classList.remove("open");
-          overlaycart.style.display = "none";
-          document.body.classList.remove("no-scroll");
-        }
-      </script>
-      <script>
-        const menuOpenBtn = document.querySelector("#menu-btn");
-        const menu = document.querySelector("#menubar");
-        const menuclosebtn = document.querySelector("#menuclose_btn");
-        const overlay = document.getElementById("overlay_menu");
+      const openBtn = document.querySelector("#cart-btn");
+      const gocart = document.querySelector("#go-cart-btn");
+      const cart = document.querySelector("#sidecart");
+      const closeBtn = document.querySelector("#close_btn");
+      const overlaycart = document.getElementById("overlay_cart");
 
+      // overlaycart.addEventListener('click',closeCart)
+      openBtn.addEventListener("click", openCart);
+      closeBtn.addEventListener("click", closeCart);
+      gocart.addEventListener("click", openCart);
 
-        menuOpenBtn.addEventListener("click", openMenu);
-        menuclosebtn.addEventListener("click", closeMenu);
-        overlay.addEventListener('click', closeMenu)
+      function openCart() {
+        cart.classList.add("open");
+        overlaycart.style.display = "block";
+        document.body.classList.add("no-scroll");
+      }
 
+      function closeCart() {
+        cart.classList.remove("open");
+        overlaycart.style.display = "none";
+        document.body.classList.remove("no-scroll");
+      }
 
-        function openMenu() {
-          menu.classList.add("open");
-          overlay.style.display = "block"; // Show the overlay
-          document.body.classList.add("no-scroll");
-        }
+      const menuOpenBtn = document.querySelector("#menu-btn");
+      const menu = document.querySelector("#menubar");
+      const menuclosebtn = document.querySelector("#menuclose_btn");
+      const overlay = document.getElementById("overlay_menu");
 
-        function closeMenu() {
-          menu.classList.remove("open");
-          overlay.style.display = "none"; // Hide the overlay
-          document.body.classList.remove("no-scroll");
-        }
+      menuOpenBtn.addEventListener("click", openMenu);
+      menuclosebtn.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeMenu);
 
+      function openMenu() {
+        menu.classList.add("open");
+        overlay.style.display = "block"; // Show the overlay
+        document.body.classList.add("no-scroll");
+      }
 
+      function closeMenu() {
+        menu.classList.remove("open");
+        overlay.style.display = "none"; // Hide the overlay
+        document.body.classList.remove("no-scroll");
+      }
 
-        function addtowish(productId){
-          fetch(`/add-to-wishlist/${productId}`,{
-            method:'POST',
-          }).then(response=>
-            window.location.reload()).then(data=>{
-              window.location.reload()
-            }).catch(error=>{
-              console.error("Error adding product to wishlist:", error)
-            })
-
-        }
-
-
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-  // Disable the "Add to Cart" button by default
-  const addToCartButton = document.getElementById("addToCartButton");
-  addToCartButton.disabled = true;
-
-  // Add a click event listener to check if a size is selected
-  const sizeInputs = document.querySelectorAll('input[name="size"]');
-  for (const sizeInput of sizeInputs) {
-    sizeInput.addEventListener("change", function () {
-      // Check if at least one size input is checked
-      const selectedSize = Array.from(sizeInputs).some(input => input.checked);
-
-      // Enable or disable the "Add to Cart" button based on the selection
-      addToCartButton.disabled = !selectedSize;
-
-      // Show/hide the warning message based on the selection
-      const sizeWarning = document.getElementById("sizeWarning");
-      sizeWarning.style.display = selectedSize ? "none" : "block";
-    });
-  }
-});
-
-
-
-function addtocart(productId) {
-  
-  const selectedSizeInput = document.querySelector('input[name="size"]:checked');
-  const selectedSize = selectedSizeInput ? selectedSizeInput.value : null;
-  const selectedcolorinput=document.querySelector('input[name="color"]');
-  const selectedcolor =selectedcolorinput? selectedcolorinput.value:null;
-  const price = document.getElementById('price').value
-
-  const data = {
-    productId: productId,
-    size: selectedSize,
-    color:selectedcolor,
-    price:price
-  };
-          fetch(`/add-to-cart/${productId}`, {
-            method: 'POST',
-            headers: {
-      'Content-Type': 'application/json', // Set the content type to JSON
-    },
-    body: JSON.stringify(data), 
+      function addtowish(productId) {
+        fetch(`/add-to-wishlist/${productId}`, {
+          method: "POST",
+        })
+          .then((response) => window.location.reload())
+          .then((data) => {
+            window.location.reload();
           })
-            .then(response => window.location.reload())
-            .then(data => {
-              window.location.reload()
-            })
-            .catch(error => {
-              console.error('Error adding product to cart:', error);
-            });
+          .catch((error) => {
+            console.error("Error adding product to wishlist:", error);
+          });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Disable the "Add to Cart" button by default
+        const addToCartButton = document.getElementById("addToCartButton");
+        addToCartButton.disabled = true;
+
+        // Add a click event listener to check if a size is selected
+        const sizeInputs = document.querySelectorAll('input[name="size"]');
+        for (const sizeInput of sizeInputs) {
+          sizeInput.addEventListener("change", function () {
+            // Check if at least one size input is checked
+            const selectedSize = Array.from(sizeInputs).some(
+              (input) => input.checked
+            );
+
+            // Enable or disable the "Add to Cart" button based on the selection
+            addToCartButton.disabled = !selectedSize;
+
+            // Show/hide the warning message based on the selection
+            const sizeWarning = document.getElementById("sizeWarning");
+            sizeWarning.style.display = selectedSize ? "none" : "block";
+          });
         }
+      });
 
+      function addtocart(productId) {
+        const selectedSizeInput = document.querySelector(
+          'input[name="size"]:checked'
+        );
+        const selectedSize = selectedSizeInput ? selectedSizeInput.value : null;
+        const selectedcolorinput = document.querySelector(
+          'input[name="color"]'
+        );
+        const selectedcolor = selectedcolorinput
+          ? selectedcolorinput.value
+          : null;
+        const price = document.getElementById("price").value;
 
+        const data = {
+          productId: productId,
+          size: selectedSize,
+          color: selectedcolor,
+          price: price,
+        };
+        fetch(`/add-to-cart/${productId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Set the content type to JSON
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => window.location.reload())
+          .then((data) => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("Error adding product to cart:", error);
+          });
+      }
+    </script>
 
-      </script>
-
-      
-
-      <!-- Optional JavaScript -->
-      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-</body>
-
+    <%- include('layout/footer.ejs')%>
+  </body>
 </html>

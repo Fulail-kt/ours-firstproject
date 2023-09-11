@@ -1,343 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <link rel="stylesheet" href="/css/home.css" />
     <!-- Bootstrap CSS -->
-    
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-  integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-   
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+
     <title>Ours.</title>
-</head>
+  </head>
 
-<body>
-    <%- include('layout/usermodals.ejs')%>
+  <body>
+    <%- include('layout/usermodals.ejs')%> <%- include('layout/navbar.ejs')%>
 
+    <div class="d-flex w-100">
+      <div class="sidepanel">
+        <div class="header_myac d-flex flex-column justify-content-start">
+          <p class="hello" style="font-weight: 700; font-size: 1.7rem">
+            Hello
+            <span style="font-weight: 300; font-size: 1.5rem">
+              <%=user.name%>
+            </span>
+          </p>
+          <p style="font-size: 0.7rem; color: grey; font-weight: 500">
+            <b>Wellcome to your Account</b>
+          </p>
+        </div>
+        <div class="body_myac">
+          <div class="text_myac">
+            <div>
+              <a href="/myaccount"> <i class="bx bx-user"></i> My Account </a>
+            </div>
+            <div>
+              <a href="/myorders"> <i class="bx bx-basket"></i> My Orders </a>
+            </div>
+            <div class="active">
+              <a href="/wishlist"><i class="bx bx-heart"></i>My Wishlist</a>
+            </div>
+            <div>
+              <a data-bs-toggle="modal" data-bs-target="#Modalsignoutuser">
+                <i class="bx bx-log-out"></i> Sign Out</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <%- include('layout/navbar.ejs')%>
+      <div class="sidepanel_fk"></div>
 
-
-
-
-
-
-            <div class="d-flex w-100">
-
-                <div class="sidepanel">
-
-                    <div class="header_myac d-flex flex-column justify-content-start ">
-                        <p class="hello" style="font-weight: 700;font-size:1.7rem"> Hello <span
-                                style="font-weight: 300;font-size:1.5rem">
-                                <%=user.name%>
-                            </span></p>
-                        <p style="font-size:.7rem; color: grey;font-weight:500;"><b>Wellcome to your Account</b></p>
-                    </div>
-                    <div class="body_myac">
-                        <div class="text_myac">
-                            <div> <a href="/myaccount"> <i class="bx bx-user"></i> My Account </a></div>
-                            <div  > <a href="/myorders"> <i class="bx bx-basket"></i> My Orders </a></div>
-                            <div class="active"><a href="/wishlist"><i class="bx bx-heart"></i>My Wishlist</a></div>
-                            <div> <a data-bs-toggle="modal" data-bs-target="#Modalsignoutuser"> <i class="bx bx-log-out"></i> Sign
-                              Out</a></div>
-                            
-
+      <div class="my-wishlist w-100">
+        <div
+          class="product-sections w-100 h-100 d-flex justify-content-center flex-column"
+        >
+          <div class="d-flex flex-column align-items-center h-100">
+            <h2 class="m-5" style="font-weight: 600"><u>WISHLIST</u></h2>
+            <div
+              class="d-flex justify-content-center"
+              style="width: 95%; height: 400px"
+            >
+              <div
+                class="container-fluid d-flex justify-content-around align-items-center w-100 bg-white"
+              >
+                <% if (wishlist && wishlist.wishlist.length > 0) { %> <%
+                wishlist.wishlist.forEach(item => { %>
+                <div class="col-md-3">
+                  <div
+                    class="fav-card bg-light"
+                    style="height: 300px; width: 210px; border-radius: 10px"
+                  >
+                    <div
+                      class="fav-img d-flex flex-column justify-content-center align-items-center"
+                    >
+                      <a href=""
+                        ><img
+                          src="/uploads/<%= item.product.images[0] %>"
+                          alt=""
+                          style="width: 210px; height: 300px"
+                      /></a>
+                      <div
+                        style="margin-top: 16rem; width: 200px; height: 35px"
+                        class="fav-details position-absolute rounded d-flex justify-content-around align-items-center"
+                      >
+                        <a
+                          class="link"
+                          href="/remove-from-wishlist/<%= item.product._id %>"
+                          ><i class="bx bx-trash-alt text-white"></i
+                        ></a>
+                        <div class="d-flex align-items-center">
+                          <p
+                            class="mt-3 text-white p-1 pl-2 pr-2"
+                            style="
+                              border-radius: 25px;
+                              background-color: rgb(82, 81, 81);
+                            "
+                          >
+                            ₹ <%= item.product.price %>
+                          </p>
                         </div>
-                    </div>
 
-                </div>
-
-                <div class="sidepanel_fk"></div>
-
-
-                <div class="my-wishlist w-100">
-
-
-                    
-
-
-                  <div class="product-sections w-100 h-100 d-flex justify-content-center flex-column">
-
-                    <div class="d-flex flex-column align-items-center h-100">
-                      <h2 class="m-5" style="font-weight: 600;"><u>WISHLIST</u></h2>
-                      <div class="  d-flex justify-content-center" style="width: 95%; height:400px;">
-            
-                        
-            
-                        <div class="container-fluid d-flex justify-content-around align-items-center w-100 bg-white">
-                         
-                          <% if (wishlist && wishlist.wishlist.length > 0) { %>
-                            <% wishlist.wishlist.forEach(item => { %>
-                              <div class="col-md-3">
-                                <div class="fav-card bg-light" style="height: 300px; width: 210px; border-radius: 10px;">
-                                  <div class="fav-img d-flex flex-column justify-content-center align-items-center">
-                                    <a href=""><img src="/uploads/<%= item.product.images[0] %>" alt="" style="width: 210px; height: 300px;"></a>
-                                    <div style="margin-top: 16rem; width:200px; height: 35px;"
-                                         class="fav-details position-absolute rounded d-flex justify-content-around align-items-center">
-                                      <a class="link" href="/remove-from-wishlist/<%= item.product._id %>" ><i class="bx bx-trash-alt text-white"></i></a>
-                                      <div class="d-flex align-items-center">
-                                        <p class="mt-3 text-white p-1 pl-2 pr-2" style="border-radius: 25px; background-color: rgb(82, 81, 81);">₹ <%= item.product.price %></p>
-                                      </div>
-
-                                     
-
-
-                                      <a class="link" onclick="addtocart('<%= item.product._id %>')"><i class="bx bx-shopping-bag text-white"></i></a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            <% }); %>
-                          <% } else { %>
-                            <div class="d-flex justify-content-center w-100">
-                              
-                                <div>
-                                  <p>Your wishlist is empty.</p>
-                                </div>
-                            
-                            </div>
-                          <% } %>
-                        </div>
-            
+                        <a
+                          class="link"
+                          onclick="addtocart('<%= item.product._id %>')"
+                          ><i class="bx bx-shopping-bag text-white"></i
+                        ></a>
                       </div>
                     </div>
-            
-            
+                  </div>
                 </div>
-            
-
-
-
-                   
-
-
-
-
+                <% }); %> <% } else { %>
+                <div class="d-flex justify-content-center w-100">
+                  <div>
+                    <p>Your wishlist is empty.</p>
+                  </div>
                 </div>
-
-
-
-             
-
-
-
-
+                <% } %>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <style>
+    <script>
+      
+      const openBtn = document.querySelector("#cart-btn");
+      const cart = document.querySelector("#sidecart");
+      const closeBtn = document.querySelector("#close_btn");
+      const overlaycart = document.getElementById("overlay_cart");
 
+      // overlaycart.addEventListener('click',closeCart)
+      openBtn.addEventListener("click", openCart);
+      closeBtn.addEventListener("click", closeCart);
 
-.link {
-        visibility: hidden;
-        color: white;
-        opacity: 0;
-        transition: opacity 0.5s ease, padding 0.3s ease;
-
-
+      function openCart() {
+        cart.classList.add("open");
+        overlaycart.style.display = "block";
+        document.body.classList.add("no-scroll");
       }
 
-      .fav-card:hover .fav-details .link {
-        background-color: rgb(82, 81, 81);
-        border-radius: 50%;
-        padding: 2px 6px 2px 6px;
-
+      function closeCart() {
+        cart.classList.remove("open");
+        overlaycart.style.display = "none";
+        document.body.classList.remove("no-scroll");
       }
 
-      .fav-card:hover .fav-details .link {
-        visibility: visible;
-        opacity: 1;
+      const menuOpenBtn = document.querySelector("#menu-btn");
+      const menu = document.querySelector("#menubar");
+      const menuclosebtn = document.querySelector("#menuclose_btn");
+      const overlay = document.getElementById("overlay_menu");
 
+      menuOpenBtn.addEventListener("click", openMenu);
+      menuclosebtn.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeMenu);
+
+      function openMenu() {
+        menu.classList.add("open");
+        overlay.style.display = "block"; // Show the overlay
+        document.body.classList.add("no-scroll");
       }
 
+      function closeMenu() {
+        menu.classList.remove("open");
+        overlay.style.display = "none"; // Hide the overlay
+        document.body.classList.remove("no-scroll");
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const addressBtn = document.getElementById("address_btn");
+        const profileSection = document.getElementById("profile");
+        const addressSection = document.getElementById("address");
+        const profileBtn = document.getElementById("profile_btn");
 
-                .sidepanel {
-                    width: 220px;
-                    height: 100vh;
-                    position: fixed;
-                    border-right: 1px solid rgb(201, 201, 201);
-                }
+        addressBtn.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent any default link behavior
+          profileSection.classList.add("hidden"); // Hide the profile section
+          addressSection.style.display = "block"; // Show the address section
+        });
 
-                .sidepanel_fk {
-                    width: 20%;
-                    height: 100%;
-                }
+        profileBtn.addEventListener("click", function () {
+          profileSection.classList.remove("hidden"); // Show the profile section
+          addressSection.style.display = "none"; // Hide the address section
+        });
+      });
 
-                .sidepanel .body_myac ul li a {
-                    color: black;
-                    text-decoration: none;
+      function addtocart(productId) {
+        fetch(`/add-to-cart/${productId}`, {
+          method: "POST",
+        })
+          .then((response) => window.location.reload())
+          .then((data) => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("Error adding product to cart:", error);
+          });
+      }
+    </script>
 
-
-                }
-
-                .header_myac {
-                    padding: 1rem 1rem 0 1rem;
-
-                }
-
-                .header_myac .hello {
-                    margin-bottom: 0;
-                }
-
-                .sidepanel .body_myac .text_myac div {
-                    padding: .6rem;
-                    list-style: none;
-
-
-
-
-                }
-
-
-                .sidepanel .body_myac .text_myac .active {
-                    background-color: rgba(240, 240, 240, 0.856);
-                    border-left: 1px solid black;
-                }
-
-                .sidepanel .body_myac .text_myac div:hover {
-                    background-color: rgba(240, 240, 240, 0.856);
-
-                }
-
-                .sidepanel .body_myac .text_myac div a {
-                    color: black;
-                    padding: 1.2rem;
-                    text-decoration: none;
-
-                }
-
-                .hidden {
-                    display: none;
-                }
-
-                .sidepanel .body_myac .text_myac div a i {
-                    padding-right: .9rem;
-
-                }
-
-                .user_info {
-
-                    margin-top: 3rem;
-                    width: 75%;
-                }
-
-                .add_list {
-                    border-radius: 15px;
-                }
-            </style>
-
-
-
-
-
-
-
-
-
-
-            <script>
-
-
-
-
-
-                const openBtn = document.querySelector("#cart-btn");
-                const cart = document.querySelector("#sidecart");
-                const closeBtn = document.querySelector("#close_btn");
-                const overlaycart = document.getElementById("overlay_cart");
-
-                // overlaycart.addEventListener('click',closeCart)
-                openBtn.addEventListener("click", openCart);
-                closeBtn.addEventListener("click", closeCart);
-
-                function openCart() {
-                    cart.classList.add("open");
-                    overlaycart.style.display = "block";
-                    document.body.classList.add("no-scroll");
-                }
-
-                function closeCart() {
-                    cart.classList.remove("open");
-                    overlaycart.style.display = "none";
-                    document.body.classList.remove("no-scroll");
-                }
-            </script>
-            <script>
-                const menuOpenBtn = document.querySelector("#menu-btn");
-                const menu = document.querySelector("#menubar");
-                const menuclosebtn = document.querySelector("#menuclose_btn");
-                const overlay = document.getElementById("overlay_menu");
-
-
-                menuOpenBtn.addEventListener("click", openMenu);
-                menuclosebtn.addEventListener("click", closeMenu);
-                overlay.addEventListener('click', closeMenu)
-
-
-                function openMenu() {
-                    menu.classList.add("open");
-                    overlay.style.display = "block"; // Show the overlay
-                    document.body.classList.add("no-scroll");
-                }
-
-                function closeMenu() {
-                    menu.classList.remove("open");
-                    overlay.style.display = "none"; // Hide the overlay
-                    document.body.classList.remove("no-scroll");
-                }
-                document.addEventListener("DOMContentLoaded", function () {
-                    const addressBtn = document.getElementById("address_btn");
-                    const profileSection = document.getElementById("profile");
-                    const addressSection = document.getElementById("address");
-                    const profileBtn = document.getElementById("profile_btn");
-
-
-                    addressBtn.addEventListener("click", function (event) {
-                        event.preventDefault(); // Prevent any default link behavior
-                        profileSection.classList.add("hidden"); // Hide the profile section
-                        addressSection.style.display = "block"; // Show the address section
-                    });
-
-
-                    profileBtn.addEventListener("click", function () {
-                        profileSection.classList.remove("hidden"); // Show the profile section
-                        addressSection.style.display = "none"; // Hide the address section
-                    });
-                });
-
-                function addtocart(productId) {
-  fetch(`/add-to-cart/${productId}`, {
-    method: 'POST',
-  })
-  .then(response => window.location.reload())
-  .then(data => {
-    window.location.reload()
-  })
-  .catch(error => {
-    console.error('Error adding product to cart:', error);
-  });
-}
-
-
-
-            </script>
-
-            <!-- Optional JavaScript -->
-            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-            crossorigin="anonymous"></script>
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-            
-</body>
-
+    <%- include('layout/footer.ejs')%>
+  </body>
 </html>

@@ -338,23 +338,58 @@ if (getQueryParam('ordersuccess') === 'true') {
     modal.show();
 }
 
+function confirmOrder() {
+	$.ajax({
+	  url: "/confirm-order",
+	  method: "POST",
+	  data: $('#checkoutForm').serialize(),
+	  success: function (res) {
+		if (res.codSuccess) {
+		  $('#myModal').modal('show');
 
+		}else if (res.razorSuccess) {
+		  const order = {
+			"key": "" + res.key_id + "",
+			"amount": "" + res.amount + "",
+			"currency": "INR",
+			"name": "" + res.name + "",
+			"prefill": {
+			  "contact": "" + res.contact + "",
+			  "name": "" + res.name + "",
+			  "email": "" + res.email + ""
+			},
+			"handler": function (response) {
+			  // alert("paymentDone")
+			  verifypayment()
 
-function addAddress() {
-    const formData = $('#address_item').serialize(); // Serialize the form data
+			},
 
-    fetch('/add-address', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded", // Set the content type to URL-encoded
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle the response data here
-        window.location.reload()
-        console.log(data);
-    })
-    .catch(error => console.error('Error:', error));
-}
+		  }
+
+		  const razorpay = new Razorpay(order);
+
+		  const done = razorpay.open();
+
+		}else if(res.walletSuccess){
+		  console.log(res)
+		  $('#myModal').modal('show');
+		} else {
+		  window.location.href = `/checkout`
+		}
+	  },
+	  error: function (err) {
+		console.log(err);
+	  }
+	})
+  }
+
+  function verifypayment() {
+	$.ajax({
+	  url: "/verify-payment",
+	  method: "POST",
+	  success: () => {
+		// window.location.href = "/myorders?ordersuccess=true"
+		$('#myModal').modal('show');
+	  }
+	})
+  }

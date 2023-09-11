@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="/css/home.css" />
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+ 
 
   <title>Ours.</title>
 </head>
@@ -20,6 +20,9 @@
   <%- include('layout/navbar.ejs')%>
 
   <%- include('layout/usermodals.ejs')%>
+
+
+
 
 
       <div class="product-section w-100">
@@ -111,18 +114,13 @@
             <div class="col-lg-6 d-flex justify-content-center align-items-center category-male bg-dark rounded-start" style="height: 150px; width: 50%">
 
               <div class="row text-white d-flex align-items-center ">
-                <!-- <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div> -->
+               
 
 
                 <% if (malecategory && malecategory.subcategories && malecategory.subcategories.length > 0) {
                   let indexCounter = 0;
                   malecategory.subcategories.forEach(subcategory => { %>
-                    <!-- <label>
-                      <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>">
-                      <%= subcategory.name %>
-                    </label> -->
+                  
 
                     <div class="col-md-3 d-flex justify-content-around">
                       <div style="width: 100px;" class="bg-secondary d-flex
@@ -132,47 +130,7 @@
                     <% indexCounter++;
                   });
                 } %>
-                <!-- <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div><div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div>
-
-                <div class="col-md-2">
-                  <div class="bg-secondary mt-2 p-2">Men</div>
-                </div> -->
+              
 
               </div>
              </div>
@@ -180,52 +138,7 @@
               <div class="col-lg-6 d-flex justify-content-center align-items-center category-female w-50 bg-secondary rounded-end"style="height: 150px; width: 50%">
               
                 <div class="row text-white d-flex align-items-center ">
-                  <!-- <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div><div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div>
-  
-                  <div class="col-md-2">
-                    <div class="bg-dark mt-2 p-2">Women</div>
-                  </div> -->
-
+                  
 
                   <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) {
                     let indexCounter = 0;
@@ -296,6 +209,9 @@
         document.body.classList.remove("no-scroll");
       }
     </script>
+
+
+
     <script>
       const menuOpenBtn = document.querySelector("#menu-btn");
     const menu = document.querySelector("#menubar");
@@ -323,9 +239,7 @@
     }
 
 
-    function changeQuentity(proId){
-      
-    }
+ 
 
    
 
@@ -333,19 +247,4 @@
 
    
     </script>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"></script>
-</body>
-
-</html>
+              <%- include('layout/footer.ejs')%>
