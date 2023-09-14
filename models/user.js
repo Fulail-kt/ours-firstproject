@@ -49,9 +49,7 @@ const userSchema=mongoose.Schema({
             color:{
                 type:String
             },
-            total:{
-                type:Number
-            }
+            total: Number
 
         }
     ], address: [

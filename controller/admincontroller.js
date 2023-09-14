@@ -7,6 +7,98 @@ const categoryModel = require("../models/category");
 const subcategoryModel = require("../models/subcategory");
 const order = require("../models/order");
 const { Parser } = require('json2csv')
+const Banner=require('../models/banner')
+
+
+
+const banner= async(req,res)=>{
+  try{
+    const banners=await Banner.find({})
+    res.render("admin/banner",{banners})
+  }catch(e){
+    console.log(e.message)
+  }
+}
+
+const add_banner = async (req, res) => {
+  try {
+    const { title, offer } = req.body;
+    const image = req.file.filename; // Use req.file.filename to get the filename
+
+    const newBanner = new Banner({
+      title,
+      offer,
+      image,
+    });
+
+    await newBanner.save();
+
+    res.status(200).send('Banner added successfully');
+  } catch (error) {
+    res.status(500).send('Error adding banner');
+  }
+};
+
+
+const editbanner = async (req, res) => {
+  const bannerId = req.params.id;
+
+  try {
+    // Find the banner by ID
+    const bannerExist = await Banner.findById(bannerId);
+
+    if (!bannerExist) {
+      return res.status(404).send("Banner not found");
+    }
+
+    // Create an object with updated values
+    const updateBanner = {
+      title: req.body.title,
+      offer: req.body.offer,
+    };
+
+    // Check if there is a file uploaded
+    if (req.file && req.file.length > 0) {
+      updateBanner.image = req.file.filename;
+    } else {
+      updateBanner.image = bannerExist.image;
+    }
+
+    // Update the banner in the database
+    await Banner.findByIdAndUpdate(bannerId, updateBanner);
+
+    res.redirect("/admin/banner");
+  } catch (err) {
+    // Handle any errors here
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
+const detetebanner = async (req,res)=>{
+
+  try{
+
+    const bannerId=req.params.id
+
+    const banner=await Banner.findById(bannerId)
+  
+    if (!banner) {
+      return res.status(404).send("Banner not found");
+    }
+  
+    banner.isDeleted = !banner.isDeleted; // Toggle the deleted field
+  
+    await banner.save(); // Save the updated productData
+  
+    res.redirect("/admin/banner");
+
+  }catch (error) {
+  console.error(error);
+  res.status(500).send("Error occurred while deleting products");
+}
+}
 
 
 const admindashboard = async (req, res) => {
@@ -205,6 +297,9 @@ const deleteproduct = async (req, res) => {
     res.status(500).send("Error occurred while deleting products");
   }
 };
+
+
+
 
 const editproduct = async (req, res) => {
   const productId = req.params.id;
@@ -517,29 +612,20 @@ const orderStatus = async (req, res) => {
       { new: true }
     );
 
-    if (newStatus === "refund") {
-
-      userData.wallet.balance += totalAmount;
-
-      // Add the transaction ID to the transactions array
-      userData.wallet.transactions.push(orderData._id.toString());
-
-      await userData.save();
-
-
-    } else if (newStatus === "cancelled") {
-
-      if (orderData.payment === "ONLINE") {
-        userData.wallet.balance += totalAmount;
-
-        // Add the transaction ID to the transactions array
-        userData.wallet.transactions.push(orderData._id.toString());
-
-        await userData.save();
-
-
-      }
+    if (newStatus === "returned") {
+      await user.updateOne(
+        { _id: userData._id },
+        { $inc: { "wallet.balance": totalAmount },
+          $push: { "wallet.transactions": orderData._id.toString() } }
+      );
+    } else if (newStatus === "cancelled" && orderData.payment === "ONLINE") {
+      await user.updateOne(
+        { _id: userData._id },
+        { $inc: { "wallet.balance": totalAmount },
+          $push: { "wallet.transactions": orderData._id.toString() } }
+      );
     }
+    
     const productsToUpdate = orderData.products;
 
     // Update the stock for each product in the productsToUpdate array
@@ -548,12 +634,12 @@ const orderStatus = async (req, res) => {
       const quantity = productData.quantity;
 
       // Find the product in the products collection
-      const product = await products.findById(productId);
+      const products = await product.findOne({_id:productId});
 
-      if (product) {
+      if (products) {
         // Increment the stock by the canceled quantity
-        product.stock += quantity;
-        await product.save();
+        products.stock += quantity;
+        await products.save();
       }
     }
     
@@ -582,12 +668,11 @@ const adminSales = async (req, res) => {
   try {
 
 
-    if (req.query.status) {
-      selectedStatus = req.query.status
+     
       salesReport = await order.aggregate([
 
         { $unwind: "$products" },
-        { $match: { "status": selectedStatus } },
+        { $match: { "status": "delivered" } },
         {
           $lookup: {
             from: "products",
@@ -610,33 +695,7 @@ const adminSales = async (req, res) => {
         },
         { $sort: { "order_id": -1 } }
       ])
-    } else {
-      salesReport = await order.aggregate([
-
-        { $unwind: "$products" },
-        {
-          $lookup: {
-            from: "products",
-            localField: "products.product",
-            foreignField: "_id",
-            as: "products_details"
-          }
-        },
-        { $unwind: "$products_details" },
-        {
-          $project: {
-            order_id: "$orderNumber",
-            products_details: "$products_details",
-            qty: "$products.quantity",
-            total_amount: "$products.price",
-            order_date: "$orderDate",
-            payment_method: "$payment",
-
-          }
-        },
-        { $sort: { "order_id": -1 } }
-      ])
-    }
+    
 
     console.log(salesReport)
 
@@ -644,10 +703,10 @@ const adminSales = async (req, res) => {
     if (from && to) {
       const fromDate = new Date(from);
       const toDate = new Date(to);
-
+    
       salesReport = salesReport.filter((prd) => {
         const orderDate = new Date(prd.order_date);
-        return orderDate >= fromDate && orderDate <= toDate;
+        return orderDate >= fromDate && orderDate <= new Date(toDate.getTime() + 24 * 60 * 60 * 1000);
       });
       console.log(salesReport)
     }
@@ -662,6 +721,7 @@ const adminSales = async (req, res) => {
 
 const salesReportDownload = async (req, res) => {
 
+  console.log("sales report")
   try {
     const data = req.body
     let file = [];
@@ -669,7 +729,6 @@ const salesReportDownload = async (req, res) => {
       const row = {
         date: data.date[i],
         order_id: data.order_id[i],
-        consumer: data.consumer[i],
         product: data.product[i],
         qty: data.qty[i],
         payment: data.payment[i],
@@ -696,7 +755,7 @@ const updateUser = async (req, res) => { };
 
 module.exports = {
 
-  adminpost, admindashboard, adminSales, salesReportDownload,
+  adminpost, admindashboard, adminSales, salesReportDownload,add_banner,banner,editbanner,detetebanner,
 
   adminlogin, adminlogout,
 

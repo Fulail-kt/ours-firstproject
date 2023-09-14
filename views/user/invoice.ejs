@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <!-- Include CSS and JavaScript libraries here -->
+    <link rel="icon" type="image/x-icon" href="/images/ours-logos.jpeg">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -201,27 +202,6 @@
 
 
 
-        document.getElementById('downloadInvoice').addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent the default behavior of the anchor tag (e.g., navigating to a URL).
-
-            // Define the element you want to convert to PDF (e.g., the entire invoice container).
-            const element = document.querySelector('.container');
-
-            // Define the PDF options (optional).
-            const options = {
-                margin: 10,
-                filename: 'invoice.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            };
-
-            // Generate the PDF.
-            html2pdf().from(element).set(options).outputPdf().then(function (pdf) {
-                // Save or download the PDF.
-                pdf.save();
-            });
-        });
     </script>
 
 </body>

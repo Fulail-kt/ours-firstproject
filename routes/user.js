@@ -2,21 +2,13 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/usercontroller');
 const auth = require('../middleware/auth');
-const bcrypt = require('bcryptjs')
-const nodemailer = require('nodemailer')
-const Order = require('../models/order');
 const User = require('../models/user'); // Assuming you have a User model
-const Product = require('../models/products');
-const shortid = require('shortid');
-const Razorpay = require("razorpay");
-const crypto = require('crypto');
-const Coupons = require('../models/coupon')
-const categoryModel = require('../models/category')
-
-const mongoose = require('mongoose')
-
 const googleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
+
+
+
+
 
 passport.use(new googleStrategy({
   clientID:process.env.CLIENT_ID,
@@ -29,8 +21,6 @@ passport.use(new googleStrategy({
   try {
     // Find or create the user based on the Google profile data
     const user = await User.findOne({ email: profile.emails[0].value });
-
-    console.log("profile ", profile.emails[0].value);
     if (user) {
       // If user exists, return the user
       done(null, user);
@@ -62,9 +52,6 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-
-
-
 router.get('/auth/google', passport.authenticate("google", {
   scope: ["profile", "email"]
 }));
@@ -94,8 +81,6 @@ router.post('/login', userController.loginPost);
 
 router.get('/signup', auth.loggedout, userController.signupGet);
 
-
-
 router.get('/verify-otp', auth.otpsession, userController.verify);
 
 router.post('/confirm', auth.otpsession, userController.confirmOtp);
@@ -108,7 +93,7 @@ router.post('/add-to-wishlist/:id', auth.isLoggedIn, userController.add_to_wishl
 
 router.get('/remove-from-wishlist/:id', auth.isBlocked, userController.remove_from_wishlist)
 
-router.get('/allproducts', userController.allProducts)
+router.get('/allproducts',auth.productSearch, userController.allProducts)
 
 router.get('/productview/:id', userController.productView)
 
@@ -118,11 +103,13 @@ router.post('/add-address', auth.isLoggedIn, auth.isBlocked, userController.add_
 
 router.get('/myaccount', auth.isLoggedIn, auth.isBlocked, userController.myaccount)
 
-router.get('/myorders', auth.isLoggedIn, auth.isBlocked, userController.myorders)
+router.get('/myorders', auth.isLoggedIn, auth.isBlocked, auth.orderSearch, userController.myorders)
 
 router.post('/update-profile', auth.isLoggedIn, auth.isBlocked, userController.update_profile);
 
 router.post('/edit-address', userController.edit_address);
+
+router.patch('/delete-address', userController.delete_address)
 
 router.get('/logout', userController.logoutGet)
 
@@ -140,33 +127,13 @@ router.get("/myorders/invoice/:id",auth.isLoggedIn, userController.invoice);
 
 router.post('/apply-coupon',userController.apply_coupon);
 
-
-
-
+router.post("/resend-otp", userController.resend_otp)
 
 router.patch("/cancel-order/:id", userController.cancelOrder)
 
-
-
-
-
-
-
-
-
-
-
-
 router.post('/reset-password', userController.postResetPassword);
 
-
-
 router.get('/reset-password', userController.getresetpassword);
-
-
-
-
-
 
 router.post('/newpassword', userController.newPassword);
 
@@ -178,6 +145,5 @@ router.post('/newpassword', userController.newPassword);
 
 
 
-router.get('/allproduct', userController.getAllproductsQuery);
 
 module.exports = router;

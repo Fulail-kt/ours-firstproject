@@ -224,8 +224,6 @@ function closeMenu() {
 
 
 
-/// products category//
-
 
 const modal = new bootstrap.Modal(document.getElementById('exampleModalCenter'));
     modal._element.addEventListener('hidden.bs.modal', () => {
@@ -277,119 +275,6 @@ const modal = new bootstrap.Modal(document.getElementById('exampleModalCenter'))
     }
 
 
-// function getQueryParams(name){
-// 	const urlParams=new URLSearchParams(window.location.search);
-// 	return urlParams.get(name);
-// }
-
-// window.addEventListener('load',function(){
-
-// 	let Message
-
-// 	if(getQueryParams){}
-
-// 	if(message){
-// 		const modal=new bootstrap.Modal(document.getElementById)
-// 	}
-// })
-
-
-// Check if the 'ordersuccess' query parameter is present in the URL
 
 
 
-
-// function getQueryParam(name) {
-//     const urlParams = new URLSearchParams(window.location.search);
-//     return urlParams.get(name);
-// }
-
-// // Display the alert box with the message from the 'message' query parameter
-// window.addEventListener('load', function () {
-//     let message
-//     let adminMessage
-//     if (getQueryParam('CreatedAccount')) { message = getQueryParam('CreatedAccount'); }
-//     else if (getQueryParam('UserLogged')) { message = getQueryParam('UserLogged'); }
-//     else if (getQueryParam('message')) { message = getQueryParam('message') }
-//     else if (getQueryParam('adminMessage')) { adminMessage = getQueryParam('adminMessage') }
-//     if (message) {
-//         const modal = new bootstrap.Modal(document.getElementById("myModal"));
-//         // const modalMessage = document.getElementById("modalMessage");
-//         // modalMessage.textContent = message;
-//         modal.show();
-//     } else if (adminMessage) {
-//         const modal = new bootstrap.Modal(document.getElementById("adminMessageModal"));
-//         const modalMessage = document.getElementById("modalAdminMessage");
-//         modalMessage.textContent = adminMessage;
-//         modal.show();
-//     }
-// });
-
-
-function getQueryParam(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
-
-// Check if the "ordersuccess" query parameter is set to "true"
-if (getQueryParam('ordersuccess') === 'true') {
-    // Open the modal when "ordersuccess" is true
-    const modal = new bootstrap.Modal(document.getElementById("myModal"));
-    modal.show();
-}
-
-function confirmOrder() {
-	$.ajax({
-	  url: "/confirm-order",
-	  method: "POST",
-	  data: $('#checkoutForm').serialize(),
-	  success: function (res) {
-		if (res.codSuccess) {
-		  $('#myModal').modal('show');
-
-		}else if (res.razorSuccess) {
-		  const order = {
-			"key": "" + res.key_id + "",
-			"amount": "" + res.amount + "",
-			"currency": "INR",
-			"name": "" + res.name + "",
-			"prefill": {
-			  "contact": "" + res.contact + "",
-			  "name": "" + res.name + "",
-			  "email": "" + res.email + ""
-			},
-			"handler": function (response) {
-			  // alert("paymentDone")
-			  verifypayment()
-
-			},
-
-		  }
-
-		  const razorpay = new Razorpay(order);
-
-		  const done = razorpay.open();
-
-		}else if(res.walletSuccess){
-		  console.log(res)
-		  $('#myModal').modal('show');
-		} else {
-		  window.location.href = `/checkout`
-		}
-	  },
-	  error: function (err) {
-		console.log(err);
-	  }
-	})
-  }
-
-  function verifypayment() {
-	$.ajax({
-	  url: "/verify-payment",
-	  method: "POST",
-	  success: () => {
-		// window.location.href = "/myorders?ordersuccess=true"
-		$('#myModal').modal('show');
-	  }
-	})
-  }

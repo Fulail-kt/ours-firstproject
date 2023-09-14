@@ -20,25 +20,21 @@
   </section>
 
   <section id="content">
-    <nav>
-      <i class='bx bx-menu toggle-sidebar'></i>
-      <h5 class="title">Sales Report</h5>
-      <form action="#">
-        <div class="form-group search">
-          <input type="text" placeholder="Search...">
-          <i class='bx bx-search icon'></i>
+    <nav class=" m-auto w-100">
+      <div class="w-100 d-flex justify-content-between">
+        <div class="w-25 d-flex align-items-center pr-4">
+          <i class='bx bx-menu toggle-sidebar' ></i>
+          <h5 class="title m-4">Sales Report</h5>
         </div>
-      </form>
-      <a href="#" class="nav-link">
-        <i class='bx bx-bell icon'></i>
-        <span class="badge"></span>
-      </a>
-      <span class="divider"></span>
-      <div class="profile">
-        <img
-          src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-          alt="">
+        <div class=" w-100 p-4 text-end">
+          <a href="#" class="nav-link m-right">
+            <i class='bx bx-bell icon'></i>
+            <span class="badge"></span>
+          </a>
+        </div>
       </div>
+      <!-- <span class="divider"></span> -->
+     
     </nav>
     <div class="container-fluid bg-light mt-3" style="width: 93%; border-radius: 8px; align-items: center; display: block;">
       <!-- For demo purpose -->
@@ -77,27 +73,8 @@
         </div>
         <div class="sales-tab  mt-2   bg-light">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="options">
-                        <select id="statusFilter" class="ea-input bg-dark text-white rounded"  onchange="redirectToSelected()" >
-                            <option value="" selected disabled>Select an option</option>
-                            <option value="/admin/adminsales">All Sales</option>
-                            <option value="/admin/adminsales?status=pending">Pending</option>
-                            <option value="/admin/adminsales?status=processing">Processing</option>
-                            <option value="/admin/adminsales?status=shipped">Shipped</option>
-                            <option value="/admin/adminsales?status=out for delivery">Out for Delivery</option>
-                            <option value="/admin/adminsales?status=delivered">Delivered</option>
-                            <option value="/admin/adminsales?status=canceled">Cancelled</option>
-                        </select>
-                        
-                       
-                    </div>
-                    <div class="selected-status d-none d-md-block ">
-                        <% if (selectedStatus) { %>
-                            <h3 class="text-secondary"><%= selectedStatus %> Sales Report</h3>
-                         <% } else { %>
-                            <h3 class="text-secondary">All Sales Report</h3>
-                        <% } %>
-                    </div>
+                   
+                   
             <form action="/admin/adminsales/download" method="post">
 
                     <% if (salesReport.length) { %>
@@ -183,7 +160,7 @@ function redirectToSelected() {
     function filterSales(status){
     const from=document.getElementById("start_date").value
     const to=document.getElementById("end_date").value
-    window.location.href=`/admin/adminsales?from=${from}&to=${to}&status=${status}`
+    window.location.href=`/admin/adminsales?from=${from}&to=${to}`
 }
   </script>
 

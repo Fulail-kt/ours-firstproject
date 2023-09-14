@@ -9,6 +9,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <link rel="icon" type="image/x-icon" href="/images/ours-logos.jpeg">
     <link
       href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
       rel="stylesheet"
@@ -36,7 +37,7 @@
     <%- include('layout/usermodals.ejs')%> <%- include('layout/navbar.ejs')%>
 
     <div class="d-flex w-100">
-      <div class="sidepanel">
+      <div class="col-md-3 col-lg-2 sidepanel">
         <div class="header_myac d-flex flex-column justify-content-start">
           <p class="hello" style="font-weight: 700; font-size: 1.7rem">
             Hello
@@ -68,9 +69,9 @@
         </div>
       </div>
 
-      <div class="sidepanel_fk"></div>
+      <div class="sidepanel_fk" style="width: 260px;"></div>
 
-      <div class="my-orders-list w-100">
+      <div class="col-md-9 col-lg-10 my-orders-list">
         <div class="w-100 h-100">
           <!-- <% console.log(orders)%> -->
           <section class="h-100 gradient-custom">
@@ -88,7 +89,7 @@
                       <% orders.forEach(order=> { %>
                       <div class="card shadow-0 border mb-4">
                         <div class="card-body">
-                          <div class="d-flex">
+                          <div class=" cardorders">
                             <div class="col text-center">
                               <p class="text-muted mb-0">
                                 Order No: <%= order.orderNumber %>
@@ -322,150 +323,111 @@
 
             <% orders.forEach(order => { %>
             <!-- Modal -->
-            <div
-              class="modal fade text-white"
-              id="orderDetails<%= order._id %>"
-              tabindex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
+            <div class="modal fade text-white" id="orderDetails<%= order._id %>" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
               <div class="modal-dialog modal-lg">
-                <div
-                  class="modal-content text-white"
-                  style="background-color: #5f6e8a; border-radius: 10px"
-                >
+                <div class="modal-content text-white" style="background-color: #5f6e8a; border-radius: 10px">
                   <div class="modal-header border-bottom-0">
-                    <button
-                      type="button"
-                      class="btn-close btn-close-white"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body text-white text-start px-4 pt-0 pb-4">
-                    <div class="d-flex">
-                      <div
-                        class="col-md-2 text-center d-flex align-items-center justify-content-center"
-                      >
+                    <div class="modal-orders d-flex">
+                      <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
                         <p class="text-white mb-0">
                           Order No: <%= order.orderNumber %>
                         </p>
                       </div>
                       <div class="row align-items-center mb-3">
-                        <div
-                          class="col- d-flex flex-column align-items-center justify-content-center"
-                          style="width: 5rem"
-                        >
-                          <% order.productDetails.forEach((product, index) => {
-                          %> <% const imageId = `productImage_${index}`; %>
-                          <!-- Check if this is not the first image -->
-                          <% if (index !== 0) { %>
-                          <img
-                            id="<%= imageId %>"
-                            style="
-                              margin-top: -2rem;
-                              transition: transform 0.5s;
-                              transform-origin: center;
-                            "
-                            src="/uploads/<%= product.images[0] %>"
-                            class="img-fluid rounded"
-                            alt="Product"
-                            onmouseover="document.getElementById('<%= imageId %>').style.transform = 'scale(3)';"
-                            onmouseout="document.getElementById('<%= imageId %>').style.transform = 'scale(1)';"
-                          />
-                          <% } else { %>
-                          <!-- This is the first image, no margin-top needed -->
-                          <img
-                            id="<%= imageId %>"
-                            style="
-                              transition: transform 0.5s;
-                              transform-origin: center;
-                            "
-                            src="/uploads/<%= product.images[0] %>"
-                            class="img-fluid rounded"
-                            alt="Product"
-                            onmouseover="document.getElementById('<%= imageId %>').style.transform = 'scale(3)';"
-                            onmouseout="document.getElementById('<%= imageId %>').style.transform = 'scale(1)';"
-                          />
-                          <% } %> <% }); %>
+                        <div class="col- d-flex flex-column align-items-center justify-content-center" style="width: 5rem">
+                          <% order.productDetails.forEach((product, index)=> {
+                            %> <% const imageId=`productImage_${index}`; %>
+                              <!-- Check if this is not the first image -->
+                              <% if (index !==0) { %>
+                                <img id="<%= imageId %>" style="
+                                          margin-top: -2rem;
+                                          transition: transform 0.5s;
+                                          transform-origin: center;
+                                        " src="/uploads/<%= product.images[0] %>" class="img-fluid rounded" alt="Product"
+                                  onmouseover="document.getElementById('<%= imageId %>').style.transform = 'scale(3)';"
+                                  onmouseout="document.getElementById('<%= imageId %>').style.transform = 'scale(1)';" />
+                                <% } else { %>
+                                  <!-- This is the first image, no margin-top needed -->
+                                  <img id="<%= imageId %>" style="
+                                          transition: transform 0.5s;
+                                          transform-origin: center;
+                                        " src="/uploads/<%= product.images[0] %>" class="img-fluid rounded" alt="Product"
+                                    onmouseover="document.getElementById('<%= imageId %>').style.transform = 'scale(3)';"
+                                    onmouseout="document.getElementById('<%= imageId %>').style.transform = 'scale(1)';" />
+                                  <% } %>
+                                    <% }); %>
                         </div>
-
+            
                         <div class="col-md text-center">
-                          <% let quantity;%> <% order.products.forEach((item) =>
-                          { %> <% quantity= item.quantity %> <% }) %> <%
-                          order.productDetails.forEach(product => { %>
-                          <p class="text-white mb-0" style="font-size: 12px">
-                            <%= product.title %>
-                          </p>
-                          <p class="text-white mb-0 small">
-                            Color: <%= product.color %>
-                          </p>
-                          <!-- Assign the quantity value inside the loop -->
-                          <p class="text-white mb-0 small">
-                            Qty: <%=quantity %>
-                          </p>
-
-                          <% }); %>
+                          <% let quantity;%>
+                            <% order.products.forEach((item)=>
+                              { %> <% quantity=item.quantity %>
+                                <% }) %>
+                                  <% order.productDetails.forEach(product=> { %>
+                                    <p class="text-white mb-0" style="font-size: 12px">
+                                      <%= product.title %>
+                                    </p>
+                                    <p class="text-white mb-0 small">
+                                      Color: <%= product.color %>
+                                    </p>
+                                    <!-- Assign the quantity value inside the loop -->
+                                    <p class="text-white mb-0 small">
+                                      price: ₹ <%=product.price%>, Qty: <%=quantity %>
+                                    </p>
+                                    <hr class="m-0">
+            
+                                    <% }); %>
                         </div>
                       </div>
-                      <div
-                        class="col-md-3 text-center d-flex align-items-center justify-content-center"
-                      >
+                      <div class="col-md-3 text-center d-flex align-items-center justify-content-center">
                         <p class="text-white mb-0 small">
                           ₹ <%=order.totalAmount %>
                         </p>
                       </div>
-                      <div
-                        class="col-md text-center d-flex align-items-center justify-content-center"
-                      >
-                        <% const address = order.address[0] %>
-                        <p class="text-white mb-0 small">
-                          Ship to: <%= address.name %> <br />
-                          <%= address.house %><br />
-                          <%= address.city %> <%= address.district %>,<br />
-                          <%= address.state %>, <%= address.post %>,<%=
-                          address.contact %>
-                        </p>
+                      <div class="col-md text-center d-flex align-items-center justify-content-center">
+                        <% const address=order.address[0] %>
+                          <p class="text-white mb-0 small">
+                            Ship to: <%= address.name %> <br />
+                              <%= address.house %><br />
+                                <%= address.city %>
+                                  <%= address.district %>,<br />
+                                    <%= address.state %>, <%= address.post %>,<%= address.contact %>
+                          </p>
                       </div>
                     </div>
-
+            
                     <div class="d-flex justify-content-around">
-                      <p
-                        id="cancelptag"
-                        class="d-flex justify-content-center rounded <%= order.status==='cancelled'? 'bg-danger w-100':'' %>"
-                      >
+                      <p id="cancelptag"
+                        class="d-flex justify-content-center rounded <%= order.status==='cancelled'? 'bg-danger w-100':'' %>">
                         <%= order.status %>
                       </p>
-                      <% if (order.status === "pending") { %>
-                      <button
-                        onclick="cancelOrder('<%= order._id %>')"
-                        type="button"
-                        class="btn btn-outline-danger"
-                      >
-                        Cancel
-                      </button>
-                      <% } %> <% if (order.status === "delivered") { %> <% const
-                      orderDate = new Date(order.orderDate); %> <% const
-                      currentDate = new Date(); %> <% const timeDifference =
-                      currentDate - orderDate; %> <% const daysDifference =
-                      Math.floor(timeDifference / (1000 * 60 * 60 * 24)); %> <%
-                      if (daysDifference <= 7) { %>
-                      <a
-                        onclick="returnRequest('<%=order._id%>')"
-                        class="btn btn-outline-warning"
-                        >Return</a
-                      >
-                      <% } %> <% } %>
+                      <% if (order.status==="pending" ) { %>
+                        <button onclick="cancelOrder('<%= order._id %>')" type="button" class="btn btn-outline-danger">
+                          Cancel
+                        </button>
+                        <% } %>
+                          <% if (order.status==="delivered" ) { %>
+                            <% const orderDate=new Date(order.orderDate); %>
+                              <% const currentDate=new Date(); %>
+                                <% const timeDifference=currentDate - orderDate; %>
+                                  <% const daysDifference=Math.floor(timeDifference / (1000 * 60 * 60 * 24)); %>
+                                    <% if (daysDifference <=7) { %>
+                                      <a id="retrun" onclick="returnRequest('<%=order._id%>')" class="btn btn-outline-warning">Return</a>
+                                      <% } %>
+                                        <% } %>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <% }) %> <% } else { %>
-            <div
-              class="w-100 h-100 d-flex justify-content-center align-items-center"
-            >
-              <div>
+            <% }) %>
+              <% } else { %>
+                <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                  <div>
                 <p>No orders found.</p>
               </div>
             </div>
@@ -474,312 +436,19 @@
           </section>
         </div>
 
-        <div style="display: none">
-          <section class="h-100 gradient-custom" style="display: none">
-            <div class="container py-5 h-100">
-              <div
-                class="row d-flex justify-content-center align-items-center h-100"
-              >
-                <div class="col-lg-10 col-xl-8">
-                  <div class="card" style="border-radius: 10px">
-                    <div class="card-header px-4 py-5">
-                      <h5 class="text-muted mb-0">
-                        Thanks for your Order,
-                        <span style="color: #a8729a">Anna</span>!
-                      </h5>
-                    </div>
-                    <div class="card-body p-4">
-                      <div
-                        class="d-flex justify-content-between align-items-center mb-4"
-                      >
-                        <p class="lead fw-normal mb-0" style="color: #a8729a">
-                          Receipt
-                        </p>
-                        <p class="small text-muted mb-0">
-                          Receipt Voucher : 1KAU9-84UIL
-                        </p>
-                      </div>
-                      <div class="card shadow-0 border mb-4">
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-md-2">
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-                                class="img-fluid"
-                                alt="Phone"
-                              />
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0">Samsung Galaxy</p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">White</p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">
-                                Capacity: 64GB
-                              </p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">Qty: 1</p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">$499</p>
-                            </div>
-                          </div>
-                          <hr
-                            class="mb-4"
-                            style="background-color: #e0e0e0; opacity: 1"
-                          />
-                          <div class="row d-flex align-items-center">
-                            <div class="col-md-2">
-                              <p class="text-muted mb-0 small">Track Order</p>
-                            </div>
-                            <div class="col-md-10">
-                              <div
-                                class="progress"
-                                style="height: 6px; border-radius: 16px"
-                              >
-                                <div
-                                  class="progress-bar"
-                                  role="progressbar"
-                                  style="
-                                    width: 65%;
-                                    border-radius: 16px;
-                                    background-color: #a8729a;
-                                  "
-                                  aria-valuenow="65"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                              <div class="d-flex justify-content-around mb-1">
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">
-                                  Out for delivary
-                                </p>
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">
-                                  Delivered
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card shadow-0 border mb-4">
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-md-2">
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/1.webp"
-                                class="img-fluid"
-                                alt="Phone"
-                              />
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0">iPad</p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">Pink rose</p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">
-                                Capacity: 32GB
-                              </p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">Qty: 1</p>
-                            </div>
-                            <div
-                              class="col-md-2 text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p class="text-muted mb-0 small">$399</p>
-                            </div>
-                          </div>
-                          <hr
-                            class="mb-4"
-                            style="background-color: #e0e0e0; opacity: 1"
-                          />
-                          <div class="row d-flex align-items-center">
-                            <div class="col-md-2">
-                              <p class="text-muted mb-0 small">Track Order</p>
-                            </div>
-                            <div class="col-md-10">
-                              <div
-                                class="progress"
-                                style="height: 6px; border-radius: 16px"
-                              >
-                                <div
-                                  class="progress-bar"
-                                  role="progressbar"
-                                  style="
-                                    width: 20%;
-                                    border-radius: 16px;
-                                    background-color: #a8729a;
-                                  "
-                                  aria-valuenow="20"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                ></div>
-                              </div>
-                              <div class="d-flex justify-content-around mb-1">
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">
-                                  Out for delivary
-                                </p>
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">
-                                  Delivered
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="d-flex justify-content-between pt-2">
-                        <p class="fw-bold mb-0">Order Details</p>
-                        <p class="text-muted mb-0">
-                          <span class="fw-bold me-4">Total</span> $898.00
-                        </p>
-                      </div>
-
-                      <div class="d-flex justify-content-between pt-2">
-                        <p class="text-muted mb-0">Invoice Number : 788152</p>
-                        <p class="text-muted mb-0">
-                          <span class="fw-bold me-4">Discount</span> $19.00
-                        </p>
-                      </div>
-
-                      <div class="d-flex justify-content-between">
-                        <p class="text-muted mb-0">
-                          Invoice Date : 22 Dec,2019
-                        </p>
-                        <p class="text-muted mb-0">
-                          <span class="fw-bold me-4">GST 18%</span> 123
-                        </p>
-                      </div>
-
-                      <div class="d-flex justify-content-between mb-5">
-                        <p class="text-muted mb-0">
-                          Recepits Voucher : 18KU-62IIK
-                        </p>
-                        <p class="text-muted mb-0">
-                          <span class="fw-bold me-4">Delivery Charges</span>
-                          Free
-                        </p>
-                      </div>
-                    </div>
-                    <div
-                      class="card-footer border-0 px-4 py-5"
-                      style="
-                        background-color: #a8729a;
-                        border-bottom-left-radius: 10px;
-                        border-bottom-right-radius: 10px;
-                      "
-                    >
-                      <h5
-                        class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0"
-                      >
-                        Total paid: <span class="h2 mb-0 ms-2">$1040</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
+        
       </div>
     </div>
 
 
-    
+
 
     <script>
-      const cancelvalue = document.getElementById("cancelptag");
+     
 
-      function cancelOrder(id, consumer) {
-        $.ajax({
-          url: `/cancel-order/${id}`,
-          method: "PATCH",
-          data: { user: consumer, orderId: id },
-          success: (response) => {
-            window.location.href = "/myorders";
-          },
-          error: function (error) {
-            console.error("Error cancelling order:", error);
-          },
-        });
-      }
-
-      function returnRequest(id) {
-        $.ajax({
-          url: `/return-request/${id}`,
-          method: "PATCH",
-          success: (response) => {
-            window.location.href = `/myorders`;
-          },
-        });
-      }
-
-      const openBtn = document.querySelector("#cart-btn");
-      const cart = document.querySelector("#sidecart");
-      const closeBtn = document.querySelector("#close_btn");
-      const overlaycart = document.getElementById("overlay_cart");
-
-      // overlaycart.addEventListener('click',closeCart)
-      openBtn.addEventListener("click", openCart);
-      closeBtn.addEventListener("click", closeCart);
-
-      function openCart() {
-        cart.classList.add("open");
-        overlaycart.style.display = "block";
-        document.body.classList.add("no-scroll");
-      }
-
-      function closeCart() {
-        cart.classList.remove("open");
-        overlaycart.style.display = "none";
-        document.body.classList.remove("no-scroll");
-      }
-
-      const menuOpenBtn = document.querySelector("#menu-btn");
-      const menu = document.querySelector("#menubar");
-      const menuclosebtn = document.querySelector("#menuclose_btn");
-      const overlay = document.getElementById("overlay_menu");
-
-      menuOpenBtn.addEventListener("click", openMenu);
-      menuclosebtn.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", closeMenu);
-
-      function openMenu() {
-        menu.classList.add("open");
-        overlay.style.display = "block"; // Show the overlay
-        document.body.classList.add("no-scroll");
-      }
-
-      function closeMenu() {
-        menu.classList.remove("open");
-        overlay.style.display = "none"; // Hide the overlay
-        document.body.classList.remove("no-scroll");
-      }
+     
     </script>
 
+<script src="/javascript/myorders.js"></script>
     <%- include('layout/footer.ejs')%>
 

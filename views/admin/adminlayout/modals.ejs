@@ -224,7 +224,7 @@ aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 
 
     <% orders.forEach((data, index)=> { %>
-      <div class="modal fade" id="Modalorderdlt" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="Modalorderdlt<%= data._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog d-flex justify-content-center">
           <div class="modal-content " style="width: 24rem; border-radius: 10px;">
             <div class="modal-header d-flex  bg-danger">
@@ -274,3 +274,35 @@ aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             </div>
           </div>
  
+
+
+
+          <div class="modal fade  " style="background-color: rgba(34, 33, 33, 0.589);" id="BannerModal" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered ">
+              <div class="modal-content">
+                <div class="modal-header bg-dark ">
+                  <h5 class="modal-title text-white " id="exampleModalLabel"><b>Add Banner</b></h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form class='d-flex flex-column justify-content-center' action="/admin/add_banner" method="post" enctype="multipart/form-data">
+                    <div class=" p-3">
+                      <div class="d-flex justify-content-around">
+                        <input type="file" id="banner" required name="image">
+                      </div>
+                      <div class="d-flex justify-content-around mt-3">
+                        <label for="offer">OFFER</label>
+                        <input type="text" placeholder="CouponCode or Category offer" name="offer" id="offer">
+                      </div>
+                      <div class="d-flex justify-content-around mt-3">
+                        <label for="title">TITLE</label>
+                        <input type="text" id="title" placeholder="Main Title " name="title">
+                      </div>
+                    </div>
+                    <button class="btn btn-success border-0" type="submit">Add Banner</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>

@@ -19,7 +19,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-
+router.get('/banner', auth.isAdminLoggedIn, admin.banner)
+router.post("/add_banner",upload.single('image'),admin.add_banner)
+router.post("edit_banner/:id",admin.editbanner)
+router.post('/unlist-banner/:id',admin.detetebanner)
 
 router.get('/',admin.adminlogin)
 router.get('/login',auth.isAdminLoggedIn,admin.adminlogin)
@@ -33,6 +36,8 @@ router.get('/products',auth.isAdminLoggedIn, admin.products);
 router.post('/addproduct',auth.isAdminLoggedIn, upload.array('images', 5),admin.addproduct )
 router.post('/deleteproduct/:id', admin.deleteproduct)
 router.post('/editproduct/:id', upload.array('images', 5),admin.editproduct);
+
+
 
 
 router.get('/adminsales',auth.isAdminLoggedIn,admin.adminSales)
@@ -57,5 +62,6 @@ router.get("/coupons",auth.isAdminLoggedIn,admin.getAllCoupons)
 router.post("/create-coupon",auth.isAdminLoggedIn,admin.createCoupon)
 router.post("/update-coupon/:id",auth.isAdminLoggedIn,admin.updateCoupons)
 router.post("/unlist-coupon/:id",auth.isAdminLoggedIn,admin.unListCoupons)
+
 
 module.exports = router;

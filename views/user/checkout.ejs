@@ -9,8 +9,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="/css/home.css" />
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
   <title>Ours.</title>
 </head>
 
@@ -31,7 +32,7 @@
       <div class="w-100 d-flex justify-content-center align-items-center">
 
         <div class="w-75">
-          <form class="w-100"  action="/confirm-order" onsubmit="event.preventDefault(); confirmOrder()" method="post"
+          <form class="w-100" action="/confirm-order" onsubmit="event.preventDefault(); confirmOrder()" method="post"
             id="checkoutForm">
 
             <div>
@@ -40,11 +41,11 @@
 
                   <div class="p-0 w-100">
                     <div class="main-page1  w-100" id="main-page1">
-                      <div class="main-page d-flex  w-100 ">
+                      <div class="main-page   w-100 ">
 
                         <div class="rounded-left text-white "
-                          style="width: 50%; height: 36rem; background-color: #343a40;">
-                          <div id="shipping-address " >
+                          style=" height: 36rem; background-color: #343a40;">
+                          <div id="shipping-address ">
                             <div class="card rounded-0  bg-gradient bg-secondary text-black-50">
                               <div class="card-header">
                                 <h4>Shipping Address</h4>
@@ -58,10 +59,10 @@
                                 <div class="page1-body m-1">
                                   <% if(user && user.address.length> 0) { %>
                                     <% user.address.forEach(address=> { %>
-                                      <div class="text-monospace " style="margin-left: 5rem; margin-right: 5rem;">
-                                        <label class=" addressLabels d-flex justify-content-around"
+                                      <div class="text-monospace mb-1" style="height:100px ; margin-left: 3rem; margin-right: 3rem;">
+                                        <label class=" addressLabels d-flex justify-content-center"
                                           for="addressRadio<%= address._id %>"
-                                          style="border: #7777 2px solid; border-radius: 5px;">
+                                          style="border: #7777 1.5px solid; border-radius: 5px;">
                                           <input type="radio" required id="addressRadio<%= address._id %>"
                                             name="selectedAddress" value="<%= address._id %>" style="display: none;">
                                           <div class="address-details">
@@ -81,12 +82,13 @@
                                       <% }) %>
                                         <% } %>
                                           <div class="mt-1">
-                                            <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressModal" id="new-address"  
-                                              title="ADD ADDRESS"><i class='bx bx-plus-circle'></i>Add
+                                            <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                              data-bs-target="#addressModal" id="new-address" title="ADD ADDRESS"><i
+                                                class='bx bx-plus-circle'></i>Add
                                               address</a>
                                           </div>
                                 </div>
-                                <div >
+                                <div>
                                   <hr>
 
 
@@ -113,18 +115,18 @@
                                         id="onlineRadio" style="display: none;">
                                     </div>
                                   </div>
-                                 
+
                                   <%if(user.wallet.balance>0){%>
                                     <div class="text-center">
-                                      <input type="checkbox" name="wallet" id="wallet" value="<%=user.wallet.balance%>" disabled>
+                                      <input type="checkbox" name="wallet" id="wallet" value="<%=user.wallet.balance%>"
+                                        disabled>
                                       <span>Your wallet: ₹ <%=user.wallet.balance%></span>
                                     </div>
-                                  <%}%>
-                                 
+                                    <%}%>
+
                                 </div>
                                 <div class="foot d-flex justify-content-center mt-2">
-                                  <button class="btn btn-secondary" disabled id="confirmBtn" type="submit"
-                                   >Confirm
+                                  <button class="btn btn-secondary" disabled id="confirmBtn" type="submit">Confirm
                                     Order</button>
                                 </div>
                               </div>
@@ -138,7 +140,7 @@
 
 
 
-                          
+
                         </div>
 
                         <!-- order address -addd -->
@@ -146,7 +148,7 @@
 
 
 
-                        <div class="bg-secondary rounded-right  text-black" style="width:50%; height: 36rem; ">
+                        <div class="bg-secondary rounded-right  text-black" style=" height: 36rem; ">
                           <div class="card   bg-dark rounded-0 bg-gradient text-capitalize text-white-50">
                             <div class="card-header">
                               <h4>order summary</h4>
@@ -201,7 +203,8 @@
                                   </div>
                                   <input type="hidden" id="discountinput" name="discountinput" value="">
                                   <div class="bill-total d-flex justify-content-center">
-                                    <p class="p-0 mt-0 pt-0 font-monospace" id="subtotal"><b>Subtotal: ₹ <%= subtotal %></b></p>
+                                    <p class="p-0 mt-0 pt-0 font-monospace" id="subtotal"><b>Subtotal: ₹ <%= subtotal %>
+                                          </b></p>
                                     <input type="hidden" name="totalamount" value="<%= subtotal %>" id="totalamount">
                                   </div>
                                   <div
@@ -254,7 +257,8 @@
 
                 <h3 class="text-center">Notification</h3>
                 <i class="fa fa-check text-center"></i>
-                <p class="r3 px-md-5 px-sm-1 text-center text-monospace"><b>Congratulations! Your order has been successfully completed.</b>
+                <p class="r3 px-md-5 px-sm-1 text-center text-monospace"><b>Congratulations! Your order has been
+                    successfully completed.</b>
                 </p>
 
 
@@ -272,392 +276,86 @@
 
 
 
-    
-
-          <!-- /////// ADD ADDRESS -->
 
 
+            <!-- /////// ADD ADDRESS -->
 
-          <div class="modal fade " id="addressModal"  tabindex="-1" role="dialog" aria-labelledby="addressModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content bg-dark text-white-50">
+
+
+            <div class="modal fade " id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark text-white-50">
                   <div class="modal-header">
-                      <h5 class="modal-title" id="addressModalLabel">Add New Address</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                     
+                    <h5 class="modal-title" id="addressModalLabel">Add New Address</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+
                   </div>
                   <div class="modal-body">
-                    <form id="address_item" action="/add-address"  method="post" onsubmit="event.preventDefault(); addAddress()" style="outline: none;" >
+                    <form id="address_item" action="/add-address" method="post"
+                      onsubmit="event.preventDefault(); addAddress()" style="outline: none;">
                       <div class="d-flex justify-content-center ">
                         <div class="  d-flex justify-content-between " style="width: 76%;">
-                            <label for="name">Full Name:</label>
-                            <input type="text" id="name" name="name" placeholder="Full Name" required style="width: 77%;">
+                          <label for="name">Full Name:</label>
+                          <input type="text" id="name" name="name" placeholder="Full Name" required style="width: 77%;">
                         </div>
                       </div>
                       <div class="d-flex w-100 justify-content-around ">
-                          <div>
-                              <label for="">Address</label><br>
-                              <input name="house" type="text" placeholder="eg: Abc house" required>
-                          </div>
-                          <div>
-                              <label for="">Contact</label><br>
-                              <input name="contact" type="tel" placeholder="eg: 9876543210" required>
-                          </div>
+                        <div>
+                          <label for="">Address</label><br>
+                          <input name="house" type="text" placeholder="eg: Abc house" required>
+                        </div>
+                        <div>
+                          <label for="">Contact</label><br>
+                          <input name="contact" type="tel" placeholder="eg: 9876543210" required>
+                        </div>
                       </div>
                       <div class="d-flex w-100 justify-content-around ">
-                          <div>
-                              <label for="">Postel Code</label><br>
-                              <input name="postel" type="text" placeholder="eg: 676090 " required>
-                          </div>
-                          <div>
-                              <label for="">City</label><br>
-                              <input name="city" type="text" placeholder="City eg: calicut" required>
-                          </div>
+                        <div>
+                          <label for="">Postel Code</label><br>
+                          <input name="postel" type="text" placeholder="eg: 676090 " required>
+                        </div>
+                        <div>
+                          <label for="">City</label><br>
+                          <input name="city" type="text" placeholder="City eg: calicut" required>
+                        </div>
                       </div>
                       <div class="d-flex w-100 justify-content-around ">
-                          <div>
-                              <label for="">State</label><br>
-                              <input name="state" type="text" placeholder="State" required>
-                          </div>
-                          <div>
-                              <label for="">District</label><br>
-                              <input name="district" type="text" placeholder="District" required>
-                          </div>
+                        <div>
+                          <label for="">State</label><br>
+                          <input name="state" type="text" placeholder="State" required>
+                        </div>
+                        <div>
+                          <label for="">District</label><br>
+                          <input name="district" type="text" placeholder="District" required>
+                        </div>
                       </div>
-                      
-                    
+
+
                       <div class="mt-2 text-end">
-                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                         <button type="submit" class="btn btn-success">Submit</button>
-                     </div>
-                   </form>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                      </div>
+                    </form>
                   </div>
-                
+
+                </div>
               </div>
-          </div>
-      </div>
+            </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <style>
-            
-            </style>
 
 
 
             <script>
 
 
-              function confirmOrder() {
-                $.ajax({
-                  url: "/confirm-order",
-                  method: "POST",
-                  data: $('#checkoutForm').serialize(),
-                  success: function (res) {
-                    if (res.codSuccess) {
-                      $('#myModal').modal('show');
+             
 
-                    }else if (res.razorSuccess) {
-                      const order = {
-                        "key": "" + res.key_id + "",
-                        "amount": "" + res.amount + "",
-                        "currency": "INR",
-                        "name": "" + res.name + "",
-                        "prefill": {
-                          "contact": "" + res.contact + "",
-                          "name": "" + res.name + "",
-                          "email": "" + res.email + ""
-                        },
-                        "handler": function (response) {
-                          // alert("paymentDone")
-                          verifypayment()
 
-                        },
 
-                      }
 
-                      const razorpay = new Razorpay(order);
-
-                      const done = razorpay.open();
-
-                    }else if(res.walletSuccess){
-                      console.log(res)
-                      $('#myModal').modal('show');
-                    } else {
-                      window.location.href = `/checkout`
-                    }
-                  },
-                  error: function (err) {
-                    console.log(err);
-                  }
-                })
-              }
-
-              function verifypayment() {
-                $.ajax({
-                  url: "/verify-payment",
-                  method: "POST",
-                  success: () => {
-                    // window.location.href = "/myorders?ordersuccess=true"
-                    $('#myModal').modal('show');
-                  }
-                })
-              }
-
-
-              ///////////////////////////////////////
-
-
-
-
-    function addAddress() {
-    const formData = $('#address_item').serialize(); // Serialize the form data
-
-    fetch('/add-address', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded", // Set the content type to URL-encoded
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle the response data here
-        window.location.reload()
-        console.log(data);
-    })
-    .catch(error => console.error('Error:', error));
-}
-              
-            
-
-            </script>
-
-            <script>
-
-document.addEventListener('DOMContentLoaded', function() {
-  const walletCheckbox = document.getElementById('wallet');
-  const subtotalElement = document.getElementById('subtotal');
-  const totalAmountInput = document.getElementById('totalamount');
-  const applyCoupon = document.getElementById('applyCouponBtn');
-  const walletAmount = parseFloat(walletCheckbox.value);
-  const previousamount = document.getElementById('prevTotal').value
-                const discount = document.getElementById('discount');
-
-
-  walletCheckbox.addEventListener('change', function() {
-    const isChecked = this.checked;
-    const subtotal = parseFloat(subtotalElement.innerText.split('₹')[1]);
-
-    if (isChecked) {
-      const remainingAmount = Math.max(0, previousamount - walletAmount);
-      subtotalElement.innerHTML = `<b>Subtotal: ₹ ${remainingAmount}<b>`;
-      totalAmountInput.value = remainingAmount;
-      applyCoupon.disabled = true; // Disable coupon button
-  discount.innerHTML=`<del><b>Discount<b></del>`;
-      
-    } else {
-      subtotalElement.innerHTML = `<b>Subtotal: ₹ ${previousamount}<b>`;
-      totalAmountInput.value = subtotal;
-      applyCoupon.disabled = false; // Enable coupon button
-      
-    }
-  });
-});
-
-            </script>
-
-            <script>
-
-              const addressRadios = document.querySelectorAll('input[name="selectedAddress"]');
-              const confirmBtn = document.getElementById('confirmBtn');
-
-              addressRadios.forEach(radio => {
-                radio.addEventListener('change', () => {
-                  // Reset border color for all labels
-                  addressRadios.forEach(otherRadio => {
-                    const label = otherRadio.parentElement;
-                    label.style.borderColor = '#7777';
-                  });
-
-                  // Set border color for the selected label
-                  if (radio.checked) {
-                    const label = radio.parentElement;
-                    label.style.borderColor = '#2e8d6d';
-                    confirmBtn.disabled = false; // Enable the button when an address is selected
-                  } else {
-                    confirmBtn.disabled = true; // Disable the button if no address is selected
-                  }
-                });
-              });
-
-
-
-
-
-
-
-
-
-
-
-
-
-              const openBtn = document.querySelector("#cart-btn");
-              const cart = document.querySelector("#sidecart");
-              const closeBtn = document.querySelector("#close_btn");
-              const overlaycart = document.getElementById("overlay_cart");
-
-              // overlaycart.addEventListener('click',closeCart)
-              openBtn.addEventListener("click", openCart);
-              closeBtn.addEventListener("click", closeCart);
-
-              function openCart() {
-                cart.classList.add("open");
-                overlaycart.style.display = "block";
-                document.body.classList.add("no-scroll");
-              }
-
-              function closeCart() {
-                cart.classList.remove("open");
-                overlaycart.style.display = "none";
-                document.body.classList.remove("no-scroll");
-              }
-            </script>
-            <script>
-
-              document.addEventListener("DOMContentLoaded", function () {
-                const addressBtn = document.getElementById("new-address");
-                const profileSection = document.getElementById("shipping-address");
-                const addressSection = document.getElementById("new-addressSection");
-                const profileBtn = document.getElementById("profile_btn");
-
-
-                addressBtn.addEventListener("click", function (event) {
-                  event.preventDefault(); // Prevent any default link behavior
-                  profileSection.classList.add("hidden"); // Hide the profile section
-                  addressSection.style.display = "block"; // Show the address section
-                });
-
-
-                profileBtn.addEventListener("click", function () {
-                  profileSection.classList.remove("hidden"); // Show the profile section
-                  addressSection.style.display = "none"; // Hide the address section
-                });
-              });
-
-
-
-
-
-
-
-
-              const menuOpenBtn = document.querySelector("#menu-btn");
-              const menu = document.querySelector("#menubar");
-              const menuclosebtn = document.querySelector("#menuclose_btn");
-              const overlay = document.getElementById("overlay_menu");
-              const add_cart = document.getElementById('add_cart')
-
-
-              menuOpenBtn.addEventListener("click", openMenu);
-              menuclosebtn.addEventListener("click", closeMenu);
-              overlay.addEventListener('click', closeMenu)
-              add_cart.addEventListener('click', openMenu)
-
-
-              function openMenu() {
-                menu.classList.add("open");
-                overlay.style.display = "block"; // Show the overlay
-                document.body.classList.add("no-scroll");
-              }
-
-              function closeMenu() {
-                menu.classList.remove("open");
-                overlay.style.display = "none"; // Hide the overlay
-                document.body.classList.remove("no-scroll");
-              }
-
-
-
-
-
-
-            </script>
-
-
-            <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                const continueButton = document.getElementById("continueBtn");
-                const page1 = document.getElementById("page1");
-                const page2 = document.getElementById("page2");
-                const addressnav = document.getElementById('addressnav')
-                const paymentnav = document.getElementById('paymentnav')
-
-
-                addressnav.addEventListener('click', function () {
-                  page1.style.display = "block"; // show page 1
-                  page2.style.display = "none"; // hide page 2
-
-                  paymentnav.classList.remove('disabled')
-
-                  addressnav.classList.add('disabled')
-                })
-
-
-
-                continueButton.addEventListener("click", function () {
-                  page1.style.display = "none"; // Hide page 1
-                  page2.style.display = "block"; // Show page 2
-                  paymentnav.classList.add('disabled')
-                  addressnav.classList.remove('disabled')
-
-
-                  paymentnav.addEventListener('click', function () {
-
-                    page1.style.display = "none"; // hide page 1
-                    page2.style.display = "block"; // show page 2
-                    addressnav.classList.remove('disabled')
-                    paymentnav.classList.add('disabled')
-                  })
-                });
-
-
-              });
-
-
-
-
-
-              //////////////////////////////////////////////
-
-
-
-              // if wallet checked
-
-
-
-              
-
-              // document.getElementById('applyCouponBtn').addEventListener('click', function () {
-              //   var couponCode = document.getElementById('coupon').value;
-              //   document.getElementById('couponCode').value = couponCode;
-              // });
-
-              ///////////////
 
 
 
@@ -666,13 +364,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const totalamountInput = document.getElementById('totalamount');
                 const prevTotal = document.getElementById('prevTotal').value
 
-                
+
                 const discountElement = document.getElementById('discount');
-                const  subtotalElement=document.getElementById('subtotal');
+                const subtotalElement = document.getElementById('subtotal');
                 subtotalElement.style.fontFamily = '"Courier New", monospace';
                 discountElement.style.fontFamily = '"Courier New", monospace';
                 const discountInput = document.getElementById('discountinput');
-                
+
 
 
                 // Send a request to your server to apply the selected coupon
@@ -692,11 +390,11 @@ document.addEventListener('DOMContentLoaded', function() {
                   document.getElementById('subtotal').innerHTML = `<b>Subtotal: ₹ ${data.discountedPrice}</b>`;
                   totalamountInput.value = data.discountedPrice; // Update the totalamount field
                   document.getElementById('alert_tag').innerHTML = `${data.message}`;
-                  
-                  discountElement.innerHTML=`<b>Discount: ₹ ${data.discount}<b>`;
 
-                    
-                discountInput.value = data.discount;
+                  discountElement.innerHTML = `<b>Discount: ₹ ${data.discount}<b>`;
+
+
+                  discountInput.value = data.discount;
 
                 } else {
                   // Display an error message for invalid coupons
@@ -706,91 +404,78 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
               document.addEventListener("DOMContentLoaded", function () {
-                const orderconfirmbtn = document.getElementById('confirmBtn');
-                const mainPage1 = document.getElementById('main-page1');
-                const mainPage2 = document.getElementById('main-page2');
+                const cashDiv = document.querySelector('[data-option="cash"]');
+                const onlineDiv = document.querySelector('[data-option="online"]');
+                const paymentbutton = document.getElementById('paymentbutton');
 
 
-                orderconfirmbtn.addEventListener('click', function () {
-                  mainPage1.style.display = "none";
-                  mainPage2.style.display = "block";
-                })
+                // Get the radio buttons
+                const cashRadio = document.getElementById('cashRadio');
+                const onlineRadio = document.getElementById('onlineRadio');
+
+                // Function to update the selected div's style
+                function updateSelectedStyle(selectedDiv, unselectedDiv) {
+                  selectedDiv.classList.add('selected');
+                  unselectedDiv.classList.remove('selected');
+                }
+
+                // Add click event listeners to the divs
+                cashDiv.addEventListener('click', () => {
+                  cashRadio.click(); // Trigger the radio button click
+                  updateSelectedStyle(cashDiv, onlineDiv);
+
+                });
+
+
+
+                onlineDiv.addEventListener('click', () => {
+                  onlineRadio.click(); // Trigger the radio button click
+                  updateSelectedStyle(onlineDiv, cashDiv);
+                  paymentbutton.style.display = 'block';
+
+                });
+
+                // Initially select the 'cash' option and update the style
+                updateSelectedStyle(cashDiv, onlineDiv);
+                cashRadio.checked = true;
+
+              });
+
+
+
+              const onlinepay = document.querySelector('#onlineRadio');
+              const cashpay = document.getElementById('cashRadio');
+              const walletCheckbox = document.getElementById('wallet');
+
+              onlinepay.addEventListener("click", () => {
+                walletCheckbox.disabled = false
 
               })
 
 
 
-
-
-
-
-              document.addEventListener("DOMContentLoaded", function () {
-  const cashDiv = document.querySelector('[data-option="cash"]');
-  const onlineDiv = document.querySelector('[data-option="online"]');
-  const paymentbutton = document.getElementById('paymentbutton');
- 
-
-  // Get the radio buttons
-  const cashRadio = document.getElementById('cashRadio');
-  const onlineRadio = document.getElementById('onlineRadio');
-
-  // Function to update the selected div's style
-  function updateSelectedStyle(selectedDiv, unselectedDiv) {
-    selectedDiv.classList.add('selected');
-    unselectedDiv.classList.remove('selected');
-  }
-
-  // Add click event listeners to the divs
-  cashDiv.addEventListener('click', () => {
-    cashRadio.click(); // Trigger the radio button click
-    updateSelectedStyle(cashDiv, onlineDiv);
-
-  });
-
- 
-
-  onlineDiv.addEventListener('click', () => {
-    onlineRadio.click(); // Trigger the radio button click
-    updateSelectedStyle(onlineDiv, cashDiv);
-    paymentbutton.style.display = 'block';
-    
-  });
-
-  // Initially select the 'cash' option and update the style
-  updateSelectedStyle(cashDiv, onlineDiv);
-  cashRadio.checked = true;
-  
-});
-
-
-
-const onlinepay = document.querySelector('#onlineRadio');
-const cashpay = document.getElementById('cashRadio');
-const walletCheckbox = document.getElementById('wallet');
-
-onlinepay.addEventListener("click",()=>{
-walletCheckbox.disabled=false
-
-})
-
-
-
-cashpay.addEventListener("click",()=>{
-// walletCheckbox.style.display='none'
-walletCheckbox.disabled=true
-walletCheckbox.checked=false
-})
+              cashpay.addEventListener("click", () => {
+                // walletCheckbox.style.display='none'
+                walletCheckbox.disabled = true
+                walletCheckbox.checked = false
+              })
 
 
             </script>
 
-            <!-- Optional JavaScript -->
-            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-            <!-- Include jQuery library -->
-      
-           
-            <%- include('layout/footer.ejs')%>
-          
+            <script src="/javascript/script.js"></script>
+            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+              integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+              crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+              integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+              crossorigin="anonymous"></script>
+
+</body>
+
+</html>

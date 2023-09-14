@@ -9,9 +9,11 @@ const Coupon = require("../models/coupon")
 const categoryModel = require('../models/category')
 const mongoose = require('mongoose');
 const Coupons = require('../models/coupon')
+const Banner = require('../models/banner')
 require('dotenv').config();
 
 const Razorpay = require("razorpay");
+const products = require("../models/products");
 
 
 const guest = async (req, res) => {
@@ -24,6 +26,7 @@ const guest = async (req, res) => {
     .findOne({ gender: "F" })
     .populate("subcategories");
 
+    const banner = await Banner.find({isDeleted:"false"})
 
   return res.render("user/home", {
     product: productdata,
@@ -31,7 +34,8 @@ const guest = async (req, res) => {
     message: req.flash(),
     cartitems: [],
     malecategory,
-    femalecategory
+    femalecategory,
+    banner
   });
 };
 
@@ -179,6 +183,14 @@ const confirmOtp = async (req, res) => {
     if (isOTPValid) {
       console.log(req.session.name);
       // Mark user as verified in the User collection
+      delete req.session.otp;
+      
+      const sessionId = req.session.otp; // Assuming you're passing the sessionId as a query parameter
+
+      // Destroy the specific session
+     
+
+
       let user = new User({
         name: req.session.name,
         password: req.session.password,
@@ -189,10 +201,13 @@ const confirmOtp = async (req, res) => {
       await user.save();
 
       req.session.userId = user._id;
+
+      delete req.session.forOtp
+      
       res.redirect("/");
     } else {
       req.flash("error", "Invalid code passed. Check your inbox");
-      res.redirect("/user/verify-otp");
+      res.redirect("/verify-otp");
     }
   } catch (error) {
     console.log(error.message);
@@ -228,17 +243,16 @@ const signupPost = async (req, res) => {
 
     // Generate OTP
 
-    // console.log("eamil          ",email)
     const otp = await generateOTP().toString();
 
     // // Send OTP via email
-    // console.log("otp   ",otp +"email", email)
+  
     await sendOTPEmail(email, otp);
 
     await UserOtp.deleteMany({ email });
 
     const hashOtp = await bcrypt.hash(otp, 10);
-    // console.log(otp);
+
     // // Store OTP and expiration time in the database
     const expiresAt = Date.now() + 15 * 60 * 1000; // OTP expires in 15 minutes
     await UserOtp.create({
@@ -256,13 +270,41 @@ const signupPost = async (req, res) => {
   }
 };
 
+
+
+const resend_otp= async (req,res)=>{
+  
+  const {email}=req.body
+
+  const otp = await generateOTP().toString();
+
+    // // Send OTP via email
+
+    await sendOTPEmail(email, otp);
+
+    await UserOtp.deleteMany({ email });
+
+    const hashOtp = await bcrypt.hash(otp, 10);
+    
+    // // Store OTP and expiration time in the database
+    const expiresAt = Date.now() + 15 * 60 * 1000; // OTP expires in 15 minutes
+    await UserOtp.create({
+      email: email,
+      otp: hashOtp,
+      createdAt: Date.now(),
+      expiresAt,
+    });
+
+
+}
+
 const homeGet = async (req, res) => {
   try {
 
     const user = await User.findOne({ _id: req.session.userId }).populate('cart');
 
-    let product = await Product.find({ deleted: false })
-    let newProduct = await Product.find({ deleted: false }).sort({ _id: -1 })
+    let product = await Product.find({ deleted: false }).limit(8)
+    let newProduct = await Product.find({ deleted: false }).sort({ _id: -1 }).limit(8)
     const malecategory = await categoryModel
       .findOne({ gender: "M" })
       .populate("subcategories");
@@ -272,6 +314,8 @@ const homeGet = async (req, res) => {
       .populate("subcategories");
 
 
+    const banner = await Banner.find({isDeleted:"false"})
+      
     if (user) {
       const cartitems = await User.aggregate([
         { $match: { _id: user._id } },
@@ -302,7 +346,7 @@ const homeGet = async (req, res) => {
           }
         }
       ]);
-      return res.render("user/home", { user, product, newProduct, cartitems, femalecategory, malecategory });
+      return res.render("user/home", { user, product, newProduct, cartitems, femalecategory, malecategory,banner });
     } else {
 
       return res.render("user/home", {
@@ -311,7 +355,7 @@ const homeGet = async (req, res) => {
         message: req.flash(),
         cartitems: [],
         newProduct,
-        malecategory, femalecategory
+        malecategory, femalecategory,banner
       });
     }
   } catch (e) {
@@ -320,13 +364,66 @@ const homeGet = async (req, res) => {
 };
 
 
-const allProducts = async (req, res) => {
+
+const  allProducts = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1; 
+    const perPage = 8; 
+    const skip = (page - 1) * perPage;
 
+    let product; 
+
+    
+    if (req.query.category || req.query.new || req.query.priceSort) {
+      // Query with filters and sort options
+      const query = {};
+
+      if (req.query.category) {
+        query.category = req.query.category;
+      }
+
+      let sortOption = {};
+
+      if (req.query.new) {
+        sortOption = { _id: -1 };
+      } else if (req.query.priceSort) {
+        if (req.query.priceSort === 'asc') {
+          sortOption = { price: 1 };
+        } else if (req.query.priceSort === 'desc') {
+          sortOption = { price: -1 };
+        }
+      }
+
+      product = await Product.find(query)
+        .sort(sortOption)
+        .skip(skip)
+        .limit(perPage)
+        .exec(); 
+    }
+    else if (req.searchResults) {
+      product = req.searchResults.slice(skip, skip + perPage);
+
+    }
+    
+    else {
+      product = await Product.find({ deleted: false })
+        .skip(skip) 
+        .limit(perPage)
+        .exec(); 
+    }
+
+    // Rest of the code (user, malecategory, femalecategory, etc.)
+
+
+    const totalProducts = await Product.countDocuments({ deleted: false });
+          const totalPages = Math.ceil(totalProducts / perPage);
+    // Load male and female categories
     const user = await User.findOne({ _id: req.session.userId }).populate('cart');
-
-    let product = await Product.find({ deleted: false });
-
+    // const totalPages =parseInt(Math.ceil( totalCount/ perPage)); 
+    
+    const currentPage = page; // Set current page
+   
+    
     const malecategory = await categoryModel
       .findOne({ gender: "M" })
       .populate("subcategories");
@@ -335,9 +432,13 @@ const allProducts = async (req, res) => {
       .findOne({ gender: "F" })
       .populate("subcategories");
 
+    if (!user) {
 
-    if (user) {
-      const cartitems = await User.aggregate([
+      cartitems=[]
+      
+    }else{
+
+      cartitems = await User.aggregate([
         { $match: { _id: user._id } },
         { $unwind: "$cart" },
         {
@@ -362,21 +463,22 @@ const allProducts = async (req, res) => {
             "cartitems.stock": 1,
             "cartitems.images": 1,
             "cartitems._id": 1,
-            "cartitems.quantity": "$cart.quantity" // Include product quantity in cart
+            "cartitems.quantity": "$cart.quantity"
           }
         }
       ]);
-      return res.render("user/allproducts", { user, product, cartitems, malecategory, femalecategory });
-    } else {
-
-      return res.render("user/allproducts", {
-        product,
-        user: false,
-        message: req.flash(),
-        cartitems: [],
-        malecategory, femalecategory
-      });
     }
+
+    // Render the view
+    res.render("user/allproducts", {
+      user,
+      product,
+      cartitems,
+      malecategory,
+      femalecategory,
+      totalPages,
+      currentPage
+    });
   } catch (e) {
     console.log(e.message);
   }
@@ -384,74 +486,6 @@ const allProducts = async (req, res) => {
 
 
 
-const getAllproductsQuery = async (req, res) => {
-  try {
-    // Initialize an empty query object
-    const query = {};
-
-    // Check if a gender filter is applied
-    if (req.query.category) {
-      query.category = req.query.category;
-    }
-
-    // Check if a priceSort filter is applied
-    let sortOption = {};
-
-    if (req.query.new) {
-      // Sort by _id in descending order
-      sortOption = { _id: -1 };
-    } else if (req.query.priceSort) {
-      if (req.query.priceSort === 'asc') {
-        sortOption = { price: 1 };
-      } else if (req.query.priceSort === 'desc') {
-        sortOption = { price: -1 };
-      }
-    }
-
-    // Query the database with filters and sort options
-    const products = await Product.find(query).sort(sortOption);
-
-    // Load male and female categories
-    const malecategory = await categoryModel.findOne({ gender: "M" }).populate("subcategories");
-    const femalecategory = await categoryModel.findOne({ gender: "F" }).populate("subcategories");
-
-    // Load user's cart items if available
-    const user = await User.findOne({ _id: req.session.userId }).populate('cart');
-    const cartitems = user ? await User.aggregate([{ $match: { _id: user._id } },
-    { $unwind: "$cart" },
-    {
-      $lookup: {
-        from: 'products',
-        localField: 'cart.product',
-        foreignField: '_id',
-        as: 'cartitems'
-      }
-    },
-    {
-      $unwind: "$cartitems"
-    },
-    {
-      $project: {
-        _id: 1,
-        email: 1,
-        "cartitems.title": 1,
-        "cartitems.color": 1,
-        "cartitems.price": 1,
-        "cartitems.size": 1,
-        "cartitems.stock": 1,
-        "cartitems.images": 1,
-        "cartitems._id": 1,
-        "cartitems.quantity": "$cart.quantity" // Include product quantity in cart
-      }
-    }]) : [];
-
-    // Render the view with the filtered and sorted products
-    res.render("user/allproducts", { user, product: products, cartitems, malecategory, femalecategory });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error fetching products');
-  }
-}
 
 const productView = async (req, res) => {
   let user = await User.findOne({ _id: req.session.userId });
@@ -518,6 +552,9 @@ const productView = async (req, res) => {
 
 const add_to_cart = async (req, res) => {
 
+  console.log("rtyuioprtyuiortyuiortyuiortyuio")
+
+  console.log(req.body)
   const productId = req.params.id;
   const size = req.body.size;
   const color = req.body.color
@@ -525,7 +562,7 @@ const add_to_cart = async (req, res) => {
   const totalPrice = price
 
 
-  // console.log("sixe          ",req.body)
+  console.log("sixe          ",size)
 
   const userId = req.session.userId;
 
@@ -563,8 +600,10 @@ const add_to_cart = async (req, res) => {
 
 
 const add_to_wishlist = async (req, res) => {
+  
   const productId = req.params.id;
-
+  
+ 
   const userId = req.session.userId;
 
   try {
@@ -600,14 +639,19 @@ const add_to_wishlist = async (req, res) => {
 const update_quantity = async (req, res) => {
   const { productId, action } = req.body;
 
+  console.log(productId)
+  console.log(action)
   try {
     const user = await User.findOne({ _id: req.session.userId });
 
+    console.log(user);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     const cartItem = user.cart.find(item => item.product.toString() === productId);
+
+    console.log(cartItem,"dddddddddddd")
 
     if (!cartItem) {
       return res.status(404).json({ error: 'Product not found in cart' });
@@ -615,6 +659,7 @@ const update_quantity = async (req, res) => {
 
     if (action === 'increase') {
       cartItem.quantity++;
+      console.log(cartItem.quantity)
     } else if (action === 'decrease' && cartItem.quantity > 1) {
       cartItem.quantity--;
     } else if (action === 'decrease' && cartItem.quantity === 1) {
@@ -622,14 +667,16 @@ const update_quantity = async (req, res) => {
       user.cart = user.cart.filter(item => item.product.toString() !== productId);
     }
 
-    // Assuming price is a property of cartItem and represents the price of one item
-    cartItem.total = cartItem.price * cartItem.quantity;
 
-    await user.save();
+    // Assuming price is a property of cartItem and represents the price of one item
+    cartItem.total = parseInt(cartItem.price * cartItem.quantity)
+
+    console.log()
+    await user.save(cartItem.total);
 
 
     const quantity = cartItem.quantity;
-    const total = cartItem.total;
+    const total = parseInt(cartItem.total)
 
     // Send updated cart item as JSON response
     res.status(200).json({ success: true, quantity, total });
@@ -638,8 +685,6 @@ const update_quantity = async (req, res) => {
     res.status(500).json({ error: 'Error updating quantity' });
   }
 };
-
-
 
 
 const remove_from_wishlist = async (req, res) => {
@@ -967,18 +1012,7 @@ const confirm_order = async (req, res) => {
           receipt: randomOrderID,
         };
 
-        // razorpay.orders.create(options, (err) => {
-        //   if (!err) {
-        //     res.status(200).send({
-        //       razorSuccess: true,
-        //       msg: "order created",
-        //       amount: amount * 100,
-        //       key_id: "rzp_test_BWSV0bS6jQoy1z",
-        //       name: addressdata.address[0].name,
-        //       contact: addressdata.address[0].contact,
-        //       email: user.email,
-        //     });
-
+   
 
 
             razorpay.orders.create(options, (err) => {
@@ -1020,7 +1054,7 @@ const verifyPayment = async (req, res) => {
 
     const userId = req.session.userId
     
-    await User.findOne({user})
+    const user = await User.findOne({_id:userId})
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId },
       { $set: { 'wallet.balance': 0} },
@@ -1030,7 +1064,7 @@ const verifyPayment = async (req, res) => {
 
 
     
-    const user = await User.find({ userId })
+    // const user = await User.findById({ userId })
 
     let orderData = req.session.orderlist
     const productId = orderData.productId
@@ -1147,6 +1181,8 @@ const myorders = async (req, res) => {
   let user = await User.findOne({ _id: userId });
 
   if (user) {
+
+
     const cartitems = await User.aggregate([
       { $match: { _id: user._id } },
       { $unwind: "$cart" },
@@ -1166,21 +1202,30 @@ const myorders = async (req, res) => {
           _id: 1,
           email: 1,
           "cartitems.title": 1,
-          "cartitems.color": 1,
+          "cartitems.color": "$cart.color",
           "cartitems.price": 1,
-          "cartitems.size": 1,
+          "cartitems.size": "$cart.size",
           "cartitems.stock": 1,
           "cartitems.images": 1,
           "cartitems._id": 1,
-          "cartitems.quantity": "$cart.quantity"
+          "cartitems.quantity": "$cart.quantity" // Include product quantity in cart
         }
       }
     ]);
 
+    let orders = [];
+
+if (req.searchResults) {
+        // Use search results if available
+        console.log("ddddddddddddddddddddddddddddddddddddddddddddd")
+        orders = req.searchResults;
 
 
+      } else {
 
-    const orders = await Order.aggregate([
+        console.log("qqqqqqqqqqqqqqqqqqqqqq")
+
+     orders = await Order.aggregate([
       {
         $match: { customer: new mongoose.Types.ObjectId(userId) }
       },
@@ -1205,12 +1250,12 @@ const myorders = async (req, res) => {
       }
     ]);
 
+  }
 
 
 
 
-
-    res.render('user/myorders', { user, cartitems, orders: orders || [] });
+    res.render('user/myorders', { user, cartitems, orders: orders });
   }
 }
 
@@ -1422,9 +1467,9 @@ const wishlist = async (req, res) => {
           _id: 1,
           email: 1,
           "cartitems.title": 1,
-          "cartitems.color": 1,
+          "cartitems.color": "$cart.color",
           "cartitems.price": 1,
-          "cartitems.size": 1,
+          "cartitems.size": "$cart.size",
           "cartitems.stock": 1,
           "cartitems.images": 1,
           "cartitems._id": 1,
@@ -1487,9 +1532,9 @@ const myaccount = async (req, res) => {
           _id: 1,
           email: 1,
           "cartitems.title": 1,
-          "cartitems.color": 1,
+          "cartitems.color": "$cart.color",
           "cartitems.price": 1,
-          "cartitems.size": 1,
+          "cartitems.size": "$cart.size",
           "cartitems.stock": 1,
           "cartitems.images": 1,
           "cartitems._id": 1,
@@ -1510,6 +1555,31 @@ const myaccount = async (req, res) => {
     res.render('user/myaccount', { user, cartitems, wishlist })
   }
 }
+
+const delete_address = async (req, res) => {
+
+  const userId=req.session.userId
+  const { addressId } = req.body;
+
+  console.log(req.body)
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: userId }, // Assuming you have a way to identify the user
+      { $pull: { address: { _id: addressId } } }, // Remove the address with matching _id
+      { new: true }
+    );
+
+console.log(user)
+    // Sending a response back to the client
+    res.status(200).json({ success: true, message: 'Address deleted successfully' });
+
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ success: false, message: 'An error occurred while deleting the address' });
+  }
+};
 
 
 
@@ -1735,7 +1805,7 @@ const return_Request = async (req, res) => {
     );
 
 
-    res.status(200).json({ success })
+    res.status(200).json({ success: true });
 
   } catch (e) {
 
@@ -1743,9 +1813,10 @@ const return_Request = async (req, res) => {
   }
 
 
-
-
 }
+
+
+
 
 
 
@@ -1758,28 +1829,23 @@ const logoutGet = (req, res) => {
 };
 
 module.exports = {
-  loginGet,
-  loginPost,
-  signupGet,
-  signupPost,
-  homeGet,
+  loginGet,loginPost,signupGet,signupPost,
+
+  homeGet,guest,
+ 
+  verify,confirmOtp,resend_otp,
+  
+  wishlist,myaccount,
+
+  add_to_cart,update_quantity,
+
+  productView, allProducts,  add_address,delete_address, edit_address,update_profile,
+
+  checkout,myorders, verifyPayment, confirm_order, invoice, cancelOrder, return_Request, apply_coupon,
+
+  add_to_wishlist,remove_from_wishlist,
+ 
+  getresetpassword, postResetPassword, newPassword,
+
   logoutGet,
-  verify,
-  confirmOtp,
-  guest,
-  wishlist,
-  myaccount,
-  add_to_cart,
-  productView, allProducts, getAllproductsQuery, add_address,
-
-
-  checkout,
-  myorders, verifyPayment, confirm_order, invoice, cancelOrder, return_Request, apply_coupon,
-  update_quantity,
-  add_to_wishlist,
-  remove_from_wishlist,
-  edit_address,
-  update_profile,
-  getresetpassword, postResetPassword, newPassword
-
 }

@@ -17,17 +17,20 @@ html {
   overflow: hidden;
   position: relative;
   z-index: 1;
-  background-color: #e0e0de;
+  /* background-color: #e0e0de; */
   height: 320px;
+  
 }
 
 .product-grid .product-image a.image {
   display: block;
+  
 }
 
-duct-grid .product-image img {
+.product-grid .product-image img {
   width: 100%;
   height: auto;
+  border-radius: 5px;
 }
 
 .product-grid .product-discount-label {
@@ -641,6 +644,7 @@ input[type="number"]::-webkit-inner-spin-button,
   z-index: 13; /* Higher than most content */
 }
 
+/* ///            all productts */
 
 
 
@@ -737,79 +741,7 @@ a:hover {
 }
 
 
-          .sidepanel {
-              width: 220px;
-              height: 100vh;
-              position: fixed;
-              border-right: 1px solid rgb(201, 201, 201);
-          }
-
-          .sidepanel_fk {
-              width: 20%;
-              height: 100%;
-          }
-
-          .sidepanel .body_myac ul li a {
-              color: black;
-              text-decoration: none;
-
-
-          }
-
-          .header_myac {
-              padding: 1rem 1rem 0 1rem;
-
-          }
-
-          .header_myac .hello {
-              margin-bottom: 0;
-          }
-
-          .sidepanel .body_myac .text_myac div {
-              padding: .6rem;
-              list-style: none;
-
-
-
-
-          }
-
-
-          .sidepanel .body_myac .text_myac .active {
-              background-color: rgba(240, 240, 240, 0.856);
-              border-left: 1px solid black;
-          }
-
-          .sidepanel .body_myac .text_myac div:hover {
-              background-color: rgba(240, 240, 240, 0.856);
-
-          }
-
-          .sidepanel .body_myac .text_myac div a {
-              color: black;
-              padding: 1.2rem;
-              text-decoration: none;
-
-          }
-
-          .hidden {
-              display: none;
-          }
-
-          .sidepanel .body_myac .text_myac div a i {
-              padding-right: .9rem;
-
-          }
-
-          .user_info {
-
-              margin-top: 3rem;
-              width: 75%;
-          }
-
-          .add_list {
-              border-radius: 15px;
-          }
+          
 
 
 /* ////////////////////////////////////////// ALL - PRODUCTS//////////////////////////////////// */
@@ -952,87 +884,84 @@ hr {
 }
 
 
-  .sidepanel {
-          width: 220px;
-          height: 100vh;
-          position: fixed;
-          border-right: 1px solid rgb(201, 201, 201);
-        }
-
-        .sidepanel_fk {
-          width: 20%;
-          height: 100%;
-        }
-
-        .sidepanel .body_myac ul li a {
-          color: black;
-          text-decoration: none;
-
-
-        }
-
-        .header_myac {
-          padding: 1rem 1rem 0 1rem;
-
-        }
-
-        .header_myac .hello {
-          margin-bottom: 0;
-        }
-
-        .sidepanel .body_myac .text_myac div {
-          padding: .6rem;
-          list-style: none;
-
-
-
-
-        }
-
-
-        .sidepanel .body_myac .text_myac .active {
-          background-color: rgba(240, 240, 240, 0.856);
-          border-left: 1px solid black;
-        }
-
-        .sidepanel .body_myac .text_myac div:hover {
-          background-color: rgba(240, 240, 240, 0.856);
-
-        }
-
-        .sidepanel .body_myac .text_myac div a {
-          color: black;
-          padding: 1.2rem;
-          text-decoration: none;
-
-        }
-
-        .hidden {
-          display: none;
-        }
-
-        .sidepanel .body_myac .text_myac div a i {
-          padding-right: .9rem;
-
-        }
-
-        .user_info {
-
-          margin-top: 3rem;
-          width: 75%;
-        }
-
-        .add_list {
-          border-radius: 15px;
-        }
 
 /* ======================== */
 
 
+.rowproduct {
+  margin: 3rem!important;
+}
+
+.cardorders{
+  display: flex ;
+}
 
 
+
+.detailsprd {
+  border: 1.5px solid grey;
+  color: #212121;
+  width: 100%;
+
+  box-shadow: 0px 0px 10px #212121;
+}
+
+
+
+.cardprd {
+  width: fit-content;
+}
+
+
+
+
+
+.img-thumbnail {
+  border: none;
+}
+
+.cartprd {
+  background-color: #212121;
+  color: white;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 900;
+  width: 100%;
+  height: 39px;
+  padding-top: 9px;
+  box-shadow: 0px 5px 10px  #212121;
+}
+
+.cardprd {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+  border-radius: 5px;
+  padding-bottom: 10px;
+}
+.text-container {
+position: absolute;
+top: 50%;
+left: 50%;
+/* transform: translate(-50%, -50%); */
+text-align: center;
+width: 100%;
+}
+
+/* //////home */
+
+
+.main-page{
+  display: flex;
+}
+
+.rounded-left{
+  width: 50%;
+}
+.rounded-right{
+  width: 50%;
+}
 
 /* MEDIA QUERIES--------------------------------------------------------------- */
+
 
 
 #searchmodal{
@@ -1048,20 +977,32 @@ hr {
     display: none;
 
   }
+  .main-page{
+    display: block !important;
+  }
+  .rounded-left{
+    width: 100%;
+  }
+  .rounded-right{
+    width: 100%;
+  }
 }
+
+
+
 
 
 @media (max-width: 768px) {
   .menu-footer ul li {
     padding: 0.5rem;
   }
-
+  
   .menu-header .menu-user {
     padding-top: 0.2rem;
     margin-left: -2rem;
     font-size: 20px;
   }
-
+  
   .menu-body li {
     margin-top: 15px;
     font-size: 16px;
@@ -1070,6 +1011,19 @@ hr {
 }
 
 
+@media (max-width: 767px) {
+  .filter-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .filter-group {
+    margin-bottom: 10px;
+    display: none;
+  }
+}
 
 @media screen and (max-width: 640px) {
 
@@ -1101,17 +1055,62 @@ hr {
     max-width: 750px !important;
     margin: 1.75rem auto;
   }
+ .sidepanel_fk{
+  width: 205px;
+ }
+
+ .modal-orders{
+  display: block !important;
+  justify-content: center;
+  align-items: center;
+}
+  
 }
 
 @media screen and (max-width: 540px) {
   
+  .rowproduct{
+    margin: 0 !important;
+    margin-top: 3rem !important;
+  }
+
+  .sidepanel {
+    width: 190px;
+    min-width: 150px;
+}
+.sidepanel_fk{
+  width: 190px;
+ }
+  
+ .sidepanel .body_myac .text_myac div a {
+
+  padding: .11rem;
+  text-decoration: none;
+
+}
+
+.modal-orders{
+  display: block !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardorders{
+  display: block !important;
+}
 
 }
 
 
 @media screen and (max-width: 420px) {
 
-
+  .sidepanel {
+    width: 170px;
+    min-width: 150px;
+}
+.sidepanel_fk{
+  width: 170px;
+ }
  
 
   .nav-icon {
@@ -1123,4 +1122,11 @@ hr {
     margin-right: 8px;
   }
 
+
+  .modal-orders{
+    display: block !important;
+    justify-content: center;
+    align-items: center;
+  }
 }
+

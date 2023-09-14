@@ -1,6 +1,6 @@
 const User = require("../models/user")
-
-
+const Product = require('../models/products');
+const Orders=require("../models/order")
 
 const isLoggedIn = (req, res, next) => {
     if (req.session.userId) {
@@ -77,7 +77,133 @@ const isLoggedIn = (req, res, next) => {
   }
 
 
+   // Assuming you have a Product model
+
+const productSearch = async (req, res, next) => {
+  try {
+    const searchTerm = req.query.searchTerm;
+
+    // Use regex to perform a case-insensitive search on the product name
+    const searchResults = await Product.find({
+      $or: [
+        { title: { $regex: new RegExp(searchTerm, 'i') } },
+        { category: { $regex: new RegExp(searchTerm, 'i') } }
+      ]
+    });
+    
+
+    req.searchResults = searchResults;
+    next(); // Move on to the next middleware or route
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+// const orderSearch = async (req, res, next) => {
+//   try {
+//     const searchTerm = req.query.searchTerm;
+//     const userId = req.session.userId; // Assuming `userId` is stored in the session
+
+//     // Use regex to perform a case-insensitive search on the order number
+//     const searchResults = await Orders.find({
+//       _id: userId, // Assuming `_id` is the field you want to match against `userId`
+//       orderNumber: { $regex: new RegExp(searchTerm, 'i') }
+//     });
+
+
+//     req.searchResults = searchResults;
+//     next(); // Move on to the next middleware or route
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+
+
+
+// const orderSearch = async (req, res, next) => {
+//   try {
+//     const searchTerm = req.query.searchTerm;
+//     const userId = req.session.userId; // Assuming `userId` is stored in the session
+
+//     const searchResults = await Orders.find({
+//       _id: userId, // Assuming `_id` is the field you want to match against `userId`
+//       orderNumber: { $regex: new RegExp(searchTerm, 'i') }
+//     });
+
+//     req.searchResults = searchResults;
+//     next(); // Move on to the next middleware or route
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+const orderSearch = async (req, res, next) => {
+  try {
+    const searchTerm = req.query.searchTerm;
+    const userId = req.session.userId; // Assuming `userId` is stored in the session
+
+    if (searchTerm) { // Only perform search if a searchTerm is provided
+      const searchResults = await Orders.find({
+        customer: userId,
+        orderNumber: { $regex: new RegExp(searchTerm, 'i') }
+      });
+
+      req.searchResults = searchResults;
+    }
+
+    next(); // Move on to the next middleware or route
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+// const orderSearch = async (req, res, next) => {
+//   try {
+//     const searchTerm = req.query.searchTerm;
+//     const userId = req.session.userId; 
+
+//     console.log("Search Term:", searchTerm); 
+
+   
+//     const searchResults = await Orders.find({
+//       _id: userId, 
+//       orderNumber: { $regex: new RegExp(searchTerm, 'i') }
+//     });
+
+//     console.log("Query:", {
+//       _id: userId,
+//       orderNumber: { $regex: new RegExp(searchTerm, 'i') }
+//     }); 
+//     console.log("User ID:", userId); 
+
+//     console.log("Search Results:", searchResults); 
+
+//     req.searchResults = searchResults;
+//     next(); 
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+  
+
 
   module.exports={
-    isLoggedIn,isAdminLoggedIn,loggedout,otpsession,isBlocked,cartCheck
+    isLoggedIn,isAdminLoggedIn,loggedout,otpsession,isBlocked,cartCheck,productSearch ,orderSearch
   }

@@ -1,0 +1,187 @@
+<%- include('adminlayout/adminheader.ejs') %>
+
+<body>
+
+
+  <section id="sidebar" class="hide">
+    <a href="#" class="brand">Ours.</a>
+    <ul class="side-menu " style="padding: 0%;">
+      <li><a href="/admin/dashboard" class=""><i class='bx bx-bar-chart-square icon'></i> Dashboard</a></li>
+
+      <li>
+        <a href="/admin/products" ><i class='bx bx-receipt icon'></i> Products </a>
+      </li>
+      <li><a href="/admin/customers"><i class='bx bx-group icon'></i> Customer </a></li>
+      <li> <a href="/admin/orders" ><i class='bx bx-box icon'></i> Orders </a></li>
+   
+      <li><a data-bs-toggle="modal" data-bs-target="#Modalsignout" ><i
+        class='bx bx-log-out icon'></i> SignOut</a></li>
+
+  </section>
+
+  <section id="content">
+    <nav class=" m-auto w-100">
+      <div class="w-100 d-flex justify-content-between">
+        <div class="w-25 d-flex align-items-center pr-4">
+          <i class='bx bx-menu toggle-sidebar' ></i>
+          <h5 class="title m-4">Banners</h5>
+        </div>
+        <div class=" w-100 p-4 text-end">
+          <a href="#" class="nav-link m-right">
+            <i class='bx bx-bell icon'></i>
+            <span class="badge"></span>
+          </a>
+        </div>
+      </div>
+      <!-- <span class="divider"></span> -->
+     
+    </nav>
+    <div class="container-fluid bg-light mt-3" style="width: 93%; border-radius: 8px; align-items: center; display: block;">
+      <!-- For demo purpose -->
+
+
+
+      <div class="container">
+        <div class="row">
+          
+
+          <div class="mt-2 d-flex justify-content-end align-item-center " style="width: 96%;">
+            <button id="showButton1" class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#BannerModal">Add Banner</button>
+          </div>
+
+          <div class="col-lg-11 mx-auto bg-white rounded shadow mt-3 " style="width: 90%;">
+            <!-- Fixed header table-->
+            <div class="table-responsive">
+              <table class="table table-responsive table-fixed">
+                <thead>
+                  <tr>
+                    <th scope="col" class="col">No</th>
+                    <th scope="col" class="col">Title</th>
+                    <th scope="col" class="col">Offer</th>
+                   
+                    <th scope="col" class="col">Image</th>
+                    <th scope="col" class="col">Action</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                 <% banners.forEach((banner,index)=>{ %>   
+                    <tr>
+                        <td scope="col" class="col-1"><%=index+1%></td>
+                        <td scope="col" class="col-3"><%=banner.title%></td>
+                        <td scope="col" class="col-3"><%=banner.offer%></td>
+                       
+                        
+                        <td scope="" class="col-3">
+                            <div style="transition: transform 0.3s;">
+                              <img src="/uploads/<%=banner.image%>" width="80px" alt="" onmouseover="this.style.transform='scale(2.5)'" onmouseout="this.style.transform='scale(1)'">
+                            </div>
+                          </td>
+                        
+                        <td scope="col" class="col-3">
+                            
+                                <div class="d-flex">
+                                    <div class="d-flex ">
+                                      <p class="mx-2 mt-1"><i class="bx bxs-edit" style="color: rgb(206, 132, 63);"
+                                          data-bs-toggle="modal" data-bs-target="#modaleditbanner<%= banner._id %>"></i></p>
+                                    </div>
+                                                                <div>
+                                    <form action="/admin/unlist-banner/<%=banner._id%>" method="post">
+                                                              <button type="submit" class="btn btn-<%= banner.isDeleted ? 'danger' : 'success' %> p-1 rounded" style="width: 70px;">
+                                    <%= banner.isDeleted ? 'Unlist' : 'List' %>
+                                                              </button>
+                                                            </form>
+                                                                </div>
+                                </div>
+                        </td>
+                       
+                    </tr>
+                    <%})%>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+  </section>
+
+  <% banners.forEach((banner,index)=>{ %>   
+
+
+
+  <div class="modal fade  " style="background-color: rgba(34, 33, 33, 0.589);" id="modaleditbanner<%= banner._id %>" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal-dialog modal-dialog-centered ">
+  <div class="modal-content">
+    <div class="modal-header bg-dark ">
+      <h5 class="modal-title text-white " id="exampleModalLabel"><b>Add Banner</b></h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form class='d-flex flex-column justify-content-center' action="/admin/edit_banner" method="post" enctype="multipart/form-data">
+        <div class=" p-3">
+          <div class="d-flex justify-content-around">
+            <input type="file" id="banner"  required name="image">
+          </div>
+          <div class="d-flex justify-content-around mt-3">
+            <label for="offer">OFFER</label>
+            <input type="text" placeholder="CouponCode or Category offer" value="<%=banner.offer%>" name="offer" id="offer">
+          </div>
+          <div class="d-flex justify-content-around mt-3">
+            <label for="title">TITLE</label>
+            <input type="text" id="title" placeholder="Main Title " value="<%=banner.title%>" name="title">
+          </div>
+        </div>
+        <button class="btn btn-success border-0" type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+  <%})%>
+
+
+
+<!-- /// create-Banner-->
+
+<div class="modal fade  " style="background-color: rgba(34, 33, 33, 0.589);" id="BannerModal" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal-dialog modal-dialog-centered ">
+  <div class="modal-content">
+    <div class="modal-header bg-dark ">
+      <h5 class="modal-title text-white " id="exampleModalLabel"><b>Add Banner</b></h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form class='d-flex flex-column justify-content-center' action="/admin/add_banner" method="post" enctype="multipart/form-data">
+        <div class=" p-3">
+          <div class="d-flex justify-content-around">
+            <input type="file" id="banner" required name="image">
+          </div>
+          <div class="d-flex justify-content-around mt-3">
+            <label for="offer">OFFER</label>
+            <input type="text" placeholder="CouponCode or Category offer" name="offer" id="offer">
+          </div>
+          <div class="d-flex justify-content-around mt-3">
+            <label for="title">TITLE</label>
+            <input type="text" id="title" placeholder="Main Title " name="title">
+          </div>
+        </div>
+        <button class="btn btn-success border-0" type="submit">Add Banner</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+   
+
+
+ 
+
+  <%- include('adminlayout/adminfooter.ejs') %>

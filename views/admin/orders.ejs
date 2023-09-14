@@ -1,8 +1,10 @@
 <%- include('adminlayout/adminheader.ejs') %>
+  <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
   <body>
     <%- include('adminlayout/modals.ejs') %>
-    
+
 
       <section id="sidebar" class="hide">
         <a href="#" class="brand">Ours.</a>
@@ -15,34 +17,35 @@
           <li><a href="/admin/customers"><i class='bx bx-group icon'></i> Customer </a></li>
           <li> <a href="#" class="active"><i class='bx bx-box icon'></i> Orders </a></li>
           <!-- <li><a href="/admin/orders"><i class='bx bxs-widget icon ' class="active"></i> Orders</a></li> -->
-          <li><a data-bs-toggle="modal" data-bs-target="#Modalsignout"  ><i
-                class='bx bx-log-out icon'></i> SignOut</a></li>
+          <li><a data-bs-toggle="modal" data-bs-target="#Modalsignout"><i class='bx bx-log-out icon'></i> SignOut</a>
+          </li>
         </ul>
 
       </section>
 
       <section id="content">
-        <nav>
-          <i class='bx bx-menu toggle-sidebar'></i>
-          <h5 class="title">Orders</h5>
-          <form action="#">
-            <div class="form-group search">
-              <input type="text" placeholder="Search...">
-              <i class='bx bx-search icon'></i>
+        <nav class=" m-auto w-100">
+          <div class="w-100 d-flex justify-content-between">
+            <div class="w-25 d-flex align-items-center pr-4">
+              <i class='bx bx-menu toggle-sidebar' ></i>
+              <h5 class="title m-4">Orders</h5>
             </div>
-          </form>
-          <a href="#" class="nav-link">
-            <i class='bx bx-bell icon'></i>
-            <span class="badge"></span>
-          </a>
-          <span class="divider"></span>
-          <div class="profile">
-            <img
-              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-              alt="">
+            <div class=" w-100 p-4 text-end">
+              <a href="#" class="nav-link m-right">
+                <i class='bx bx-bell icon'></i>
+                <span class="badge"></span>
+              </a>
+            </div>
           </div>
+          <!-- <span class="divider"></span> -->
+         
         </nav>
-        <div class="container-fluid bg-light mt-3"
+
+
+
+
+
+        <div class="container-fluid bg-light mt-3 pt-2"
           style="width: 93%; border-radius: 8px; align-items: center; display: block;">
           <!-- For demo purpose -->
 
@@ -50,204 +53,116 @@
 
 
 
-          <div class="container">
+          <div class="container mt-3">
 
+            <table id="myTable" class="display">
+              <thead>
+                <tr>
+                  <th scope="col" class="col-1" style="width: 20px;">No</th>
+                  <th scope="col" class="col-2">Order Id</th>
+                  <th scope="col" class="col-2">customer Id</th>
+                  <th scope="col" class="col-4">Products</th>
+                  <th scope="col" class="col-2" style="width: 50px;">Amount</th>
+                  <th scope="col" class="col-2">Order Date</th>
+                  <th scope="col" class="col-1" style="width: 80px;">Payment</th>
+                  <th scope="col" class="col-1">Status</th>
+                  <th scope="col" class="col-1">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% orders.forEach((data, index)=> { %>
+                  <tr>
+                    <td>
+                      <%= index + 1 %>
+                    </td>
+                    <td>
+                      <%= data.orderNumber %>
+                    </td>
+                    <td>
+                      <%= data.customer?.name %>
+                    </td>
+                    <td>
+                      <% data.products.forEach(productData=> { %>
+                        <%= productData.product.title %><br>(Qty: <%= productData.quantity %>)<br>
 
-            <%if(requested){%>
+                            <% }) %>
+                    </td>
+                    <td>
+                      <%= data.totalAmount %>
+                    </td>
+                    <td>
+                      <%= data.orderDate.toISOString().slice(0, 10) %>
+                    </td>
+                    <td>
+                      <%= data.payment %>
+                    </td>
+                    <td>
+                      <form id="statusForm<%= data._id %>" action="/admin/update-status/<%= data._id %>" class="d-flex " method="post"
+                        enctype="application/x-www-form-urlencoded">
+                
+                    <select id="statusSelect<%= data._id %>" onchange="submitForm('<%= data._id %>')" name="newValue" data-order-id="<%= data._id %>"
+                            style="border: 0;">
+                
+                      <option value="" disabled selected>
+                        <%=data.status%>
+                      </option>
+                      <option name="newValue" value="pending">Pending</option>
+                      <option name="newValue" value="processing">Processing</option>
+                      <option name="newValue" value="shipped">Shipped</option>
+                      <option name="newValue" value="out for delivery">Out for Delivery</option>
+                      <option name="newValue" value="delivered">Delivered</option>
+                      <option name="newValue" value="cancelled">Cancelled</option>
+                      <option name="newValue" value="returned">Return Approve</option>
+                
+                    </select>
+                    <button type="submit" id="submitButton<%= data._id %>" style="display: none;">Submit</button>
+                  </form>
+                    </td>
 
-              <div>
-                <div class="container">
-                  <div class="row">
-                    <div class="col-lg-12 mx-auto bg-white rounded shadow mt-4 " style="width: 95%;">
-                      <!-- Fixed header table-->
-                      <div class="table-responsive">
-                        <table class="table table-responsive table-fixed">
-                          <thead>
-                            <tr>
-                              <th scope="col" class="col-1" style="width: 20px;">No</th>
-                              <th scope="col" class="col-2">Order Id</th>
-                              <th scope="col" class="col-2">customer Id</th>
-                              <th scope="col" class="col-4">Products</th>
-                              <th scope="col" class="col-2" style="width: 50px;">Amount</th>
-                              <th scope="col" class="col-2">Order Date</th>
-                              <th scope="col" class="col-1" style="width: 80px;">Payment</th>
-                              <th scope="col" class="col-1">Status</th>
-                              <th scope="col" class="col-1">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-              
-              
-              
-                            <% orders.forEach((data, index)=> { %>
-                              <tr>
-                                <td>
-                                  <%= index + 1 %>
-                                </td>
-                                <td>
-                                  <%= data.orderNumber %>
-                                </td>
-                                <td>
-                                  <%= data.customer?.name %>
-                                </td>
-                                <td>
-                                  <% data.products.forEach(productData=> { %>
-                                    <%= productData.product.title %><br>(Qty: <%= productData.quantity %>)<br>
-                              
-                                        <% }) %>
-                                </td>
-                                <td>
-                                  <%= data.totalAmount %>
-                                </td>
-                                <td>
-                                  <%= data.orderDate.toISOString().slice(0, 10) %>
-                                </td>
-                                <td>
-                                  <%= data.payment %>
-                                </td>
-                                <td>
-                                  <form action="/admin/update-status/<%= data._id %>" method="post" enctype="application/x-www-form-urlencoded">
-                                    
-                                    <select  id="statusSelect<%= data._id %>"  name="newValue" data-order-id="<%= data._id %>" onchange="changeStatus(event)" style="border: 0;">
-                                      <option value="" disabled selected><%=data.status%></option>
-                                      <option name="newValue" value="pending" >Pending</option>
-                                      <option name="newValue" value="processing">Processing</option>
-                                      <option name="newValue" value="shipped">Shipped</option>
-                                      <option name="newValue" value="out for delivery">Out for Delivery</option>
-                                      <option name="newValue" value="delivered">Delivered</option>
-                                      <option name="newValue" value="cancelled">Cancelled</option>
-                                      <option name="newValue" value="returned">return approve</option>
-
-
-                                    </select>
-                                    <div class="mt-1"><button class="btn btn-outline-success m-0" id="submitButton<%= data._id %>" type="submit"  style="display: none; padding:0;">Save</button></div>
-                                  </form> 
-                                </td>
-                                
-                                <td>
-                                  <div class="d-flex justify-content-center">
-                                    <!-- <a href=""><i class="bx bxs-edit"></i></a> -->
-                                    <a data-bs-toggle="modal" data-bs-target="#Modalorderdlt" ><i class="bx bxs-trash"></i></a>
-                                  </div>
-                                </td>
-                              </tr>
-                              <% }) %>
-              
-                          </tbody>
-                        </table>
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <!-- <a href=""><i class="bx bxs-edit"></i></a> -->
+                        <a data-bs-toggle="modal" data-bs-target="#Modalorderdlt<%= data._id %>"><i class="bx bxs-trash"></i></a>
                       </div>
-              
-                    </div>
-                  </div>
-                </div>
-              
-              </div>
-              <%}%>
-            <div class="row">
-              <div class="col-lg-12 mx-auto bg-white rounded shadow mt-4 " style="width: 95%;">
-                <!-- Fixed header table-->
-                <div class="table-responsive">
-                  <table class="table table-responsive table-fixed">
-                    <thead>
-                      <tr>
-                        <th scope="col" class="col-1" style="width: 20px;">No</th>
-                        <th scope="col" class="col-2">Order Id</th>
-                        <th scope="col" class="col-2">customer Id</th>
-                        <th scope="col" class="col-4">Products</th>
-                        <th scope="col" class="col-2" style="width: 50px;">Amount</th>
-                        <th scope="col" class="col-2">Order Date</th>
-                        <th scope="col" class="col-1" style="width: 80px;">Payment</th>
-                        <th scope="col" class="col-1">Status</th>
-                        <th scope="col" class="col-1">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
+            </table>
 
 
 
-                      <% requested.forEach((data, index)=> { %>
-                        <tr>
-                          <td>
-                            <%= index + 1 %>
-                          </td>
-                          <td>
-                            <%= data.orderNumber %>
-                          </td>
-                          <td>
-                            <%= data.customer?.name %>
-                          </td>
-                          <td>
-                            <% data.products.forEach(productData=> { %>
-                              <%= productData.product.title %><br>(Qty: <%= productData.quantity %>)<br>
-                        
-                                  <% }) %>
-                          </td>
-                          <td>
-                            <%= data.totalAmount %>
-                          </td>
-                          <td>
-                            <%= data.orderDate.toISOString().slice(0, 10) %>
-                          </td>
-                          <td>
-                            <%= data.payment %>
-                          </td>
-                          <td>
-                            <form action="/admin/update-status/<%= data._id %>" method="post" enctype="application/x-www-form-urlencoded">
-                              
-                              <select  id="statusSelect<%= data._id %>"  name="newValue" data-order-id="<%= data._id %>" onchange="changeStatus(event)" style="border: 0;">
-                                <option value="" disabled selected><%=data.status%></option>
-                                <option name="newValue" value="pending" >Pending</option>
-                                <option name="newValue" value="processing">Processing</option>
-                                <option name="newValue" value="shipped">Shipped</option>
-                                <option name="newValue" value="out for delivery">Out for Delivery</option>
-                                <option name="newValue" value="delivered">Delivered</option>
-                                <option name="newValue" value="cancelled">Cancelled</option>
-                                <option name="newValue" value="returned">return approve</option>
 
-                              </select>
-                              <div class="mt-1"><button class="btn btn-outline-success m-0" id="submitButton<%= data._id %>" type="submit"  style="display: none; padding:0;">Save</button></div>
-                            </form> 
-                          </td>
-                          
-                          <td>
-                            <div class="d-flex justify-content-center">
-                              <!-- <a href=""><i class="bx bxs-edit"></i></a> -->
-                              <a data-bs-toggle="modal" data-bs-target="#Modalorderdlt" ><i class="bx bxs-trash"></i></a>
-                            </div>
-                          </td>
-                        </tr>
-                        <% }) %>
 
-                    </tbody>
-                  </table>
-                </div>
 
-              </div>
-            </div>
           </div>
 
-
-
-
-
-
-        </div>
-
+          </div>
       </section>
+
+   <style>
+      table.dataTable tbody tr {
+        background-color: #ffffff; /* Set the background color to white */
+    }
+
+    table.dataTable tbody tr:nth-child(odd) {
+        background-color: #ffffff; /* Set the background color to white for odd rows */
+    }
+   </style>
 
 
       <script>
-
- 
-
-    function changeStatus(event) {
-      const select = event.target;
-      const orderId = select.getAttribute('data-order-id');
-      const submitButton = document.getElementById(`submitButton${orderId}`);
-      submitButton.style.display = 'inline'; // Show the submit button
-    }
-
+ function submitForm(id) {
+    document.getElementById(`statusForm${id}`).submit();
+  }
       </script>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
+
+      <script>
+        $(document).ready(function () {
+          $('#myTable').DataTable();
+        });
+      </script>
 
       <%- include('adminlayout/adminfooter.ejs') %>

@@ -1,220 +1,190 @@
-<%- include('layout/header.ejs')%>
+<%- include('layout/header.ejs')%> <%- include('layout/navbar.ejs')%>
+    <%-include('layout/usermodals.ejs')%>
+      <div class="d-block w-100">
 
-  <%- include('layout/navbar.ejs')%>
+        <div class="product-section w-100">
+          <div class="container-fluid d-flex">
+            <div class="d-flex flex-column">
+              <div style="position: absolute; top: 70px; left: 140px" class="">
+                <button id="open-filter" class="btn btn-outline-secondary p-0 m-0">
+                  Filter
+                </button>
+              </div>
 
-    <%- include('layout/usermodals.ejs')%>
-    
-
-
-      <div class="product-section w-100 ">
-
-        <div class="container-fluid d-flex">
-
-          <div class="d-flex flex-column">
-            <div style="position: absolute; top: 80px; left: 140px;" class=""><button id="open-filter"
-                class="btn btn-dark  p-0 m-0">Filter</button></div>
-
-            <div class="filter-section " style="display: none; margin-top: 65px;">
-
-              <form action="/allproduct" method="get">
-                <div class="side-filter" id="side-filter">
-                  <h5>Filter Options</h5>
-                  <div class="filter-group d-flex flex-column">
-                    
-                    <label for="all"><input type="radio" name="all" >All</label>
+              <div class="filter-section" style="display: none; margin-top: 65px">
+                <form action="/allproducts" method="get">
+                  <div class="side-filter" id="side-filter">
+                    <h6 class="text"><u>Filter Options</u></h6>
+                    <div class="filter-group d-flex flex-column">
+                      <a href="/allproducts?new=on " for="all"  class="text-dark  filter p-0 d-flex justify-content-center" style="border: 1px solid #bdbdbdda; display: inline-block; padding: 1px; text-decoration: none; " ><input type="radio" name="all" style="display: none;" />All</a>
                       <!-- Male Categories -->
                       <h5>Male</h5>
-                        <% if (malecategory && malecategory.subcategories && malecategory.subcategories.length > 0) {
-                          let indexCounter = 0;
-                          malecategory.subcategories.forEach(subcategory => { %>
-                            <label>
-                              <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>">
-                              <%= subcategory.name %>
-                            </label>
-                            <% indexCounter++;
-                          });
-                        } %>
-                      
-                   
-                    
-                    
-                        <h5>Women</h5>
-                        <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) {
-                          let indexCounter = 0;
-                          femalecategory.subcategories.forEach(subcategory => { %>
-                            <label>
-                              <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>">
-                              <%= subcategory.name %>
-                            </label>
-                            <% indexCounter++;
-                          });
-                        } %>
-                      
-                    <!-- Add more checkboxes for categories -->
-                  </div>
-                  <div class="filter-group">
-                    <h4>Price Sort:</h4>
-                    <select class="form-control" name="priceSort">
-                        <option value="asc">Low to High</option>
-                        <option value="desc">High to Low</option>
-                    </select>
-                </div>
-        
-                  <button class="mt-2 btn btn-dark" id="apply-filter" type="submit">Apply</button>
-                </div>
-              </form>
+                      <% if (malecategory && malecategory.subcategories && malecategory.subcategories.length> 0) { let
+                        indexCounter = 0;
+                        malecategory.subcategories.forEach(subcategory => { %>
+                          <label for="subcategory<%= indexCounter %>" class="filter p-0 d-flex justify-content-center" style="border: 1px solid #bdbdbdda; display: inline-block;  ">
+                            <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>" style="display: none" />
+                            <%= subcategory.name %>
+                          </label>
+                         
 
+                        <% indexCounter++; }); } %>
+
+                          <h5>Women</h5>
+                          <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) {
+                            let indexCounter = 0;
+                            femalecategory.subcategories.forEach(subcategory => { %>
+                              <label for="subcategory<%= indexCounter %>" class="filter p-0 d-flex justify-content-center" style="border: 1px solid #bdbdbdda; display: inline-block;">
+                                <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>" style="display: none" />
+                                <%= subcategory.name %>
+                              </label>
+                              <% indexCounter++; }); 
+                          } %>
+                          
+
+                              <!-- Add more checkboxes for categories -->
+                    </div>
+                    <div class="filter-group">
+                      <h4>Price Sort:</h4>
+                      <select class="form-control" name="priceSort">
+                        <option value="asc" class="m-0 p-0">Low to High</option>
+                        <option value="desc" class="m-0 p-0">High to Low</option>
+                      </select>
+                    </div>
+
+                    <button class="mt-2 btn btn-dark" id="apply-filter" type="submit">
+                      Apply
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row rowproduct w-100 justify-content-around d-flex  ">
+
+              <div class="row  w-100 justify-content-around d-flex " style="min-height: 75vh;">
+
+                <% for(let i=0; i < product.length;i++) { %>
+                  <div class="col-lg-3 col-md-4 col-sm-12 d-flex justify-content-center mt-3">
+                    <div class="product-grid d-flex flex-column">
+                      <div class="product-image d-flex justify-content-center align-content-center">
+                        <a href="/productview/<%=product[i]._id%>" class="image d-flex">
+                          <img src="/uploads/<%=product[i].images[0]%>" style="width: 223px; height: 319px" />
+                        </a>
+                        <ul class="product-links">
+                          <li>
+                            <a href="#"><i class="fas fa-heart"></i></a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="product-content">
+                        <h3 class="title"><a href="#">
+                            <%=product[i].title%>
+                          </a></h3>
+                        <div class="price">₹ <%=product[i].price%>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% }; %>
+              </div>
+              <div class="d-flex mt-2">
+
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <% if (currentPage> 1) { %>
+                        <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+                        <% } else { %>
+                          <span class="page-link disabled">Previous</span>
+                          <% } %>
+                    </li>
+                    <% for(let i=1; i <=totalPages; i++) { %>
+                      <li class="page-item <%= (i === currentPage) ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>">
+                          <%= i %>
+                        </a>
+                      </li>
+                      <% } %>
+                        <li class="page-item">
+                          <% if (currentPage < totalPages) { %>
+                            <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+                            <% } else { %>
+                              <span class="page-link disabled">Next</span>
+                              <% } %>
+                        </li>
+                  </ul>
+                </nav>
+
+              </div>
             </div>
 
           </div>
 
 
 
-          <div class="row rowproduct w-100 justify-content-around d-flex m-5">
-            <% for(let i=0; i < product.length;i++) { %>
-              <div class="col-lg-3 col-md-4 col-sm-12 d-flex justify-content-center mt-3">
-                <div class="product-grid d-flex flex-column justify-content-center">
-                  <div class="product-image d-flex justify-content-center align-content-center">
-                    <a href="/productview/<%=product[i]._id%>" class="image d-flex">
-                      <img src="/uploads/<%=product[i].images[0]%>" style="width: 223px; height: 319px" />
-                    </a>
-                    <ul class="product-links">
-                      <li>
-                        <a href="#"><i class="fas fa-heart"></i></a>
-                      </li>
-                    </ul>
 
-
-                  </div>
-
-                  <div class="product-content">
-                    <h3 class="title"><a href="#">
-                        <%=product[i].title%>
-                      </a></h3>
-                    <div class="price">₹ <%=product[i].price%>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <% }; %>
-          </div>
         </div>
+        <%- include('layout/footnav.ejs')%>
+      </div>
 
 
+      
+      <script>
 
 
+      </script>
 
+      <script>
+        const openBtn = document.querySelector("#cart-btn");
+        const cart = document.querySelector("#sidecart");
+        const closeBtn = document.querySelector("#close_btn");
+        const overlaycart = document.getElementById("overlay_cart");
 
+        // overlaycart.addEventListener('click',closeCart)
+        openBtn.addEventListener("click", openCart);
+        closeBtn.addEventListener("click", closeCart);
 
+        function openCart() {
+          cart.classList.add("open");
+          overlaycart.style.display = "block";
+          document.body.classList.add("no-scroll");
+        }
 
+        function closeCart() {
+          cart.classList.remove("open");
+          overlaycart.style.display = "none";
+          document.body.classList.remove("no-scroll");
+        }
+      </script>
+      <script>
+        const menuOpenBtn = document.querySelector("#menu-btn");
+        const menu = document.querySelector("#menubar");
+        const menuclosebtn = document.querySelector("#menuclose_btn");
+        const overlay = document.getElementById("overlay_menu");
+        const add_cart = document.getElementById("add_cart");
 
-        <script>
-          const openFilterButton = document.getElementById('open-filter');
-          const filterSection = document.querySelector('.filter-section');
+        menuOpenBtn.addEventListener("click", openMenu);
+        menuclosebtn.addEventListener("click", closeMenu);
+        overlay.addEventListener("click", closeMenu);
+        add_cart.addEventListener("click", openMenu);
 
-          // Add click event listener to the "Open Filter" button
-          openFilterButton.addEventListener('click', function () {
-            // Toggle the visibility of the filter section
-            if (filterSection.style.display === 'none') {
-              filterSection.style.display = 'block';
-            } else {
-              filterSection.style.display = 'none';
-            }
-          });
+        function openMenu() {
+          menu.classList.add("open");
+          overlay.style.display = "block"; // Show the overlay
+          document.body.classList.add("no-scroll");
+        }
 
+        function closeMenu() {
+          menu.classList.remove("open");
+          overlay.style.display = "none"; // Hide the overlay
+          document.body.classList.remove("no-scroll");
+        }
 
-          const applyFilterButton = document.getElementById('apply-filter');
-          applyFilterButton.addEventListener('click', () => {
-            // Get selected category values
-            const selectedMaleCategory = document.getElementById('maleCategory').value;
-            const selectedFemaleCategory = document.getElementById('femaleCategory').value;
+        function changeQuentity(proId) { }
+      </script>
 
-            // Get selected price range values
-            const minPrice = document.querySelector('input[name="min-price"]').value;
-            const maxPrice = document.querySelector('input[name="max-price"]').value;
+</div>
 
-            // Construct the URL with query parameters
-            const queryParams = new URLSearchParams();
-            queryParams.append('maleCategory', selectedMaleCategory);
-            queryParams.append('femaleCategory', selectedFemaleCategory);
-            queryParams.append('minPrice', minPrice);
-            queryParams.append('maxPrice', maxPrice);
-
-            const queryString = queryParams.toString();
-            const url = `/products?${queryString}`; // Change the URL according to your endpoint
-
-            // Redirect or make an API request using the constructed URL
-            window.location.href = url; // Redirect to the filtered page
-            // Alternatively, make an AJAX request using fetch or another library
-          });
-        </script>
-
-
-
-
-
-
-        <script>
-          const openBtn = document.querySelector("#cart-btn");
-          const cart = document.querySelector("#sidecart");
-          const closeBtn = document.querySelector("#close_btn");
-          const overlaycart = document.getElementById("overlay_cart");
-
-          // overlaycart.addEventListener('click',closeCart)
-          openBtn.addEventListener("click", openCart);
-          closeBtn.addEventListener("click", closeCart);
-
-          function openCart() {
-            cart.classList.add("open");
-            overlaycart.style.display = "block";
-            document.body.classList.add("no-scroll");
-          }
-
-          function closeCart() {
-            cart.classList.remove("open");
-            overlaycart.style.display = "none";
-            document.body.classList.remove("no-scroll");
-          }
-        </script>
-        <script>
-          const menuOpenBtn = document.querySelector("#menu-btn");
-          const menu = document.querySelector("#menubar");
-          const menuclosebtn = document.querySelector("#menuclose_btn");
-          const overlay = document.getElementById("overlay_menu");
-          const add_cart = document.getElementById('add_cart')
-
-
-          menuOpenBtn.addEventListener("click", openMenu);
-          menuclosebtn.addEventListener("click", closeMenu);
-          overlay.addEventListener('click', closeMenu)
-          add_cart.addEventListener('click', openMenu)
-
-
-          function openMenu() {
-            menu.classList.add("open");
-            overlay.style.display = "block"; // Show the overlay
-            document.body.classList.add("no-scroll");
-          }
-
-          function closeMenu() {
-            menu.classList.remove("open");
-            overlay.style.display = "none"; // Hide the overlay
-            document.body.classList.remove("no-scroll");
-          }
-
-
-          function changeQuentity(proId) {
-
-          }
-
-
-
-
-
-
-
-
-        </script>
 
 <%- include('layout/footer.ejs')%>
-   

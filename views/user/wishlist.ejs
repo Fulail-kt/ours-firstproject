@@ -7,6 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <link rel="icon" type="image/x-icon" href="/images/ours-logos.jpeg">
     <link
       href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
       rel="stylesheet"
@@ -32,7 +33,7 @@
     <%- include('layout/usermodals.ejs')%> <%- include('layout/navbar.ejs')%>
 
     <div class="d-flex w-100">
-      <div class="sidepanel">
+      <div class="col-md-3 col-lg-2 sidepanel">
         <div class="header_myac d-flex flex-column justify-content-start">
           <p class="hello" style="font-weight: 700; font-size: 1.7rem">
             Hello
@@ -64,83 +65,163 @@
         </div>
       </div>
 
-      <div class="sidepanel_fk"></div>
+      <div class="sidepanel_fk" style="width: 260px;"></div>
 
-      <div class="my-wishlist w-100">
+      <div class="col-md-9 col-lg-10 my-wishlist">
         <div
           class="product-sections w-100 h-100 d-flex justify-content-center flex-column"
         >
           <div class="d-flex flex-column align-items-center h-100">
-            <h2 class="m-5" style="font-weight: 600"><u>WISHLIST</u></h2>
+            <h2 class="m-2" style="font-weight: 600"><u>WISHLIST</u></h2>
             <div
               class="d-flex justify-content-center"
               style="width: 95%; height: 400px"
             >
-              <div
-                class="container-fluid d-flex justify-content-around align-items-center w-100 bg-white"
-              >
-                <% if (wishlist && wishlist.wishlist.length > 0) { %> <%
-                wishlist.wishlist.forEach(item => { %>
-                <div class="col-md-3">
-                  <div
-                    class="fav-card bg-light"
-                    style="height: 300px; width: 210px; border-radius: 10px"
-                  >
-                    <div
-                      class="fav-img d-flex flex-column justify-content-center align-items-center"
-                    >
-                      <a href=""
-                        ><img
-                          src="/uploads/<%= item.product.images[0] %>"
-                          alt=""
-                          style="width: 210px; height: 300px"
-                      /></a>
-                      <div
-                        style="margin-top: 16rem; width: 200px; height: 35px"
-                        class="fav-details position-absolute rounded d-flex justify-content-around align-items-center"
-                      >
-                        <a
-                          class="link"
-                          href="/remove-from-wishlist/<%= item.product._id %>"
-                          ><i class="bx bx-trash-alt text-white"></i
-                        ></a>
-                        <div class="d-flex align-items-center">
-                          <p
-                            class="mt-3 text-white p-1 pl-2 pr-2"
-                            style="
-                              border-radius: 25px;
-                              background-color: rgb(82, 81, 81);
-                            "
-                          >
-                            ₹ <%= item.product.price %>
-                          </p>
+            <div class="container-fluid wishlist-pic">
+              <div class="row">
+                <%console.log(wishlist)%>
+                <% if (wishlist && wishlist.wishlist.length > 0) { %>
+                  <% wishlist.wishlist.forEach(item => { %>
+                    <div class="col-md-4 col-sm-6 col-12">
+                      <div class="card mt-5" style="width: 190px; height: 500px">
+                        <img src="/uploads/<%= item.product.images[0] %>" style="height: 300px;" class="card-img-top img-thumbnail" alt="Product Image" >
+                        <div class="card-body text-center">
+                          <div class="text-center d-flex justify-content-center" >
+                            <h5 class="card-title text-center" style="font-size: 13px;"><%= item.product.title %></h5>
+                          </div>
+                          <div>
+                            <% const size = item.product.size %>
+                            <% for (let i=0; i < size.length; i++) { %>
+                                <label class="size-label text-center font-weight-light"
+                                    style="font-size: 13.2px; border: 1px solid #bdbdbdda; padding: 1px; width: 26px;">
+                                    <input type="radio" required name="size" value="<%=size[i]%>" class="size-input"
+                                        style="display: none;">
+                                    <%=size[i]%>
+                                </label>
+                            <% } %>
                         </div>
-
-                        <a
-                          class="link"
-                          onclick="addtocart('<%= item.product._id %>')"
-                          ><i class="bx bx-shopping-bag text-white"></i
-                        ></a>
+                        
+                        <input type="radio" id="color" checked name="color" value="<%= item.product.color %>" style="display: none;">
+                <input type="hidden"  name="" id="price" value=" <%= item.product.price%>">
+                          
+                          <p class="card-text">₹ <%= item.product.price %></p>
+                          <a href="/remove-from-wishlist/<%= item.product._id %>" class="btn detailsprd">Remove</a><br />
+                          <a onclick="addtocart('<%= item.product._id %>')" id="addToCartButton" class="btn cartprd " >ADD TO CART</a>
+                        </div>
                       </div>
                     </div>
+                  <% }); %>
+                <% } else { %>
+                  <div class="col-12">
+                    <div class="d-flex justify-content-center">
+                      <p>Your wishlist is empty.</p>
+                    </div>
                   </div>
-                </div>
-                <% }); %> <% } else { %>
-                <div class="d-flex justify-content-center w-100">
-                  <div>
-                    <p>Your wishlist is empty.</p>
-                  </div>
-                </div>
                 <% } %>
               </div>
+            </div>
+            
             </div>
           </div>
         </div>
       </div>
     </div>
 
+
+    <style>
+
+.details {
+            border: 1.5px solid grey;
+            color: #212121;
+            width: 100%;
+            height: auto;
+            box-shadow: 0px 0px 10px #212121;
+        }
+
+        .cartprd {
+            background-color: #212121;
+            color: white;
+            margin-top: 10px;
+            font-size: 12px;
+            font-weight: 900;
+            width: 100%;
+            height: 39px;
+            padding-top: 9px;
+            box-shadow: 0px 5px 10px  #212121;
+        }
+
+        .card {
+            width: fit-content;
+        }
+
+        
+
+        .btn {
+            border-radius: 0;
+        }
+
+        .img-thumbnail {
+            border: none;
+        }
+
+        .card {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+            border-radius: 5px;
+            padding-bottom: 10px;
+        }
+     
+        .disable {
+    opacity: 0.5;
+    pointer-events: none;
+}
+    </style>
+
     <script>
-      
+document.addEventListener('DOMContentLoaded', function() {
+    const productCards = document.querySelectorAll('.card');
+
+    productCards.forEach(card => {
+        const sizeLabels = card.querySelectorAll('.size-label');
+        const addToCartButton = card.querySelector('#addToCartButton');
+
+        sizeLabels.forEach((label, index) => {
+            const input = label.querySelector('input[type="radio"]');
+            if (index === 0) {
+                input.checked = true; // Set the first input as checked by default
+                label.style.borderColor = '#000'; // Optionally, change the border color
+            }
+
+            input.addEventListener('change', () => {
+                sizeLabels.forEach(otherLabel => {
+                    otherLabel.style.borderColor = '#bdbdbdda';
+                });
+
+                if (input.checked) {
+                    label.style.borderColor = '#000';
+                } else {
+                    label.style.borderColor = '#bdbdbdda';
+                }
+            });
+        });
+
+  
+        
+    });
+});
+
+
+
+
+
+    </script>
+
+    <script>
+
+
+
+
+
+
       const openBtn = document.querySelector("#cart-btn");
       const cart = document.querySelector("#sidecart");
       const closeBtn = document.querySelector("#close_btn");
@@ -200,20 +281,44 @@
         });
       });
 
+
       function addtocart(productId) {
-        fetch(`/add-to-cart/${productId}`, {
-          method: "POST",
-        })
-          .then((response) => window.location.reload())
-          .then((data) => {
-            window.location.reload();
-          })
-          .catch((error) => {
-            console.error("Error adding product to cart:", error);
-          });
-      }
+    const selectedSizeInput = document.querySelector('input[name="size"]:checked');
+    const selectedSize = selectedSizeInput ? selectedSizeInput.value : null;
+    const selectedcolorinput = document.querySelector('input[name="color"]');
+    const selectedcolor = selectedcolorinput ? selectedcolorinput.value : null;
+    const price = document.getElementById('price').value;
+
+    console.log("helo");
+
+    const data = {
+        productId: productId,
+        size: selectedSize,
+        color: selectedcolor,
+        price: price
+    };
+
+    // console.log(data);
+
+    fetch(`/add-to-cart/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+
+    .then((data) => {
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error("Error adding product to cart:", error);
+    });
+}
+
     </script>
 
     <%- include('layout/footer.ejs')%>
+    
   </body>
 </html>
