@@ -492,7 +492,7 @@ const updateroles = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const userId = req.params._id;
-    console.log();
+  
 
     await user.findOneAndDelete({ userId });
 
@@ -526,7 +526,7 @@ const createCoupon = async (req, res) => {
       min: req.body.min
     }
 
-    console.log(req.body)
+
 
     const exist = await Coupons.findOne({ code: req.body.code })
 
@@ -577,7 +577,7 @@ const unListCoupons = async (req, res) => {
 
   const coupon = await Coupons.findById(couponId);
 
-  console.log(coupon)
+ 
 
   if (!coupon) {
     return res.status(404).send("coupon not found");
@@ -597,7 +597,7 @@ const orderStatus = async (req, res) => {
   const orderId = req.params.id;
   const userId = req.session.userId;
   const newStatus = req.body.newValue;
-  console.log(newStatus)
+
 
   try {
     // Find the order by orderId and update the status
@@ -697,7 +697,7 @@ const adminSales = async (req, res) => {
       ])
     
 
-    console.log(salesReport)
+
 
 
     if (from && to) {
@@ -708,7 +708,7 @@ const adminSales = async (req, res) => {
         const orderDate = new Date(prd.order_date);
         return orderDate >= fromDate && orderDate <= new Date(toDate.getTime() + 24 * 60 * 60 * 1000);
       });
-      console.log(salesReport)
+     
     }
 
     res.render("admin/adminsales", { salesReport, selectedStatus })
@@ -721,7 +721,7 @@ const adminSales = async (req, res) => {
 
 const salesReportDownload = async (req, res) => {
 
-  console.log("sales report")
+  
   try {
     const data = req.body
     let file = [];

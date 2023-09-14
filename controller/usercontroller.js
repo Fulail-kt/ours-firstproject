@@ -163,10 +163,10 @@ const verify = (req, res) => {
 
 const confirmOtp = async (req, res) => {
   try {
-    console.log(req.session.email);
+    
     const { email, otp } = req.body;
     const otpRecord = await UserOtp.findOne({ email });
-    console.log(otpRecord);
+   
     if (!otpRecord) {
       req.flash("error", "Otp not exist");
       return res.redirect("/verify-otp");
@@ -181,7 +181,7 @@ const confirmOtp = async (req, res) => {
     const isOTPValid = await bcrypt.compare(otp, otpRecord.otp);
 
     if (isOTPValid) {
-      console.log(req.session.name);
+      
       // Mark user as verified in the User collection
       delete req.session.otp;
       
@@ -552,9 +552,9 @@ const productView = async (req, res) => {
 
 const add_to_cart = async (req, res) => {
 
-  console.log("rtyuioprtyuiortyuiortyuiortyuio")
+  
 
-  console.log(req.body)
+
   const productId = req.params.id;
   const size = req.body.size;
   const color = req.body.color
@@ -562,7 +562,6 @@ const add_to_cart = async (req, res) => {
   const totalPrice = price
 
 
-  console.log("sixe          ",size)
 
   const userId = req.session.userId;
 
@@ -639,19 +638,18 @@ const add_to_wishlist = async (req, res) => {
 const update_quantity = async (req, res) => {
   const { productId, action } = req.body;
 
-  console.log(productId)
-  console.log(action)
+  
   try {
     const user = await User.findOne({ _id: req.session.userId });
 
-    console.log(user);
+    
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     const cartItem = user.cart.find(item => item.product.toString() === productId);
 
-    console.log(cartItem,"dddddddddddd")
+  
 
     if (!cartItem) {
       return res.status(404).json({ error: 'Product not found in cart' });
@@ -659,7 +657,7 @@ const update_quantity = async (req, res) => {
 
     if (action === 'increase') {
       cartItem.quantity++;
-      console.log(cartItem.quantity)
+     
     } else if (action === 'decrease' && cartItem.quantity > 1) {
       cartItem.quantity--;
     } else if (action === 'decrease' && cartItem.quantity === 1) {
@@ -671,7 +669,7 @@ const update_quantity = async (req, res) => {
     // Assuming price is a property of cartItem and represents the price of one item
     cartItem.total = parseInt(cartItem.price * cartItem.quantity)
 
-    console.log()
+  
     await user.save(cartItem.total);
 
 
@@ -712,7 +710,7 @@ const remove_from_wishlist = async (req, res) => {
 
 const add_address = async (req, res) => {
 
-  console.log(req.body)
+
   const userId = req.session.userId;
   const newAddress = {
     name: req.body.name,
@@ -750,7 +748,7 @@ const checkout = async (req, res) => {
 
     const userId = req.session.userId
 
-    console.log(userId)
+ 
 
     const user = await User.findById(userId)
 
@@ -814,7 +812,7 @@ const confirm_order = async (req, res) => {
     const wallet = req.body.wallet
     const prev=req.body.prev
 
-    console.log(req.body);
+    
 
     let totalAmount = parseFloat(req.body.totalamount);
     const couponCode = req.body.coupon;
@@ -902,7 +900,7 @@ const confirm_order = async (req, res) => {
 
         if (wallet) {
 
-          console.log("groter")
+          
           const userId = req.session.userId;
           const user = await User.findById(userId);
           let userWallet = user.wallet.balance;
@@ -988,7 +986,7 @@ const confirm_order = async (req, res) => {
 
           } else if (totalAmount > userWallet) {
 
-            console.log("lower")
+           
 
             
             amount = totalAmount - userWallet;
@@ -1083,7 +1081,7 @@ const verifyPayment = async (req, res) => {
 
 
 
-    console.log(orderData)
+    
     let totalAmount = parseFloat(orderData.totalamount);
 
 
@@ -1217,13 +1215,13 @@ const myorders = async (req, res) => {
 
 if (req.searchResults) {
         // Use search results if available
-        console.log("ddddddddddddddddddddddddddddddddddddddddddddd")
+       
         orders = req.searchResults;
 
 
       } else {
 
-        console.log("qqqqqqqqqqqqqqqqqqqqqq")
+       
 
      orders = await Order.aggregate([
       {
@@ -1561,7 +1559,7 @@ const delete_address = async (req, res) => {
   const userId=req.session.userId
   const { addressId } = req.body;
 
-  console.log(req.body)
+ 
 
   try {
     const user = await User.findOneAndUpdate(
@@ -1570,7 +1568,6 @@ const delete_address = async (req, res) => {
       { new: true }
     );
 
-console.log(user)
     // Sending a response back to the client
     res.status(200).json({ success: true, message: 'Address deleted successfully' });
 
@@ -1626,7 +1623,7 @@ const update_profile = async (req, res) => {
 
     };
 
-    console.log(updatedUserData)
+    
 
     // Update user data (excluding password) in the database
     await User.findByIdAndUpdate(userId, updatedUserData);
@@ -1687,7 +1684,7 @@ const getresetpassword = async (req, res) => {
 const postResetPassword = async (req, res) => {
   const userEmail = req.body.email;
 
-  console.log(userEmail);
+ 
 
   try {
     // Find user by email
@@ -1696,8 +1693,7 @@ const postResetPassword = async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    console.log(user)
-
+   
     // Generate a unique token
     const token = crypto.randomBytes(8).toString('hex');
 
