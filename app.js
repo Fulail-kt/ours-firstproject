@@ -13,7 +13,7 @@ require('dotenv').config();
 
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/Ours").then(()=>{
+mongoose.connect("mongodb+srv://muhamedfulail77:fIxrFl4f8N2sN7gY@home.ez5skag.mongodb.net/?retryWrites=true&w=majority").then(()=>{
     console.log("Mongodb connected")
 }).catch((error)=>{
  console.log(error.message)

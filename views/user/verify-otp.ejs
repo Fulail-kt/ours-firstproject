@@ -35,7 +35,7 @@
                    
                     <div class="mt-4"> <button type="submit" class="btn btn-danger px-4 validate">Validate</button> </div>
                 </form>
-                <button class="mt-3 btn-outline-primary" id="resendTimer" onclick="startResendOTPTimer(5, 'resendTimer')" disabled>Resend OTP</button>
+                <button class="mt-3 btn-outline-primary" id="resendTimer" onclick="startResendOTPTimer(120, 'resendTimer')" disabled>Resend OTP</button>
             </div>
         </div>
     </div>
@@ -134,7 +134,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 // Usage
-const duration = 5; // Duration in seconds (2 minutes in this example)
+const duration = 120; // Duration in seconds (2 minutes in this example)
 const displayElementId = "resendTimer"; // ID of the element where timer will be displayed
 
 // Call the function with duration and element ID
