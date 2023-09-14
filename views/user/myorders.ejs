@@ -386,6 +386,9 @@
                       <div class="col-md-3 text-center d-flex align-items-center justify-content-center">
                         <p class="text-white mb-0 small">
                           ₹ <%=order.totalAmount %>
+                          <%if(order.discount){%>
+                            (-<%=order.discount %>)
+                          <%}%>
                         </p>
                       </div>
                       <div class="col-md text-center d-flex align-items-center justify-content-center">

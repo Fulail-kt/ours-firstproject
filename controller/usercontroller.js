@@ -984,12 +984,12 @@ const confirm_order = async (req, res) => {
            return res.json({ walletSuccess: true });
 
 
-          } else if (totalAmount > userWallet) {
+          } else if (prev > userWallet) {
 
            
 
             
-            amount = totalAmount - userWallet;
+            amount = prev - userWallet;
 
             
           }

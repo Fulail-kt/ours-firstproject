@@ -24,140 +24,144 @@
 
 
 
-
-      <div class="container-fluid">
-
-        <% if (product) { %>
-          <div class="prd_mainbody d-flex  w-100">
-            <div class="image-container mt-5 w-50 d-flex justify-content-center">
-              <div style="width: 5rem;"
-                class="semi-image-container mr-1  d-flex flex-column align-items-center justify-content-center">
-                <% for(let i=0 ; i< product.images.length; i++){%>
-                  <img src="/uploads/<%=product.images[i]%>" alt="" style="width:100%" class="semi-image"
-                    data-index="<%= i %>">
-                  <%}%>
-              </div>
-              <div style="width: 20rem;"
-                class="main-image-container d-flex flex-column align-items-center justify-content-center">
-                <img src="" alt="" style="width:100%" class="main-image">
-              </div>
-            </div>
-
-
-
-            <div class="prd_det w-50 mt-5 ">
-
-              <div>
-                <h4 style="font-weight: 400;">
-                  <%=product.title%>
-                </h4>
-                <input type="hidden"  name="" id="price" value=" <%=product.price%>">
-                <p ><span>Rs</span> : <%=product.price%>
-                </p>
-              </div>
-
-              <hr>
-
-              <div style="height: 300px;">
-                <div class="mt-2">
-                  <p class="mb-1"><span>COLOR</span></p>
-                  <label for="color" class="color-label text-center font-weight-light"
-                    style="border: 1px solid #bdbdbdda; display: inline-block; padding: 2px; width: 70px;">
-                    <input type="radio" id="color" checked name="color" value="<%= product.color %>" style="display: none;">
-                    <%= product.color %>
-                  </label>
-                </div>
-                <div class="mt-3">
-                  <p class="mb-1">SIZE</p>
-                  <% for (let i=0; i < product.size.length; i++) { %>
-                    <label for="size_<%= i %>" class="size-label text-center font-weight-light"
-                      style="border: 1px solid #bdbdbdda; display: inline-block; padding: 1px; width: 30px;">
-                      <input type="radio" id="size_<%= i %>"  required name="size" value="<%= product.size[i] %>" class=""
-                        style="display: none;">
-                      <%= product.size[i] %>
-                    </label>
-                    <% } %>
-                </div>
-                <div class="mt-3">
-                  <% if (product.stock < 10) { %>
-                  <p class="mb-1 ">STOCK LEFT</p>
-                    <h6 class="font-weight-light text-danger"><%= product.stock %></h6>
+<div class="d-block w-100">
+  
+        <div class="container-fluid">
+  
+          <% if (product) { %>
+            <div class="prd_mainbody d-flex  w-100">
+              <div class="image-container mt-5 w-50 d-flex justify-content-center">
+                <div style="width: 5rem;"
+                  class="semi-image-container mr-1  d-flex flex-column align-items-center justify-content-center">
+                  <% for(let i=0 ; i< product.images.length; i++){%>
+                    <img src="/uploads/<%=product.images[i]%>" alt="" style="width:100%" class="semi-image"
+                      data-index="<%= i %>">
                     <%}%>
                 </div>
-                <div class="mt-3">
-                  <p class="mb-1">DESCRIPTION </p>
-                  <p>
-                    <%=product.description%>
-                  </p>
+                <div style="width: 20rem;"
+                  class="main-image-container d-flex flex-column align-items-center justify-content-center">
+                  <img src="" alt="" style="width:100%" class="main-image">
                 </div>
               </div>
-              
-
-
-
-              <%}%>
-
-              <% if (product.stock < 1) { %>
-                <p class="text-capitalize text-danger">Product is out of stock</p>
-                
-                <a class="text-dark btn btn-secondary text-white">
-                  <i class="bx bx-shopping-bag" ></i> ADD TO CART
-                </a>
-
-                <% if (isWish) { %>
+  
+  
+  
+              <div class="prd_det w-50 mt-5 ">
+  
+                <div>
+                  <h4 style="font-weight: 400;">
+                    <%=product.title%>
+                  </h4>
+                  <input type="hidden"  name="" id="price" value=" <%=product.price%>">
+                  <p ><span>Rs</span> : <%=product.price%>
+                  </p>
+                </div>
+  
+                <hr>
+  
+                <div style="height: 300px;">
+                  <div class="mt-2">
+                    <p class="mb-1"><span>COLOR</span></p>
+                    <label for="color" class="color-label text-center font-weight-light"
+                      style="border: 1px solid #bdbdbdda; display: inline-block; padding: 2px; width: 70px;">
+                      <input type="radio" id="color" checked name="color" value="<%= product.color %>" style="display: none;">
+                      <%= product.color %>
+                    </label>
+                  </div>
+                  <div class="mt-3">
+                    <p class="mb-1">SIZE</p>
+                    <% for (let i=0; i < product.size.length; i++) { %>
+                      <label for="size_<%= i %>" class="size-label text-center font-weight-light"
+                        style="border: 1px solid #bdbdbdda; display: inline-block; padding: 1px; width: 30px;">
+                        <input type="radio" id="size_<%= i %>"  required name="size" value="<%= product.size[i] %>" class=""
+                          style="display: none;">
+                        <%= product.size[i] %>
+                      </label>
+                      <% } %>
+                  </div>
+                  <div class="mt-3">
+                    <% if (product.stock < 10) { %>
+                    <p class="mb-1 ">STOCK LEFT</p>
+                      <h6 class="font-weight-light text-danger"><%= product.stock %></h6>
+                      <%}%>
+                  </div>
+                  <div class="mt-3">
+                    <p class="mb-1">DESCRIPTION </p>
+                    <p>
+                      <%=product.description%>
+                    </p>
+                  </div>
+                </div>
+  
+  
+  
+  
+                <%}%>
+  
+                <% if (product.stock < 1) { %>
+                  <p class="text-capitalize text-danger">Product is out of stock</p>
+  
                   <a class="text-dark btn btn-secondary text-white">
-                    <i class="bx bx-heart"></i> GO TO WISHLIST
+                    <i class="bx bx-shopping-bag" ></i> ADD TO CART
                   </a>
+  
+                  <% if (isWish) { %>
+                    <a class="text-dark btn btn-secondary text-white">
+                      <i class="bx bx-heart"></i> GO TO WISHLIST
+                    </a>
+                  <% } else { %>
+                    <a class="text-white btn btn-dark" onclick="addtowish('<%= product._id %>',)" >
+                      <i class="bx bx-heart"></i> ADD TO WISHLIST
+                    </a>
+                  <% } %>
+  
+                <% } else if (user) { %>
+  
+  
+                  <% if (isCart) { %>
+                    <button id="go-cart-btn" class="btn btn-secondary text-dark">
+                      <i class="bx bx-shopping-bag"></i>GO TO CART
+                    </button>
+                  <% } else { %>
+  
+                    <button id="addToCartButton" class="btn btn-dark" disabled onclick="addtocart('<%= product._id %>')">
+                      <i class="bx bx-shopping-bag"></i> ADD TO CART
+                    </button>
+                  <% } %>
+  
+  
+                  <% if (isWish) { %>
+                    <a href="/wishlist"  class="text-dark btn btn-secondary text-white">
+                      <i class="bx bx-heart"></i> GO TO WISHLIST
+                    </a>
+                  <% } else { %>
+                    <a class="text-white btn btn-dark" onclick="addtowish('<%= product._id %>')">
+                      <i class="bx bx-heart"></i> ADD TO WISHLIST
+                    </a>
+                  <% } %>
+  
+  
                 <% } else { %>
-                  <a class="text-white btn btn-dark" onclick="addtowish('<%= product._id %>',)" >
-                    <i class="bx bx-heart"></i> ADD TO WISHLIST
-                  </a>
-                <% } %>
-
-              <% } else if (user) { %>
-
-
-                <% if (isCart) { %>
-                  <button id="go-cart-btn" class="btn btn-secondary text-dark">
-                    <i class="bx bx-shopping-bag"></i>GO TO CART
-                  </button>
-                <% } else { %>
-                  
-                  <button id="addToCartButton" class="btn btn-dark" disabled onclick="addtocart('<%= product._id %>')">
+                  <button class="btn btn-dark" data-toggle="modal" data-target="#modalwarning">
                     <i class="bx bx-shopping-bag"></i> ADD TO CART
                   </button>
-                <% } %>
-
-
-                <% if (isWish) { %>
-                  <a href="/wishlist"  class="text-dark btn btn-secondary text-white">
-                    <i class="bx bx-heart"></i> GO TO WISHLIST
-                  </a>
-                <% } else { %>
-                  <a class="text-white btn btn-dark" onclick="addtowish('<%= product._id %>')">
+                  <button class="btn btn-dark" data-toggle="modal" data-target="#modalwarning">
                     <i class="bx bx-heart"></i> ADD TO WISHLIST
-                  </a>
+                  </button>
                 <% } %>
-
-
-              <% } else { %>
-                <button class="btn btn-dark" data-toggle="modal" data-target="#modalwarning">
-                  <i class="bx bx-shopping-bag"></i> ADD TO CART
-                </button>
-                <button class="btn btn-dark" data-toggle="modal" data-target="#modalwarning">
-                  <i class="bx bx-heart"></i> ADD TO WISHLIST
-                </button>
-              <% } %>
-
-
-
+  
+  
+  
+              </div>
             </div>
-          </div>
-
-
-      </div>
-
-
+  
+  
+        </div>
+  <div>
+  
+          <%- include('layout/footnav.ejs')%>
+  </div>
+</div>
 
 <script>
   

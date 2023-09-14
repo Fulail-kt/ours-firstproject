@@ -813,7 +813,7 @@ hr {
   width: 220px;
   height: 100vh;
   position: fixed;
-  border-right: 1px solid rgb(201, 201, 201);
+  /* border-right: 1px solid rgb(201, 201, 201); */
 }
 
 .sidepanel_fk {

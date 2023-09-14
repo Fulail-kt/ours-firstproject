@@ -29,222 +29,186 @@
 
 
       <!-- <button data-toggle="modal" data-target="#checkOutmodal">Proced to checkout</button> -->
-      <div class="w-100 d-flex justify-content-center align-items-center">
-
-        <div class="w-75">
-          <form class="w-100" action="/confirm-order" onsubmit="event.preventDefault(); confirmOrder()" method="post"
-            id="checkoutForm">
-
-            <div>
-              <div class="d-flex justify-content-center checkout">
-                <div class="w-100">
-
-                  <div class="p-0 w-100">
-                    <div class="main-page1  w-100" id="main-page1">
-                      <div class="main-page   w-100 ">
-
-                        <div class="rounded-left text-white "
-                          style=" height: 36rem; background-color: #343a40;">
-                          <div id="shipping-address ">
-                            <div class="card rounded-0  bg-gradient bg-secondary text-black-50">
-                              <div class="card-header">
-                                <h4>Shipping Address</h4>
+      <div class="d-block w-100">
+        <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+          <div class="w-75">
+            <form class="w-100" action="/confirm-order" onsubmit="event.preventDefault(); confirmOrder()" method="post"
+              id="checkoutForm">
+              <div>
+                <div class="d-flex justify-content-center checkout">
+                  <div class="w-100">
+                    <div class="p-0 w-100">
+                      <div class="main-page1  w-100" id="main-page1">
+                        <div class="main-page   w-100 ">
+                          <div class="rounded-left text-white "
+                            style=" height: 36rem; background-color: #343a40;">
+                            <div id="shipping-address ">
+                              <div class="card rounded-0  bg-gradient bg-secondary text-black-50">
+                                <div class="card-header">
+                                  <h4>Shipping Address</h4>
+                                </div>
                               </div>
-                            </div>
-                            <div class="chekout-body1 w-100">
-                              <div class="checkout-head1 w-100 d-flex  justify-content-center">
-                                <h5 class="fw-light">SELECT ADDRESS</h5>
-                              </div>
-                              <div class="checkout-page h-100  w-100" id="page1">
-                                <div class="page1-body m-1">
-                                  <% if(user && user.address.length> 0) { %>
-                                    <% user.address.forEach(address=> { %>
-                                      <div class="text-monospace mb-1" style="height:100px ; margin-left: 3rem; margin-right: 3rem;">
-                                        <label class=" addressLabels d-flex justify-content-center"
-                                          for="addressRadio<%= address._id %>"
-                                          style="border: #7777 1.5px solid; border-radius: 5px;">
-                                          <input type="radio" required id="addressRadio<%= address._id %>"
-                                            name="selectedAddress" value="<%= address._id %>" style="display: none;">
-                                          <div class="address-details">
-                                            <div class="d-flex justify-content-start">
-                                              <h5 class="">
-                                                <%= address.name %>
-                                              </h5>
+                              <div class="chekout-body1 w-100">
+                                <div class="checkout-head1 w-100 d-flex  justify-content-center">
+                                  <h5 class="fw-light">SELECT ADDRESS</h5>
+                                </div>
+                                <div class="checkout-page h-100  w-100" id="page1">
+                                  <div class="page1-body m-1">
+                                    <% if(user && user.address.length> 0) { %>
+                                      <% user.address.forEach(address=> { %>
+                                        <div class="text-monospace mb-1" style="height:100px ; margin-left: 3rem; margin-right: 3rem;">
+                                          <label class=" addressLabels d-flex justify-content-center"
+                                            for="addressRadio<%= address._id %>"
+                                            style="border: #7777 1.5px solid; border-radius: 5px;">
+                                            <input type="radio" required id="addressRadio<%= address._id %>"
+                                              name="selectedAddress" value="<%= address._id %>" style="display: none;">
+                                            <div class="address-details">
+                                              <div class="d-flex justify-content-start">
+                                                <h5 class="">
+                                                  <%= address.name %>
+                                                </h5>
+                                              </div>
+                                              <p>
+                                                <%= address.house %>, <%= address.city %>, <%= address.district %>, <%=
+                                                        address.state %>,<br>
+                                                        <%= address.post %>, <%= address.contact %>
+                                              </p>
                                             </div>
+                                          </label>
+                                        </div>
+                                        <% }) %>
+                                          <% } %>
+                                            <div class="mt-1">
+                                              <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#addressModal" id="new-address" title="ADD ADDRESS"><i
+                                                  class='bx bx-plus-circle'></i>Add
+                                                address</a>
+                                            </div>
+                                  </div>
+                                  <div>
+                                    <hr>
+                                  </div>
+                                </div>
+                                <div class="checkout-page w-100 h-100" id="page2">
+                                  <!-- Content of the second page -->
+                                  <div class="h-75">
+                                    <div class="d-flex  justify-content-center">
+                                      <h6 class="fw-light">Please select payment method to complete the order
+                                      </h6>
+                                    </div>
+                                    <div class="d-flex justify-content-around mt-2">
+                                      <div class="d-flex justify-content-center text-white rounded p-1 option"
+                                        data-option="cash" style="width: 200px; background: #1d1d1d;">
+                                        <h5>Cash on Delivery</h5>
+                                        <input type="radio" required name="selectedPaymentOption" value="COD"
+                                          id="cashRadio" style="display: none;">
+                                      </div>
+                                      <div class="d-flex text-white justify-content-center rounded p-1 option"
+                                        data-option="online" style="width: 200px; background: #1d1d1d;">
+                                        <h5>Pay via Online</h5>
+                                        <input type="radio" required name="selectedPaymentOption" value="ONLINE"
+                                          id="onlineRadio" style="display: none;">
+                                      </div>
+                                    </div>
+                                    <%if(user.wallet.balance>0){%>
+                                      <div class="text-center">
+                                        <input type="checkbox" name="wallet" id="wallet" value="<%=user.wallet.balance%>"
+                                          disabled>
+                                        <span>Your wallet: ₹ <%=user.wallet.balance%></span>
+                                      </div>
+                                      <%}%>
+                                  </div>
+                                  <div class="foot d-flex justify-content-center mt-2">
+                                    <button class="btn btn-secondary" disabled id="confirmBtn" type="submit">Confirm
+                                      Order</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- order address -addd -->
+                          <div class="bg-secondary rounded-right  text-black" style=" height: 36rem; ">
+                            <div class="card   bg-dark rounded-0 bg-gradient text-capitalize text-white-50">
+                              <div class="card-header">
+                                <h4>order summary</h4>
+                              </div>
+                            </div>
+                            <div class="chekout-body2 w-100  ">
+                              <div class="  p-1 justify-content-center " style=" overflow-y: auto;height: 22.2rem;">
+                                <% let subtotal=0; %>
+                                  <% for (const cartItem of cartitems) { %>
+                                    <% const product=cartItem.cartitems; %>
+                                      <div class="col-md-12 mb-1 w-100 d-flex text-black justify-content-center ">
+                                        <div class="row d-flex  align-items-center w-100"
+                                          style=" background-color: #C0C0C0; border-radius: 5px;">
+                                          <input type="hidden" name="productId" value="<%=product._id%>">
+                                          <div class="col-3 bill-img d-flex justify-content-start "
+                                            style=" object-fit: cover;">
+                                            <img src="/uploads/<%= product.images[0] %>" alt=""
+                                              class="bg-light w-75 rounded" style="width: 100%;">
+                                          </div>
+                                          <div class="col-9 p-0 m-0 bill-details">
                                             <p>
-                                              <%= address.house %>, <%= address.city %>, <%= address.district %>, <%=
-                                                      address.state %>,<br>
-                                                      <%= address.post %>, <%= address.contact %>
+                                              <%= product.title %>
                                             </p>
+                                            <p class="" style="font-size: 12px;">Size : <%= product.size %>
+                                            </p>
+                                            <p class="" style="font-size: 12px;">Color : <%= product.color %>
+                                            </p>
+                                            <p class="" style="font-size: 12px;">Price: <%= product.price %>
+                                            </p>
+                                            <p class="" style="font-size: 12px;">Quantity: <%= product.quantity %>
+                                            </p>
+                                            <input type="hidden" name="qty" value="<%= product.quantity %>" id="">
+                                            <input type="hidden" name="price" id="" value="<%= product.price %>">
                                           </div>
-                                        </label>
+                                          <% subtotal +=product.price * product.quantity; %>
+                                        </div>
                                       </div>
-                                      <% }) %>
-                                        <% } %>
-                                          <div class="mt-1">
-                                            <a type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                              data-bs-target="#addressModal" id="new-address" title="ADD ADDRESS"><i
-                                                class='bx bx-plus-circle'></i>Add
-                                              address</a>
-                                          </div>
-                                </div>
+                                      <% } %>
+                              </div>
+                              <div class="d-flex justify-content-center"
+                                style="height: 10rem; background-color: #DCDCDC;">
                                 <div>
-                                  <hr>
-
-
-                                </div>
-                              </div>
-                              <div class="checkout-page w-100 h-100" id="page2">
-                                <!-- Content of the second page -->
-                                <div class="h-75">
-                                  <div class="d-flex  justify-content-center">
-                                    <h6 class="fw-light">Please select payment method to complete the order
-                                    </h6>
-                                  </div>
-                                  <div class="d-flex justify-content-around mt-2">
-                                    <div class="d-flex justify-content-center text-white rounded p-1 option"
-                                      data-option="cash" style="width: 200px; background: #1d1d1d;">
-                                      <h5>Cash on Delivery</h5>
-                                      <input type="radio" required name="selectedPaymentOption" value="COD"
-                                        id="cashRadio" style="display: none;">
-                                    </div>
-                                    <div class="d-flex text-white justify-content-center rounded p-1 option"
-                                      data-option="online" style="width: 200px; background: #1d1d1d;">
-                                      <h5>Pay via Online</h5>
-                                      <input type="radio" required name="selectedPaymentOption" value="ONLINE"
-                                        id="onlineRadio" style="display: none;">
-                                    </div>
-                                  </div>
-
-                                  <%if(user.wallet.balance>0){%>
+                                  <%const prevTotal=subtotal%>
+                                    <input type="hidden" id="prevTotal" name="prev" value="<%= prevTotal %>">
                                     <div class="text-center">
-                                      <input type="checkbox" name="wallet" id="wallet" value="<%=user.wallet.balance%>"
-                                        disabled>
-                                      <span>Your wallet: ₹ <%=user.wallet.balance%></span>
+                                      <p class="mb-0 font-monospace" id="discount"><b></b>
+                                      </p>
                                     </div>
-                                    <%}%>
-
-                                </div>
-                                <div class="foot d-flex justify-content-center mt-2">
-                                  <button class="btn btn-secondary" disabled id="confirmBtn" type="submit">Confirm
-                                    Order</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-
-
-
-
-
-
-
-
-                        </div>
-
-                        <!-- order address -addd -->
-
-
-
-
-                        <div class="bg-secondary rounded-right  text-black" style=" height: 36rem; ">
-                          <div class="card   bg-dark rounded-0 bg-gradient text-capitalize text-white-50">
-                            <div class="card-header">
-                              <h4>order summary</h4>
-                            </div>
-                          </div>
-                          <div class="chekout-body2 w-100  ">
-
-                            <div class="  p-1 justify-content-center " style=" overflow-y: auto;height: 22.2rem;">
-                              <% let subtotal=0; %>
-                                <% for (const cartItem of cartitems) { %>
-                                  <% const product=cartItem.cartitems; %>
-                                    <div class="col-md-12 mb-1 w-100 d-flex text-black justify-content-center ">
-                                      <div class="row d-flex  align-items-center w-100"
-                                        style=" background-color: #C0C0C0; border-radius: 5px;">
-                                        <input type="hidden" name="productId" value="<%=product._id%>">
-                                        <div class="col-3 bill-img d-flex justify-content-start "
-                                          style=" object-fit: cover;">
-                                          <img src="/uploads/<%= product.images[0] %>" alt=""
-                                            class="bg-light w-75 rounded" style="width: 100%;">
-                                        </div>
-                                        <div class="col-9 p-0 m-0 bill-details">
-                                          <p>
-                                            <%= product.title %>
-                                          </p>
-
-
-                                          <p class="" style="font-size: 12px;">Size : <%= product.size %>
-                                          </p>
-                                          <p class="" style="font-size: 12px;">Color : <%= product.color %>
-                                          </p>
-                                          <p class="" style="font-size: 12px;">Price: <%= product.price %>
-                                          </p>
-                                          <p class="" style="font-size: 12px;">Quantity: <%= product.quantity %>
-                                          </p>
-                                          <input type="hidden" name="qty" value="<%= product.quantity %>" id="">
-                                          <input type="hidden" name="price" id="" value="<%= product.price %>">
-                                        </div>
-                                        <% subtotal +=product.price * product.quantity; %>
+                                    <input type="hidden" id="discountinput" name="discountinput" value="">
+                                    <div class="bill-total d-flex justify-content-center">
+                                      <p class="p-0 mt-0 pt-0 font-monospace" id="subtotal"><b>Subtotal: ₹ <%= subtotal %>
+                                            </b></p>
+                                      <input type="hidden" name="totalamount" value="<%= subtotal %>" id="totalamount">
+                                    </div>
+                                    <div
+                                      class="h-25 d-flex flex-column justify-content-center align-items-center p-3 pb-1">
+                                      <div class="d-flex align-items-center">
+                                        <input type="text" id="coupon" name="coupon" placeholder="Enter your coupon code"
+                                          style="outline: 0;">
+                                        <button class="btn btn-dark p-0 ml-2 pr-1 pl-1" id="applyCouponBtn"
+                                          type="button">Apply</button>
                                       </div>
                                     </div>
-                                    <% } %>
-                            </div>
-
-                            <div class="d-flex justify-content-center"
-                              style="height: 10rem; background-color: #DCDCDC;">
-                              <div>
-                                <%const prevTotal=subtotal%>
-                                  <input type="hidden" id="prevTotal" name="prev" value="<%= prevTotal %>">
-                                  <div class="text-center">
-                                    <p class="mb-0 font-monospace" id="discount"><b></b>
-                                    </p>
-                                  </div>
-                                  <input type="hidden" id="discountinput" name="discountinput" value="">
-                                  <div class="bill-total d-flex justify-content-center">
-                                    <p class="p-0 mt-0 pt-0 font-monospace" id="subtotal"><b>Subtotal: ₹ <%= subtotal %>
-                                          </b></p>
-                                    <input type="hidden" name="totalamount" value="<%= subtotal %>" id="totalamount">
-                                  </div>
-                                  <div
-                                    class="h-25 d-flex flex-column justify-content-center align-items-center p-3 pb-1">
-                                    <div class="d-flex align-items-center">
-                                      <input type="text" id="coupon" name="coupon" placeholder="Enter your coupon code"
-                                        style="outline: 0;">
-                                      <button class="btn btn-dark p-0 ml-2 pr-1 pl-1" id="applyCouponBtn"
-                                        type="button">Apply</button>
+                                    <!-- <input type="hidden" name="couponCode" id="couponCode"> -->
+                                    <div class="w-100 d-flex justify-content-center">
+                                      <p class="text-success" id="alert_tag"></p>
                                     </div>
-                                  </div>
-                                  <!-- <input type="hidden" name="couponCode" id="couponCode"> -->
-                                  <div class="w-100 d-flex justify-content-center">
-                                    <p class="text-success" id="alert_tag"></p>
-                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
-
                         </div>
-
-
                       </div>
-
                     </div>
-
-
-
                   </div>
                 </div>
-              </div>
-
-          </form>
-
+            </form>
+          </div>
         </div>
-
-
+        <div class="w-100"><%- include('layout/footnav.ejs')%></div>
       </div>
-
-
 
 
       <% for (const cartItem of cartitems) { %>
@@ -271,7 +235,6 @@
           </div>
 
           <% } %>
-
 
 
 
@@ -346,7 +309,7 @@
 
 
 
-
+           
 
             <script>
 

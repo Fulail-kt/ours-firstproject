@@ -350,22 +350,7 @@ totalCartElement.textContent = `₹ ${updatedTotalAmount.toFixed()}/-`;
 });
 }
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
 
-//     const data = await response.json();
-
-    
-//     if (data.success) {
-//       const quantityElement = document.querySelector(`.quantity[data-product-id="${productId}"]`);
-//       quantityElement.textContent = data.quantity;
-     
-//     }
-//   } catch (error) {
-//     console.error("Error updating quantity:", error);
-//   }
-// }
 
 // Plus button click event
 function increaseQuantity(productId) {
@@ -379,11 +364,6 @@ function decreaseQuantity(productId) {
 
 
 
-// document.getElementById('searchButton').addEventListener('click', function() {
-//     const searchValue = document.getElementById('searchInput').value;
-//     const searchUrl = `/allproducts?searchTerm=${encodeURIComponent(searchValue)}`;
-//     window.location.href = searchUrl;
-// });
 
 document.getElementById('searchButton').addEventListener('click', function() {
     const searchValue = document.getElementById('searchInput').value;
@@ -396,9 +376,8 @@ document.getElementById('searchButton').addEventListener('click', function() {
 
     if (currentPage.includes('/allproducts')) {
         searchRoute = '/allproducts';
-    } else if (currentPage.includes('/myorders')) {
-        searchRoute = '/myorders';
-    } // Add more conditions as needed for other pages
+    } 
+    // Add more conditions as needed for other pages
 
     const searchUrl = `${searchRoute}?searchTerm=${encodeURIComponent(searchValue)}`;
     window.location.href = searchUrl;
