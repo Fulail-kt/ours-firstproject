@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     const sizeInputs = document.querySelectorAll('input[name="size"]');
     const addToCartButton = document.getElementById('addToCartButton');
-
+    const sizeAlert=document.getElementById('sizealert')
     sizeInputs.forEach(function(sizeInput) {
         sizeInput.addEventListener('change', function() {
             if (this.checked) {
                 addToCartButton.removeAttribute('disabled');
+                sizeAlert.style.display="none"
+
+            }else{
+              sizeAlert.style.display="block"
             }
         });
     });
@@ -72,21 +76,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+function addtowish(productId) {
+  fetch(`/add-to-wishlist/${productId}`, {
+    method: 'POST',
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Assuming the response is JSON. Adjust as needed.
+  })
+  .then(data => {
+    window.location.reload(); // Reload after successful response
+  })
+  .catch(error => {
+    console.error("Error adding product to wishlist:", error);
+  });
+}
 
-        function addtowish(productId){
-           
-
-            
-          fetch(`/add-to-wishlist/${productId}`,{
-            method:'POST',
-          }).then(response=>
-            window.location.reload()).then(data=>{
-              window.location.reload()
-            }).catch(error=>{
-              console.error("Error adding product to wishlist:", error)
-            })
-
-        }
 
 
 
@@ -114,9 +121,10 @@ document.addEventListener("DOMContentLoaded", function () {
               },
               body: JSON.stringify(data), 
                     })
-                      .then(response => window.location.reload())
+                      
                       .then(data => {
                         window.location.reload()
+                        
                       })
                       .catch(error => {
                         console.error('Error adding product to cart:', error);

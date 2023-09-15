@@ -1,30 +1,3 @@
-const cancelvalue = document.getElementById("cancelptag");
-
-function cancelOrder(id, consumer) {
-  $.ajax({
-    url: `/cancel-order/${id}`,
-    method: "PATCH",
-    data: { user: consumer, orderId: id },
-    success: (response) => {
-      window.location.href = "/myorders";
-    },
-    error: function (error) {
-      console.error("Error cancelling order:", error);
-    },
-  });
-}
-
-function returnRequest(id) {
-  $.ajax({
-    url: `/return-request/${id}`,
-    method: "PATCH",
-    success: (response) => {
-      window.location.reload()
-      // document.getElementById("cancelptag").innerHTML="return request"
-      // document.getElementById("return").remove();
-    },
-  });
-}
 
 
 const openBtn = document.querySelector("#cart-btn");

@@ -139,7 +139,7 @@
                                 <a
                                   class="btn btn-dark p-0 text-white-50"
                                   data-bs-toggle="modal"
-                                  data-bs-target="#orderDetails<%=order._id%>"
+                                  data-bs-target="#orderDetails<%= order._id %>"
                                   >Details</a
                                 >
                               </div>
@@ -444,14 +444,86 @@
     </div>
 
 
-
+    <%- include('layout/footer.ejs')%>
 
     <script>
      
 
-     
+     const cancelvalue = document.getElementById("cancelptag");
+
+     function cancelOrder(id, consumer) {
+  fetch(`/cancel-order/${id}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ user: consumer, orderId: id })
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Assuming the response is JSON. Adjust as needed.
+  })
+  .then(data => {
+    window.location.href = "/myorders";
+    // You can also perform other actions based on the response data if needed.
+    // For example, if the response is JSON, you can access properties like data.someProperty
+  })
+  .catch(error => {
+    console.error('Error cancelling order:', error);
+  });
+}
+
+
+// function cancelOrder(id, consumer) {
+//   $.ajax({
+//     url: `/cancel-order/${id}`,
+//     method: "PATCH",
+//     data: { user: consumer, orderId: id },
+//     success: (response) => {
+//       window.location.href = "/myorders";
+//     },
+//     error: function (error) {
+//       console.error("Error cancelling order:", error);
+//     },
+//   });
+// }
+
+// function returnRequest(id) {
+//   $.ajax({
+//     url: `/return-request/${id}`,
+//     method: "PATCH",
+//     success: (response) => {
+//       window.location.reload()
+//       // document.getElementById("cancelptag").innerHTML="return request"
+//       // document.getElementById("return").remove();
+//     },
+//   });
+// }
+
+function returnRequest(id) {
+  fetch(`/return-request/${id}`, {
+    method: "PATCH",
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Assuming the response is JSON. Adjust as needed.
+  })
+  .then(data => {
+    window.location.reload();
+    // You can also perform other actions based on the response data if needed.
+    // For example, if the response is JSON, you can access properties like data.someProperty
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
     </script>
 
 <script src="/javascript/myorders.js"></script>
-    <%- include('layout/footer.ejs')%>
+  
 

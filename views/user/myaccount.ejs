@@ -54,13 +54,16 @@
                     </div>
                     <div class="sidepanel_fk  " style="width: 260px;"></div>
                     <div class="col-md-9 col-lg-10 user_info" id="profile">
-                        <%if(user && user.wallet.balance>0){%>
+                        <%if(user ){%>
                             <div class="row m-right rounded ">
                                 <div class="col-md-3 offset-md p-0 m-0">
                                     <div class="card text-center">
                                         <div class="card-body p-0 m-0">
                                             <h5 class="card-title">Your Wallet</h5>
-                                            <h1 class="display-4">₹ <%=user.wallet.balance%>
+                                            <h1 class="display-4">₹ <%if(user.wallet.balance > 0){%>
+                                                <%=user.wallet.balance%>
+                                          <%  }else {%> 0.00
+                                          <%}%>
                                             </h1>
                                             <p class="card-text">Available Balance</p>
                                             <!-- <a href="#" class="btn btn-primary">View Transactions</a> -->
@@ -76,7 +79,7 @@
                                     <h5>Contact Details</h5>
                                     <a href="" id="edit-profilebtn">Edit</a>
                                 </div>
-                                <div class="userinfo_list">
+                                <div class="userinfo_list m-auto">
                                     <label for="">Your Name</label>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <p>
@@ -312,9 +315,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div style="z-index:10;"><%- include('layout/footnav.ejs')%></div>
-            </div>
+                
 <!-- <script src="/javascript/script.js"></script> -->
 <script src="/javascript/myaccounts.js"></script>
             <%- include('layout/footer.ejs')%>

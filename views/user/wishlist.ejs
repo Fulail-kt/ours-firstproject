@@ -92,8 +92,13 @@
                                     </p>
                                     <a href="/remove-from-wishlist/<%= item.product._id %>"
                                       class="btn detailsprd">Remove</a><br />
-                                    <a onclick="addtocart('<%= item.product._id %>')" id="addToCartButton"
-                                      class="btn cartprd ">ADD TO CART</a>
+                                      <%if(isCart){%>
+                                        
+                                      
+                                      <%}else{%>
+                                        <a onclick="addtocart('<%= item.product._id %>')" id="addToCartButton"
+                                          class="btn cartprd ">ADD TO CART</a>
+                                      <%}%>
                                   </div>
                                 </div>
                               </div>

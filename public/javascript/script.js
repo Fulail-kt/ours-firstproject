@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
       } else {
         subtotalElement.innerHTML = `<b>Subtotal: ₹ ${previousamount}<b>`;
-        totalAmountInput.value = subtotal;
+        totalAmountInput.value = previousamount;
         applyCoupon.disabled = false; // Enable coupon button
         
       }

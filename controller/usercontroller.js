@@ -567,6 +567,7 @@ const add_to_cart = async (req, res) => {
   const userId = req.session.userId;
 
   try {
+
     const user = await User.findOne({ _id: userId });
 
     if (user && user.cart) {
@@ -586,6 +587,10 @@ const add_to_cart = async (req, res) => {
       user.cart = [{
         product: productId,
         quantity: 1,
+        size: size,
+        color: color,
+        price: price,
+        total: totalPrice
       }];
     }
 
@@ -1276,6 +1281,9 @@ const cancelOrder = async (req, res) => {
       { new: true }
     );
 
+    const payment=updatedOrder.payment
+
+   
 
     console.log("payment method", updatedOrder.payment)
 
@@ -1486,18 +1494,16 @@ const wishlist = async (req, res) => {
       })
       .lean();
 
-    const cartProductIds = user.cart.map(cartItem => cartItem.product);
-
-    wishlist.wishlist.forEach(item => {
-      if (cartProductIds.includes(item.product._id)) {
-        // The specific product in the wishlist is in the cart
-        item.isCart = true;
-      }
-    });
-
-
-
-
+     
+      const cartProductIds = user.cart.map(item => item.product);
+      const wishlistProductIds = user.wishlist.map(item => item.product);
+      
+      wishlist.wishlist.forEach(item => {
+        if (item.product && cartProductIds.includes(item.product)) {
+          isCart = true;
+        }
+      });
+      
 
 
     res.render('user/wishlist', { user, cartitems, wishlist, isCart })
