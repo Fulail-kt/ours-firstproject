@@ -1,4 +1,3 @@
-
 const filter = document.querySelectorAll(".filter");
 
 filter.forEach((label) => {
@@ -67,6 +66,7 @@ filter.forEach((label) => {
 
 
 
+///////////////////////////////////////////////////////////////////////////
 
           const openBtn = document.querySelector("#cart-btn");
         const cart = document.querySelector("#sidecart");
@@ -89,108 +89,17 @@ filter.forEach((label) => {
           document.body.classList.remove("no-scroll");
         }
      
+    ///////////////////////////////////////////////////////////////////////////////////////
+    
+    
         
-        const menuOpenBtn = document.querySelector("#menu-btn");
-        const menu = document.querySelector("#menubar");
-        const menuclosebtn = document.querySelector("#menuclose_btn");
-        const overlay = document.getElementById("overlay_menu");
-        const add_cart = document.getElementById("add_cart");
-
-        menuOpenBtn.addEventListener("click", openMenu);
-        menuclosebtn.addEventListener("click", closeMenu);
-        overlay.addEventListener("click", closeMenu);
-        add_cart.addEventListener("click", openMenu);
-
-        function openMenu() {
-          menu.classList.add("open");
-          overlay.style.display = "block"; // Show the overlay
-          document.body.classList.add("no-scroll");
-        }
-
-        function closeMenu() {
-          menu.classList.remove("open");
-          overlay.style.display = "none"; // Hide the overlay
-          document.body.classList.remove("no-scroll");
-        }
 
 
-        function updateQuantity(productId, action) {
-            fetch("/update-quantity", {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              productId: productId,
-              action: action,
-            }),
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json(); // Parse the response body as JSON
-          })
-          .then(data => {
-            // This is the data received from the server
-            // Access 'success' and 'quantity' properties from 'data'
-            const { success, quantity, total } = data;
-            console.log(data); // 'true' if the request was successful
-            const quantityElement = document.querySelector(`.quantity[data-product-id="${productId}"]`);
-              quantityElement.textContent = quantity;
-          
-              // Update price
-              const priceElement = document.querySelector(`.priceForQty[data-product="${productId}"]`);
-              priceElement.textContent = `₹ ${total}/-`;
-            // document.getElementById('singleprdprice').innerHTML=`₹ ${quantity*singleprd}`
-            let updatedTotalAmount = 0;
-          const prdsTotal = document.getElementsByClassName("priceForQty");
-          
-          for (let i = 0; i < prdsTotal.length; i++) {
-            const priceText = prdsTotal[i].textContent;
-            const price = parseFloat(priceText.replace("₹", "").replace("/-", ""));
-            updatedTotalAmount += price;
-          }
-          
-          const totalCartElement = document.getElementById('totalCart');
-          totalCartElement.textContent = `₹ ${updatedTotalAmount.toFixed()}/-`;
-                          // $("#totalCart").text("₹" + updatedTotalAmount.toFixed(2) + "/-");
-           
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-          }
-          
-          //     if (!response.ok) {
-          //       throw new Error(`HTTP error! status: ${response.status}`);
-          //     }
-          
-          //     const data = await response.json();
-          
-              
-          //     if (data.success) {
-          //       const quantityElement = document.querySelector(`.quantity[data-product-id="${productId}"]`);
-          //       quantityElement.textContent = data.quantity;
-               
-          //     }
-          //   } catch (error) {
-          //     console.error("Error updating quantity:", error);
-          //   }
-          // }
-          
-          // Plus button click event
-          function increaseQuantity(productId) {
-            updateQuantity(productId, "increase");
-          }
-          
-          // Minus button click event
-          function decreaseQuantity(productId) {
-            updateQuantity(productId, "decrease");
-          }
-          
-          
-          
+        
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+
           // document.getElementById('searchButton').addEventListener('click', function() {
           //     const searchValue = document.getElementById('searchInput').value;
           //     const searchUrl = `/allproducts?searchTerm=${encodeURIComponent(searchValue)}`;

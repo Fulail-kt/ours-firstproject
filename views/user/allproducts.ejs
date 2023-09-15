@@ -132,33 +132,7 @@
       
       <script>
 
-
-      </script>
-
-      <script>
-        const openBtn = document.querySelector("#cart-btn");
-        const cart = document.querySelector("#sidecart");
-        const closeBtn = document.querySelector("#close_btn");
-        const overlaycart = document.getElementById("overlay_cart");
-
-        // overlaycart.addEventListener('click',closeCart)
-        openBtn.addEventListener("click", openCart);
-        closeBtn.addEventListener("click", closeCart);
-
-        function openCart() {
-          cart.classList.add("open");
-          overlaycart.style.display = "block";
-          document.body.classList.add("no-scroll");
-        }
-
-        function closeCart() {
-          cart.classList.remove("open");
-          overlaycart.style.display = "none";
-          document.body.classList.remove("no-scroll");
-        }
-      </script>
-      <script>
-        const menuOpenBtn = document.querySelector("#menu-btn");
+const menuOpenBtn = document.querySelector("#menu-btn");
         const menu = document.querySelector("#menubar");
         const menuclosebtn = document.querySelector("#menuclose_btn");
         const overlay = document.getElementById("overlay_menu");
@@ -180,9 +154,11 @@
           overlay.style.display = "none"; // Hide the overlay
           document.body.classList.remove("no-scroll");
         }
-
-        function changeQuentity(proId) { }
       </script>
+
+      
+
+      <script src="/javascript/allproducts.js"></script>
 
 </div>
 

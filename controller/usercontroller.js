@@ -10,6 +10,7 @@ const categoryModel = require('../models/category')
 const mongoose = require('mongoose');
 const Coupons = require('../models/coupon')
 const Banner = require('../models/banner')
+const crypto=require('crypto')
 require('dotenv').config();
 
 const Razorpay = require("razorpay");
