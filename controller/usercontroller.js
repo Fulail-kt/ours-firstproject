@@ -998,6 +998,11 @@ const confirm_order = async (req, res) => {
             amount = prev - userWallet;
 
             
+            const updatedUser = await User.findOneAndUpdate(
+              { _id: userId },
+              { $set: { 'wallet.balance': 0} },
+              { new: true }
+            );
           }
         }
         
@@ -1059,11 +1064,7 @@ const verifyPayment = async (req, res) => {
     const userId = req.session.userId
     
     const user = await User.findOne({_id:userId})
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: userId },
-      { $set: { 'wallet.balance': 0} },
-      { new: true }
-    );
+    
 
 
 
