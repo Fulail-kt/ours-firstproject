@@ -145,11 +145,12 @@
                               </div>
 
                               <div>
-                                <a
-                                  class="btn btn-light p-0"
-                                  href="/myorders/invoice/<%= order._id %>"
-                                  >Invoice</a
-                                >
+                                <% if(order.status === "cancelled" || order.status === "returned") { %>
+                                  <!-- Code to be executed if order status is "cancelled" or "returned" -->
+                                <% } else { %>
+                                  <a class="btn btn-light p-0" href="/myorders/invoice/<%= order._id %>">Invoice</a>
+                                <% } %>
+                                
                               </div>
                             </div>
                           </div>
@@ -339,27 +340,16 @@
                       </div>
                       <div class="row align-items-center mb-3">
                         <div class="col- d-flex flex-column align-items-center justify-content-center" style="width: 5rem">
-                          <% order.productDetails.forEach((product, index)=> {
-                            %> <% const imageId=`productImage_${index}`; %>
-                              <!-- Check if this is not the first image -->
-                              <% if (index !==0) { %>
-                                <img id="<%= imageId %>" style="
-                                          margin-top: -2rem;
-                                          transition: transform 0.5s;
-                                          transform-origin: center;
-                                        " src="/uploads/<%= product.images[0] %>" class="img-fluid rounded" alt="Product"
-                                  onmouseover="document.getElementById('<%= imageId %>').style.transform = 'scale(3)';"
-                                  onmouseout="document.getElementById('<%= imageId %>').style.transform = 'scale(1)';" />
-                                <% } else { %>
-                                  <!-- This is the first image, no margin-top needed -->
-                                  <img id="<%= imageId %>" style="
-                                          transition: transform 0.5s;
-                                          transform-origin: center;
-                                        " src="/uploads/<%= product.images[0] %>" class="img-fluid rounded" alt="Product"
-                                    onmouseover="document.getElementById('<%= imageId %>').style.transform = 'scale(3)';"
-                                    onmouseout="document.getElementById('<%= imageId %>').style.transform = 'scale(1)';" />
-                                  <% } %>
-                                    <% }); %>
+                          <% order.productDetails.forEach((product, index) => { %>
+                            <img id="image<%= index %>" style="
+                              transition: transform 0.5s;
+                              transform-origin: center;
+                              width: 2.7rem;
+                            " src="/uploads/<%=product.images[0] %>" class="img-fluid rounded" alt="Product"
+                             
+                            />
+                          <% }); %>
+                          
                         </div>
             
                         <div class="col-md text-center">
@@ -409,7 +399,8 @@
                         <%= order.status %>
                       </p>
                       <% if (order.status==="pending" ) { %>
-                        <button onclick="cancelOrder('<%= order._id %>')" type="button" class="btn btn-outline-danger">
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                        data-bs-target="#refundmodal<%=order._id %>">
                           Cancel
                         </button>
                         <% } %>
@@ -427,6 +418,37 @@
                 </div>
               </div>
             </div>
+
+
+            
+
+
+            <div class="modal fade" id="refundmodal<%= order._id %>" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+                <div class="modal-content " style="width: 300px;">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>
+
+                      <input type="radio" name="refund" id="" value="wallet">
+                      <input type="radio" name="refund" id="" value="bank">
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary"  onclick="cancelOrder('<%= order._id %>')">Open second modal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
             <% }) %>
               <% } else { %>
                 <div class="w-100 h-100 d-flex justify-content-center align-items-center">

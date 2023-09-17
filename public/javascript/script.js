@@ -90,28 +90,34 @@ function addAddress() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const walletCheckbox = document.getElementById('wallet');
-    const subtotalElement = document.getElementById('subtotal');
+    const totalElement = document.getElementById('Total');
     const totalAmountInput = document.getElementById('totalamount');
     const applyCoupon = document.getElementById('applyCouponBtn');
     const walletAmount = parseFloat(walletCheckbox.value);
     const previousamount = document.getElementById('prevTotal').value
-                  const discount = document.getElementById('discount');
+    const discount = document.getElementById('discount');
+    const walletAlert= document.getElementById('walletalert')
   
   
     walletCheckbox.addEventListener('change', function() {
       const isChecked = this.checked;
-      const subtotal = parseFloat(subtotalElement.innerText.split('₹')[1]);
+      const total = parseFloat(totalElement.innerText.split('₹')[1]);
   
+      let remainingAmount = Math.max(0, previousamount - walletAmount);
       if (isChecked) {
-        const remainingAmount = Math.max(0, previousamount - walletAmount);
-        subtotalElement.innerHTML = `<b>Subtotal: ₹ ${remainingAmount}<b>`;
+        walletAlert.innerHTML=`<b>Wallet: ₹ -${walletAmount}<b>`
+       
+        totalElement.innerHTML = `<b>Total: ₹ ${remainingAmount}<b>`;
         totalAmountInput.value = remainingAmount;
-        applyCoupon.disabled = true; // Disable coupon button
-    discount.innerHTML=`<del><b>Discount<b></del>`;
+        applyCoupon.disabled = true;
+        
+    discount.innerHTML=" ";
+    document.getElementById('alert_tag').innerHTML=""
         
       } else {
-        subtotalElement.innerHTML = `<b>Subtotal: ₹ ${previousamount}<b>`;
+        totalElement.innerHTML = `<b>Total: ₹ ${remainingAmount + walletAmount}<b>`;
         totalAmountInput.value = previousamount;
+        walletAlert.innerHTML=""
         applyCoupon.disabled = false; // Enable coupon button
         
       }

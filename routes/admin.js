@@ -36,7 +36,7 @@ router.get('/products',auth.isAdminLoggedIn, admin.products);
 router.post('/addproduct',auth.isAdminLoggedIn, upload.array('images', 5),admin.addproduct )
 router.post('/deleteproduct/:id', admin.deleteproduct)
 router.post('/editproduct/:id', upload.array('images', 5),admin.editproduct);
-
+router.patch('/deleteimg/:id',admin.deleteImg)
 
 
 

@@ -137,9 +137,6 @@
                             <img src="/uploads/<%= product.images[0] %>" alt=""
                               style="height: 80px; width: 100px; object-fit: contain;">
 
-
-
-
                           </td>
 
                           <td class="col ">
@@ -151,7 +148,6 @@
                               <!-- <a onclick="return confirm('Are You sure Want to Delete <%=product.title%>')"
                             href="/admin/deleteproduct/<%=product._id%>"  class="mx-2" style="color: red;"><i
                               class="bx bx-trash-alt ml-2"></i></a> -->
-
 
                               <form action="/admin/deleteproduct/<%= product._id %>" method="post">
                                 <input type="hidden" name="product" value="<%= product._id %>">
@@ -172,9 +168,6 @@
                         </tr>
                         <% }); %>
                     </tbody>
-
-                
-                
 
               </div>
             </div>
@@ -206,8 +199,6 @@
                 <form id="productForm" action="/admin/editproduct/<%=product._id%>" method="post"
                   enctype="multipart/form-data">
 
-
-
                   <div class="d-flex justify-content-around w-100">
                     <div class=""><input type="text" required name="title" id="titleInput" placeholder="Title"
                         value="<%= product.title %>"></div>
@@ -222,8 +213,6 @@
                     <div><input type="number" required id="quentity" name="stock" placeholder="Stock" min="1" max="500"
                         value="<%= product.stock %>" style="width: 6.8rem;"></div>
                   </div>
-
-
 
                   <div class="form-group d-flex justify-content-around mt-2">
                     <h6>Select Gender:</h6>
@@ -241,8 +230,7 @@
                     <label>Select Category:</label>
                     <select class="form-control" name="category">
                       
-                      
-                      
+
                             <div>
                               <option value="<%= product.category %>"><%=product.category%></option>
                               <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) { %>
@@ -258,8 +246,7 @@
                               <% } %>
                             </div>
                       
-                      
-                      
+
                     </select>
                   </div>
 
@@ -294,14 +281,34 @@
                         style="width: 40px; transition: transform 0.5s; transform-origin: center;"
                         onmouseover="this.style.transform = 'scale(3.6)';"
                         onmouseout="this.style.transform = 'scale(1)';">
-                      
+                        <button class="btn btn-close"  data-bs-toggle="modal" data-bs-target="#modalimgdlt<%= product._id %>" onclick="event.preventDefault();"></button>
                       </div>
 
-                          <!-- Add a "Delete" button/icon -->
-                          <a class="" onclick="deleteImage('<%= i %>');" style="font-size: 12px; padding: 0.1rem 0.25rem;">Del</a>
+                      <div ></div>
 
-      <!-- Add a hidden input field to flag the image for deletion -->
-      <input type="hidden" name="deleteImage_<%= i %>" id="deleteImage_<%= i %>" value="0">
+                      <!-- Add a "Delete" button/icon -->
+                      
+                    
+                      <div class="modal fade" id="modalimgdlt<%= product._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog d-flex justify-content-center">
+                          <div class="modal-content " style="width: 24rem; border-radius: 10px;">
+                            <div class="modal-header d-flex  bg-danger">
+                              <h5 class="modal-title text-white" style="margin-left: 30%;" id="exampleModalLabel">CONFIRMATION</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-0 d-flex justify-content-center">
+                             <p><u>Are you Sure Want to Delete?</u></p>
+                            </div>
+                            <div class="modal-footer d-flex m-0 p-0 justify-content-around" >
+                              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">NO</button>
+                             
+                                <button class="btn btn-outline-danger waves-effect custom-button" onclick="event.preventDefault(); deleteImage('<%= product._id %>','<%= product.images[i] %>');">YES</button>
+                        
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     <% } %>
                   </div>
 
@@ -317,73 +324,55 @@
         </div>
         <%}) %>
 
-
-
-
-
-
-
-
-       
-
-
           <!------------------------------------------- coupon modal----------------------l -->
 
-
-
-
           <!-- Button trigger modal -->
 
-
-
-
-
-
-
-
           <!-- Button trigger modal -->
-        
-
-         
-
-
-
 
 
 <script>
   
-function deleteImage(index) {
-  console.log(`Delete button clicked for index ${index}`);
-  // Toggle the hidden input field value between 0 and 1
-  const deleteInput = document.getElementById(`deleteImage_${index}`);
-  deleteInput.value = (deleteInput.value === "1") ? "0" : "1";
+  function deleteImage(prdId, imgId) {
+
+  fetch(`/admin/deleteimg/${prdId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ imgId })
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    window.location.reload();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
+
 
 </script>
 
 
 
 
-          <script>
+<script>
 
 
-            function viewImage(event) {
-              document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
-            }
+ function viewImage(event) {
+document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
+}
 
 // Add event listener to gender radio buttons
-  const maleRadio = document.getElementById('male');
-  const femaleRadio = document.getElementById('female');
-  const categoryContainer = document.getElementById('categoryContainer');
 
-  maleRadio.addEventListener('click', function () {
-    categoryContainer.style.display = 'block';
-  });
 
-  femaleRadio.addEventListener('click', function () {
-    categoryContainer.style.display = 'block';
-  });
-          </script>
+
+
+  
+</script>
 
 
 <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
@@ -394,4 +383,4 @@ function deleteImage(index) {
                       });
                   </script>
 
-          <%- include('adminlayout/adminfooter.ejs') %>
+<%- include('adminlayout/adminfooter.ejs') %>

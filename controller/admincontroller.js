@@ -8,7 +8,7 @@ const subcategoryModel = require("../models/subcategory");
 const order = require("../models/order");
 const { Parser } = require('json2csv')
 const Banner=require('../models/banner')
-
+const { ObjectId } = require('mongoose').Types;
 
 
 const banner= async(req,res)=>{
@@ -326,16 +326,16 @@ const editproduct = async (req, res) => {
     updatedProductData.images = existingProduct.images;
   }
 
-  if (existingProduct && existingProduct.images && existingProduct.images.length > 0) {
-    for (let i = 0; i < existingProduct.images.length; i++) {
-      const deleteFlag = req.body[`deleteImage_${i}`];
-      if (deleteFlag === '1') {
-        // Delete the image from the server (implement this logic)
-        // Remove the image from the images array
-        existingProduct.images.splice(i, 1);
-      }
-    }
-  }
+  // if (existingProduct && existingProduct.images && existingProduct.images.length > 0) {
+  //   for (let i = 0; i < existingProduct.images.length; i++) {
+  //     const deleteFlag = req.body[`deleteImage_${i}`];
+  //     if (deleteFlag === '1') {
+  //       // Delete the image from the server (implement this logic)
+  //       // Remove the image from the images array
+  //       existingProduct.images.splice(i, 1);
+  //     }
+  //   }
+  // }
 
   try {
     const updatedProduct = await product.findOneAndUpdate(
@@ -354,6 +354,52 @@ const editproduct = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ success: false, message: "Error updating product" });
+  }
+};
+
+
+const deleteImg = async (req, res) => {
+  console.log("ghjkl");
+  try {
+
+    const imageId=req.body.imgId
+    console.log(imageId);
+
+    const prdId = req.params.id;
+
+    const prd=await product.findById(prdId)
+    console.log(prd);
+    
+    if (!prd) {
+      return res.status(404).json({ response: "Product not found" });
+    }
+
+    // Find the index of the image to delete by matching the image name
+    let indexToDelete = -1;
+    for (let i = 0; i < prd.images.length; i++) {
+      if (prd.images[i] === imageId) {
+        indexToDelete = i;
+        break;
+      }
+    }
+    
+
+    console.log(indexToDelete);
+
+    if (indexToDelete === -1) {
+      return res.status(404).json({ response: "Image not found in product" });
+    }
+
+    // Remove the image from the images array
+    prd.images.splice(indexToDelete, 1);
+
+    // Save the updated product back to the database
+    await prd.save();
+
+    res.status(200).json({ response: "ok" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ response: "error" });
   }
 };
 
@@ -759,7 +805,7 @@ module.exports = {
 
   adminlogin, adminlogout,
 
-  products, addproduct, addcategories, deleteproduct, editproduct,
+  products, addproduct, addcategories, deleteproduct, editproduct,deleteImg,
 
   LoadOrder, order_delete, orderStatus,
 

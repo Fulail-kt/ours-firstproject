@@ -79,9 +79,9 @@
                                         <% }) %>
                                           <% } %>
                                             <div class="mt-1">
-                                              <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                              <a type="button" class="btn btn-warning text-black-50 p-0" data-bs-toggle="modal"
                                                 data-bs-target="#addressModal" id="new-address" title="ADD ADDRESS"><i
-                                                  class='bx bx-plus-circle'></i>Add
+                                                  class='bx bx-plus-circle'></i>
                                                 address</a>
                                             </div>
                                   </div>
@@ -135,7 +135,7 @@
                             </div>
                             <div class="chekout-body2 w-100  ">
                               <div class="  p-1 justify-content-center " style=" overflow-y: auto;height: 22.2rem;">
-                                <% let subtotal=0; %>
+                                <% let Total=0; %>
                                   <% for (const cartItem of cartitems) { %>
                                     <% const product=cartItem.cartitems; %>
                                       <div class="col-md-12 mb-1 w-100 d-flex text-black justify-content-center ">
@@ -157,12 +157,17 @@
                                             </p>
                                             <p class="" style="font-size: 12px;">Price: <%= product.price %>
                                             </p>
-                                            <p class="" style="font-size: 12px;">Quantity: <%= product.quantity %>
-                                            </p>
+                                            <div class="d-flex justify-content-between">
+                                              <p class="" style="font-size: 12px;">Quantity: <%= product.quantity %>
+                                              </p>
+                                              <p class="text-end fw-bold" style="font-size: 12px; margin-right: 2rem;">Subtotal: <%= product.quantity*product.price %>
+                                              </p>
+                                            </div>
+                                            
                                             <input type="hidden" name="qty" value="<%= product.quantity %>" id="">
                                             <input type="hidden" name="price" id="" value="<%= product.price %>">
                                           </div>
-                                          <% subtotal +=product.price * product.quantity; %>
+                                          <% Total +=product.price * product.quantity; %>
                                         </div>
                                       </div>
                                       <% } %>
@@ -170,25 +175,27 @@
                               <div class="d-flex justify-content-center"
                                 style="height: 10rem; background-color: #DCDCDC;">
                                 <div>
-                                  <%const prevTotal=subtotal%>
+                                  <%const prevTotal=Total%>
                                     <input type="hidden" id="prevTotal" name="prev" value="<%= prevTotal %>">
                                     <div class="text-center">
                                       <p class="mb-0 font-monospace" id="discount"><b></b>
                                       </p>
+                                      <p class="mb-0 font-monospace" id="walletalert" value=""></p>
                                     </div>
                                     <input type="hidden" id="discountinput" name="discountinput" value="">
+                                   
                                     <div class="bill-total d-flex justify-content-center">
-                                      <p class="p-0 mt-0 pt-0 font-monospace" id="subtotal"><b>Subtotal: ₹ <%= subtotal %>
+                                      <p class="p-0 mt-0 pt-0 font-monospace" id="Total"><b>Total: ₹ <%= Total %>
                                             </b></p>
-                                      <input type="hidden" name="totalamount" value="<%= subtotal %>" id="totalamount">
+                                      <input type="hidden" name="totalamount" value="<%= Total %>" id="totalamount">
                                     </div>
                                     <div
                                       class="h-25 d-flex flex-column justify-content-center align-items-center p-3 pb-1">
                                       <div class="d-flex align-items-center">
                                         <input type="text" id="coupon" name="coupon" placeholder="Enter your coupon code"
-                                          style="outline: 0;">
-                                        <button class="btn btn-dark p-0 ml-2 pr-1 pl-1" id="applyCouponBtn"
-                                          type="button">Apply</button>
+                                          style=" border-radius: 10px; background-color: transparent;">
+                                        <button class="btn btn-outline-dark   " id="applyCouponBtn"
+                                          type="button" style="border-radius: 10px; margin-left: .2rem; letter-spacing: .2px; padding: 1px 5px 1px 5px;">Apply</button>
                                       </div>
                                     </div>
                                     <!-- <input type="hidden" name="couponCode" id="couponCode"> -->
@@ -329,7 +336,7 @@
 
 
                 const discountElement = document.getElementById('discount');
-                const subtotalElement = document.getElementById('subtotal');
+                const subtotalElement = document.getElementById('Total');
                 subtotalElement.style.fontFamily = '"Courier New", monospace';
                 discountElement.style.fontFamily = '"Courier New", monospace';
                 const discountInput = document.getElementById('discountinput');
@@ -350,11 +357,11 @@
                 console.log(data)
                 if (data.success) {
                   // Update the displayed subtotal with the discounted price
-                  document.getElementById('subtotal').innerHTML = `<b>Subtotal: ₹ ${data.discountedPrice}</b>`;
+                  document.getElementById('Total').innerHTML = `<b>Total: ₹ ${data.discountedPrice}</b>`;
                   totalamountInput.value = data.discountedPrice; // Update the totalamount field
                   document.getElementById('alert_tag').innerHTML = `${data.message}`;
 
-                  discountElement.innerHTML = `<b>Discount: ₹ ${data.discount}<b>`;
+                  discountElement.innerHTML = `<b>Discount: ₹ -${data.discount}<b>`;
 
 
                   discountInput.value = data.discount;

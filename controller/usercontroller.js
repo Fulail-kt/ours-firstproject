@@ -900,7 +900,7 @@ const confirm_order = async (req, res) => {
       if (prev > 0) {
 
 
-        
+        let walletused;
 
        
 
@@ -910,12 +910,12 @@ const confirm_order = async (req, res) => {
           const userId = req.session.userId;
           const user = await User.findById(userId);
           let userWallet = user.wallet.balance;
-        
+          
           if (userWallet >= prev) {
 
 
             userWallet = userWallet - prev;
-
+            
         
             if (Array.isArray(productId)) {
               productId.forEach((product, index) => {
@@ -998,11 +998,9 @@ const confirm_order = async (req, res) => {
             amount = prev - userWallet;
 
             
-            const updatedUser = await User.findOneAndUpdate(
-              { _id: userId },
-              { $set: { 'wallet.balance': 0} },
-              { new: true }
-            );
+           walletused=true;
+
+           
           }
         }
         
@@ -1013,6 +1011,7 @@ const confirm_order = async (req, res) => {
 
         req.session.orderlist = req.body;
         req.session.orderamount = amount;
+        req.session.usedwallet=walletused;
 
         const randomOrderID = Math.floor(Math.random() * 1000000).toString();
         const options = {
@@ -1061,11 +1060,26 @@ const confirm_order = async (req, res) => {
 const verifyPayment = async (req, res) => {
   try {
 
+    
     const userId = req.session.userId
     
     const user = await User.findOne({_id:userId})
     
+    if(req.session.usedwallet){
+      const wallet =req.session.usedwallet
 
+      if(wallet){
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: userId },
+          { $set: { 'wallet.balance': 0} },
+          { new: true }
+        );
+
+
+        delete req.session.usedwallet
+      }
+      
+    }
 
 
     
