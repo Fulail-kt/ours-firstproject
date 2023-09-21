@@ -15,6 +15,20 @@
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
 
+
+  <!-- Bootstrap CSS -->
+
+
+<!-- Owl Carousel CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+<!-- Bootstrap JavaScript (optional, for certain features) -->
+
+
+<!-- Owl Carousel JavaScript -->
+
+
   <title>Ours.</title>
 </head>
 
@@ -24,6 +38,8 @@
     <%- include('layout/usermodals.ejs')%>
 
 
+
+    
     
     
     <div class="container-fluid product-section w-100">
@@ -32,46 +48,52 @@
          <img src="" style="width:100%; height:100%;" alt="">
         </div> -->
 
+<!-- Carousel wrapper -->
+<div id="carouselMaterialStyle" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+  <!-- Indicators -->
+  <div class="carousel-indicators">
+    <% for(let i=0; i < banner.length; i++) { %>
+      <button type="button" data-bs-target="#carouselMaterialStyle" data-bs-slide-to="<%= i %>" class="<%= i === 0 ? 'active' : '' %>" aria-label="Slide <%= i + 1 %>"></button>
+    <% } %>
+  </div>
 
-        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <% for(let i=0; i < banner.length; i++) { %>
-
-              <div class="carousel-item <%= i === 0 ? 'active' : '' %> " style="width: 100%;height: 100%;">
-                <a href=""><img src="/uploads/<%= banner[i].image %>" class="d-block w-100" alt="Image <%= i + 1 %>"></a>
-              </div>
-
-
-              <div class="text-container">
-                <% if(banner[i].offer) { %>
-                  <p class="offer-text">
-                    <%= banner[i].offer %>
-                  </p>
-                  <% } %>
-
-                    <% if(banner[i].title) { %>
-                      <p class="title-text">
-                        <%= banner[i].title %>
-                      </p>
-                      <% } %>
-              </div>
-          </div>
-
+  <!-- Inner -->
+  <div class="carousel-inner rounded-5 shadow-4">
+    <% for(let i=0; i < banner.length; i++) { %>
+      <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+        <a href=""><img src="/uploads/<%= banner[i].image %>" class="d-block w-100" alt="Image <%= i + 1 %>"></a>
+        <div class="carousel-caption d-none d-md-block">
+          <% if(banner[i].offer) { %>
+            <p class="offer-text"><%= banner[i].offer %></p>
           <% } %>
-
+          <% if(banner[i].title) { %>
+            <p class="title-text"><%= banner[i].title %></p>
+          <% } %>
         </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
       </div>
+    <% } %>
+  </div>
+  <!-- Inner -->
+
+  <!-- Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselMaterialStyle" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselMaterialStyle" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<!-- Carousel wrapper -->
+
+       
 
 
+      
+
+       
 
 
 
@@ -217,23 +239,30 @@
        
       </style>
 
+<script>
+  $(document).ready(function(){
+  var totalImages = $('.owl-carousel .carousel-item').length;
+
+  $('.owl-carousel').owlCarousel({
+    items: totalImages, // Set the number of items dynamically based on total images
+    loop: true, // Infinite loop
+    margin: 10, // Space between items
+    nav: true, // Navigation arrows
+    responsive:{
+      0:{
+        items:1
+      },
+      600:{
+        items: totalImages >= 3 ? 3 : totalImages // Set to a maximum of 3 if there are fewer than 3 images
+      }
+    }
+  });
+});
+
+
+</script>
       <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          let carousel = document.getElementById('carouselExample');
-
-          carousel.addEventListener('slid.bs.carousel', function () {
-            let activeItem = this.querySelector('.carousel-item.active');
-            let activeIndex = Array.from(activeItem.parentElement.children).indexOf(activeItem);
-
-            let textContainer = activeItem.querySelector('.text-container');
-
-            if (banner[activeIndex].title || banner[activeIndex].offer) {
-              textContainer.style.display = 'block';
-            } else {
-              textContainer.style.display = 'none';
-            }
-          });
-        });
+        
 
 
 
@@ -298,6 +327,8 @@
 
 
       </script>
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/js/bootstrap.min.js"></script>
