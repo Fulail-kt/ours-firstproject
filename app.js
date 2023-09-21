@@ -13,16 +13,22 @@ require('dotenv').config();
 
 
 
-mongoose.connect("mongodb+srv://muhamedfulail77:fIxrFl4f8N2sN7gY@home.ez5skag.mongodb.net/?retryWrites=true&w=majority").then(()=>{
+
+// ======================================= MONGODB CONNNECTION=========================================
+
+
+const URL=process.env.MONGO_URL
+
+mongoose.connect(URL).then(()=>{
     console.log("Mongodb connected")
 }).catch((error)=>{
  console.log(error.message)
 })
 
-
-
 module.exports=mongoose.connection;
 
+
+// ======================================= MONGODB CONNNECTION=========================================
 
 
 
