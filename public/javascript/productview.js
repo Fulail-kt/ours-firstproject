@@ -80,19 +80,15 @@ function addtowish(productId) {
   fetch(`/add-to-wishlist/${productId}`, {
     method: 'POST',
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json(); // Assuming the response is JSON. Adjust as needed.
-  })
   .then(data => {
-    window.location.reload(); // Reload after successful response
+    window.location.reload();
   })
   .catch(error => {
-    console.error("Error adding product to wishlist:", error);
+    console.error('Error adding product to wishlist:', error);
   });
 }
+
+
 
 
 

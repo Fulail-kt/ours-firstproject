@@ -105,7 +105,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
       let remainingAmount = Math.max(0, previousamount - walletAmount);
       if (isChecked) {
-        walletAlert.innerHTML=`<b>Wallet: ₹ -${walletAmount}<b>`
+
+        if(walletAmount>=previousamount){
+          walletAlert.innerHTML=`<b>Wallet: ₹ -${previousamount}<b>`
+        }else{
+          walletAlert.innerHTML=`<b>Wallet: ₹ -${walletAmount}<b>`
+        }
+       
        
         totalElement.innerHTML = `<b>Total: ₹ ${remainingAmount}<b>`;
         totalAmountInput.value = remainingAmount;
@@ -115,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('alert_tag').innerHTML=""
         
       } else {
-        totalElement.innerHTML = `<b>Total: ₹ ${remainingAmount + walletAmount}<b>`;
+        totalElement.innerHTML = `<b>Total: ₹ ${previousamount}<b>`;
         totalAmountInput.value = previousamount;
         walletAlert.innerHTML=""
         applyCoupon.disabled = false; // Enable coupon button

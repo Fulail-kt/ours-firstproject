@@ -73,7 +73,7 @@
 
       <div class="col-md-9 col-lg-10 my-orders-list">
         <div class="w-100 h-100">
-          <!-- <% console.log(orders)%> -->
+       
           <section class="h-100 gradient-custom">
             <% if (orders.length> 0) { %>
             <div class="container py-5 h-100">
@@ -399,10 +399,16 @@
                         <%= order.status %>
                       </p>
                       <% if (order.status==="pending" ) { %>
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                        data-bs-target="#refundmodal<%=order._id %>">
-                          Cancel
-                        </button>
+                        <% if(order.payment==="ONLINE"){%>
+                          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                          data-bs-target="#refundmodal<%=order._id %>">
+                            Cancel
+                          </button>
+                        <%}else{%>
+                          <button type="button" class="btn btn-outline-danger" onclick="cancelOrder('<%= order._id %>')" >
+                            Cancel
+                          </button>
+                          <% } %>
                         <% } %>
                           <% if (order.status==="delivered" ) { %>
                             <% const orderDate=new Date(order.orderDate); %>
@@ -410,7 +416,7 @@
                                 <% const timeDifference=currentDate - orderDate; %>
                                   <% const daysDifference=Math.floor(timeDifference / (1000 * 60 * 60 * 24)); %>
                                     <% if (daysDifference <=7) { %>
-                                      <a id="retrun" onclick="returnRequest('<%=order._id%>')" class="btn btn-outline-warning">Return</a>
+                                      <a id="retrun"  class="btn btn-outline-warning " data-bs-toggle="modal" data-bs-target="#rtnrefundmodal<%=order._id %>" >Return</a>
                                       <% } %>
                                         <% } %>
                     </div>
@@ -427,19 +433,54 @@
               <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
                 <div class="modal-content " style="width: 300px;">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Choose refund option</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="modal-body">
-                    <div>
-
-                      <input type="radio" name="refund" id="" value="wallet">
-                      <input type="radio" name="refund" id="" value="bank">
+                  <form action="" onsubmit="cancelOrder('<%= order._id %>')" >
+                    <div class="modal-body">
+                      <div class="d-flex justify-content-around">
+                        <label id="lb_rfd" class="border p-1 rounded" for="rfd">
+                          <input type="radio" name="refund" required id="rfd" class="refund" value="wallet" >To Wallet
+                        </label>
+                        <label id="lb_wlt" class="border p-1 rounded" for="wlt">
+                          <input type="radio" name="refund" required id="wlt" class="refund" value="bank">To Bank
+                        </label>
+                      </div>
                     </div>
+                    
+                    <div class="modal-footer d-flex justify-content-center">
+                      <button class="btn btn-primary" type="submit" >Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            
+
+
+
+            <div class="modal fade" id="rtnrefundmodal<%= order._id %>" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+                <div class="modal-content " style="width: 300px;">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Choose refund option</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <div class="modal-footer">
-                    <button class="btn btn-primary"  onclick="cancelOrder('<%= order._id %>')">Open second modal</button>
-                  </div>
+                  <form action="" onsubmit="returnRequest('<%=order._id%>')">
+                    <div class="modal-body">
+                      <div class="d-flex justify-content-around">
+                        <label id="lb_rfd" class="border p-1 rounded" for="rfd">
+                          <input type="radio" name="rtnrefund" required  id="rfd" class="refund" value="wallet">To Wallet
+                        </label>
+                        <label id="lb_wlt" class="border p-1 rounded" for="wlt">
+                          <input type="radio" name="rtnrefund" required id="wlt" class="refund" value="bank">To Bank
+                        </label>
+                      </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                      <button class="btn btn-primary"   type="submit">Submit</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -468,18 +509,28 @@
 
     <%- include('layout/footer.ejs')%>
 
+
     <script>
-     
+      
+
+
+    </script>
+  
+    <script>
+
 
      const cancelvalue = document.getElementById("cancelptag");
 
-     function cancelOrder(id, consumer) {
+     function cancelOrder(id) {
+      console.log('ghjkl')
+      const selectedRefund = document.querySelector('input[name="refund"]:checked')?.value || "";
+     
   fetch(`/cancel-order/${id}`, {
     method: "PATCH",
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ user: consumer, orderId: id })
+    body: JSON.stringify({ refund: selectedRefund  })
   })
   .then(response => {
     if (!response.ok) {
@@ -496,6 +547,8 @@
     console.error('Error cancelling order:', error);
   });
 }
+
+
 
 
 // function cancelOrder(id, consumer) {
@@ -525,8 +578,14 @@
 // }
 
 function returnRequest(id) {
-  fetch(`/return-request/${id}`, {
+  const selectedRefund = document.querySelector('input[name="rtnrefund"]:checked').value;
+  console.log(selectedRefund)
+  fetch(`/return-request/${id}`,{
     method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ refund: selectedRefund, })
   })
   .then(response => {
     if (!response.ok) {
@@ -535,7 +594,7 @@ function returnRequest(id) {
     return response.json(); // Assuming the response is JSON. Adjust as needed.
   })
   .then(data => {
-    window.location.reload();
+    // window.location.reload();
     // You can also perform other actions based on the response data if needed.
     // For example, if the response is JSON, you can access properties like data.someProperty
   })

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="radio" id="option1" name="options" >
+<label for="option1" style="cursor:pointer;">Option 1</label>
+
+<input type="radio" id="option2" name="options" >
+<label for="option2" style="cursor:pointer;">Option 2</label>
+
+
+
+
+
+
+
+<div class="modal-body">
+    <div class="d-flex justify-content-around">
+      <label id="lb_rfd" class="border p-1 rounded" for="rfd">
+        <input type="radio" name="refund" id="rfd" class="refund" value="wallet" >To Wallet
+      </label>
+      <label id="lb_wlt" class="border p-1 rounded" for="wlt">
+        <input type="radio" name="refund" id="wlt" class="refund"  value="bank">To Bank
+      </label>
+    </div>
+  </div>
+  
+  <div class="modal-footer d-flex justify-content-center">
+    <button class="btn btn-primary" disabled id="cancelbtn" onclick="cancelOrder('<%= order._id %>')">Submit</button>
+  </div>
+</body>
+</html>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+  const toWalletRadio = document.getElementById("rfd");
+  const toBankRadio = document.getElementById('wlt');
+  const cancelbtn = document.getElementById('cancelbtn');
+
+  // Function to enable/disable submit button based on radio button status
+  function updateSubmitButton() {
+    if (toWalletRadio.checked || toBankRadio.checked) {
+      cancelbtn.removeAttribute('disabled');
+    } else {
+      cancelbtn.setAttribute('disabled', true);
+    }
+  }
+
+  // Add event listeners to radio buttons
+  toWalletRadio.addEventListener('change', updateSubmitButton);
+  toBankRadio.addEventListener('change', updateSubmitButton);
+
+  // Initial check on page load
+  updateSubmitButton();
+});
+
+</script>

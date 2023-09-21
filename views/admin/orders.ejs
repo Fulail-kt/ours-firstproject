@@ -112,7 +112,16 @@
                       <option name="newValue" value="out for delivery">Out for Delivery</option>
                       <option name="newValue" value="delivered">Delivered</option>
                       <option name="newValue" value="cancelled">Cancelled</option>
+                      <%if(data.status==="Refund requested"){%>
+                      
+                        <option name="newValue" value="refund">Refund Approve</option>
+                      <%}%>
+                      <%if(data.status==="Return requested"){%>
                       <option name="newValue" value="returned">Return Approve</option>
+                      <%}%>
+                      <%if(data.status==="Return & Refund requested"){%>
+                        <option name="newValue" value="refund & returned">Refund & Return Approve</option>
+                      <%}%>
                 
                     </select>
                     <button type="submit" id="submitButton<%= data._id %>" style="display: none;">Submit</button>

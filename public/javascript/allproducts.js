@@ -1,20 +1,43 @@
-const filter = document.querySelectorAll(".filter");
+const maleLabels = document.querySelectorAll('label[for^="male-subcategory"]');
+const femaleLabels = document.querySelectorAll('label[for^="female-subcategory"]');
 
-filter.forEach((label) => {
-  const input = label.querySelector('input[type="radio"]');
+function handleCategoryChange(labels) {
+  labels.forEach(label => {
+    label.addEventListener('click', () => {
+      const radio = label.querySelector('input[type="radio"]');
+      if (!radio.checked) {
+        labels.forEach(otherLabel => {
+          if (otherLabel !== label) {
+            const otherRadio = otherLabel.querySelector('input[type="radio"]');
+            otherLabel.style.borderColor = "";
+            otherRadio.checked = false;
+          }
+        });
 
-  input.addEventListener("change", () => {
-    filter.forEach((otherLabel) => {
-      otherLabel.style.borderColor = "#bdbdbdda"; // Reset border color for all labels
+        labels.forEach(label => {
+          label.style.borderColor = "#bdbdbdda"; // Reset all border colors
+        });
+
+        label.style.borderColor = "#000"; // Set border color for the selected label
+        radio.checked = true;
+
+        if (labels === femaleLabels) {
+          maleLabels.forEach(maleLabel => {
+            maleLabel.style.borderColor = "#bdbdbdda"; // Reset border color for male labels
+          });
+        } else if (labels === maleLabels) {
+          femaleLabels.forEach(femaleLabel => {
+            femaleLabel.style.borderColor = "#bdbdbdda"; // Reset border color for female labels
+          });
+        }
+      }
     });
-
-    if (input.checked) {
-      label.style.borderColor = "#000"; // Set border color for the selected label
-    } else {
-      label.style.borderColor = "#bdbdbdda"; // Reset border color if radio is not checked
-    }
   });
-});
+}
+
+handleCategoryChange(maleLabels);
+handleCategoryChange(femaleLabels);
+
 
 
 

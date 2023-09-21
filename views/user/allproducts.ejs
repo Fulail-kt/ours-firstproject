@@ -22,25 +22,23 @@
                       <% if (malecategory && malecategory.subcategories && malecategory.subcategories.length> 0) { let
                         indexCounter = 0;
                         malecategory.subcategories.forEach(subcategory => { %>
-                          <label for="subcategory<%= indexCounter %>" class="filter p-0 d-flex justify-content-center" style="border: 1px solid #bdbdbdda; display: inline-block;  ">
-                            <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>" style="display: none" />
+                          <label for="male-subcategory<%= indexCounter %>" class="filter p-0 d-flex justify-content-center" style="border: 1px solid #bdbdbdda; display: inline-block;  ">
+                            <input type="radio" id="male-subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>"  />
                             <%= subcategory.name %>
                           </label>
-                         
-
-                        <% indexCounter++; }); } %>
-
-                          <h5>Women</h5>
-                          <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) {
-                            let indexCounter = 0;
-                            femalecategory.subcategories.forEach(subcategory => { %>
-                              <label for="subcategory<%= indexCounter %>" class="filter p-0 d-flex justify-content-center" style="border: 1px solid #bdbdbdda; display: inline-block;">
-                                <input type="radio" id="subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>" style="display: none" />
-                                <%= subcategory.name %>
-                              </label>
-                              <% indexCounter++; }); 
-                          } %>
-                          
+                          <% indexCounter++; }); } %>
+                        
+                        <h5>Women</h5>
+                        <% if (femalecategory && femalecategory.subcategories && femalecategory.subcategories.length > 0) {
+                          let indexCounter = 0;
+                          femalecategory.subcategories.forEach(subcategory => { %>
+                            <label for="female-subcategory<%= indexCounter %>" class="filter p-0 d-flex justify-content-center" style="border: 1px solid #bdbdbdda; display: inline-block;  ">
+                              <input type="radio" id="female-subcategory<%= indexCounter %>" name="category" value="<%= subcategory.name %>"  />
+                              <%= subcategory.name %>
+                            </label>
+                            <% indexCounter++; }); 
+                        } %>
+                        
 
                               <!-- Add more checkboxes for categories -->
                     </div>
@@ -128,6 +126,16 @@
         <%- include('layout/footnav.ejs')%>
       </div>
 
+      <style>
+        label.filter {
+  border: 1px solid #bdbdbdda;
+}
+
+label.filter.selected {
+  border: 1px solid #000;
+}
+
+      </style>
 
       
       <script>

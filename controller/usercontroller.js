@@ -605,40 +605,30 @@ const add_to_cart = async (req, res) => {
 
 
 const add_to_wishlist = async (req, res) => {
-  
   const productId = req.params.id;
-  
- 
   const userId = req.session.userId;
 
   try {
     const user = await User.findOne({ _id: userId });
 
     if (user && user.wishlist) {
-
       user.wishlist.push({
         product: productId,
-
       });
-
-
     } else {
-
       user.wishlist = [{
         product: productId,
-
       }];
     }
 
     await user.save();
 
-    res.redirect('/productview');
+    res.status(200).json({ response: 'ok' });
 
   } catch (e) {
     console.log(e.message)
   }
 }
-
 
 
 const update_quantity = async (req, res) => {
@@ -1227,7 +1217,7 @@ const myorders = async (req, res) => {
           "cartitems.stock": 1,
           "cartitems.images": 1,
           "cartitems._id": 1,
-          "cartitems.quantity": "$cart.quantity" // Include product quantity in cart
+          "cartitems.quantity": "$cart.quantity" 
         }
       }
     ]);
@@ -1235,7 +1225,7 @@ const myorders = async (req, res) => {
     let orders = [];
 
 if (req.searchResults) {
-        // Use search results if available
+
        
         orders = req.searchResults;
 
@@ -1280,8 +1270,13 @@ if (req.searchResults) {
 
 const cancelOrder = async (req, res) => {
   try {
+   
+
     const orderId = req.params.id;
     const userId = req.session.userId;
+    const refundmethod=req.body.refund;
+
+    console.log(refundmethod);
 
     const cancelledOrder = await Order.findById(orderId);
     if (!cancelledOrder) {
@@ -1290,33 +1285,54 @@ const cancelOrder = async (req, res) => {
 
     const totalAmount = cancelledOrder.totalAmount;
 
-    const updatedOrder = await Order.findByIdAndUpdate(
-      orderId,
-      { status: 'cancelled' },
-      { new: true }
-    );
 
-    const payment=updatedOrder.payment
+    const payment=cancelledOrder.payment
 
    
 
-    console.log("payment method", updatedOrder.payment)
+    console.log("payment method", cancelledOrder.payment)
 
-    if (!updatedOrder) {
-      return res.status(404).json({ error: 'Order not found' });
-    }
-
+   
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     // Access the balance field directly
-    if (updatedOrder.payment === "ONLINE") {
+
+
+    if (cancelledOrder.payment === "ONLINE" && refundmethod==="bank") {
+
+      const updatedOrder = await Order.findByIdAndUpdate(
+        orderId,
+        { status: 'Refund requested' },
+        { new: true }
+      )
+      
+      ;
+     
+    }else if(cancelledOrder.payment==="ONLINE" && refundmethod==="wallet"){
+
+      const updatedOrder = await Order.findByIdAndUpdate(
+        orderId,
+        { status: 'cancelled' },
+        { new: true }
+      )
+
+
       await User.findByIdAndUpdate(userId, {
         $inc: { 'wallet.balance': totalAmount },
         $push: { 'wallet.transactions': updatedOrder._id.toString() }
       });
+      
+    }else if(cancelledOrder.payment==="COD"){
+
+      const updatedOrder = await Order.findByIdAndUpdate(
+        orderId,
+        { status: 'cancelled' },
+        { new: true }
+      )
+
     }
 
 
@@ -1807,6 +1823,8 @@ const newPassword = async (req, res) => {
 
 const return_Request = async (req, res) => {
 
+
+
   const userId = req.session.userId;
 
   try {
@@ -1814,16 +1832,25 @@ const return_Request = async (req, res) => {
 
     const orderId = req.params.id
     const user = await User.findById(userId)
+    const refundmethod=req.body.refund;
 
+    console.log(refundmethod)
+if(refundmethod==="wallet"){
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    { $set: { status: 'Return requested' } },
+    { new: true }
+  );
+}else if(refundmethod==="bank"){
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    { $set: { status: 'Return & Refund requested' } },
+    { new: true }
+  );
+}
+    
 
-    const order = await Order.findByIdAndUpdate(
-      orderId,
-      { $set: { status: 'return request' } },
-      { new: true }
-    );
-
-
-    res.status(200).json({ success: true });
+    res.send(200).json({ success: true });
 
   } catch (e) {
 

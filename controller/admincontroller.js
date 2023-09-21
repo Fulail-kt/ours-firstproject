@@ -652,25 +652,63 @@ const orderStatus = async (req, res) => {
 
     const totalAmount = orderData.totalAmount;
 
-    const updatedOrder = await order.findByIdAndUpdate(
-      orderId,
-      { $set: { status: newStatus } },
-      { new: true }
-    );
+    
 
     if (newStatus === "returned") {
+
+      const updatedOrder = await order.findByIdAndUpdate(
+        orderId,
+        { $set: { status: newStatus } },
+        { new: true }
+      );
+
+      
       await user.updateOne(
         { _id: userData._id },
         { $inc: { "wallet.balance": totalAmount },
           $push: { "wallet.transactions": orderData._id.toString() } }
       );
+
+
+
     } else if (newStatus === "cancelled" && orderData.payment === "ONLINE") {
+
+      const updatedOrder = await order.findByIdAndUpdate(
+        orderId,
+        { $set: { status: newStatus } },
+        { new: true }
+      );
+
+      
       await user.updateOne(
         { _id: userData._id },
         { $inc: { "wallet.balance": totalAmount },
           $push: { "wallet.transactions": orderData._id.toString() } }
+      );
+
+    }else if(newStatus==="refund" && orderData.payment ==="ONLINE" ){
+
+      const updatedOrder = await order.findByIdAndUpdate(
+        orderId,
+        { $set: { status: "returned" } },
+        { new: true }
+      );
+    }else if(newStatus==="refund & returned" ){
+
+      const updatedOrder = await order.findByIdAndUpdate(
+        orderId,
+        { $set: { status: "returned" } },
+        { new: true }
+      );
+    }else{
+
+      const updatedOrder = await order.findByIdAndUpdate(
+        orderId,
+        { $set: { status: newStatus } },
+        { new: true }
       );
     }
+
     
     const productsToUpdate = orderData.products;
 
@@ -690,9 +728,7 @@ const orderStatus = async (req, res) => {
     }
     
 
-    if (!updatedOrder) {
-      return res.status(404).send("Order not found.");
-    }
+   
 
     // Respond with success
     res.redirect('/admin/orders')
