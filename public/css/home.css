@@ -1327,3 +1327,10 @@ display: none !important;
       }
 }
 
+@media screen and (max-width: 375px) {
+  .menu {
+    
+    padding: 5.5px !important;
+    height: 42px !important;
+}
+}
