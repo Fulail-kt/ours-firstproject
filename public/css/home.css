@@ -647,7 +647,11 @@ input[type="number"]::-webkit-inner-spin-button,
 /* ///            all productts */
 
 
-
+.filter-div{
+  position: absolute;
+   top: 4.37rem;
+    left: 9.7rem;
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
 
@@ -1048,7 +1052,7 @@ width: 100%;
     display: none;
   }
 
-
+  
 }
 
 
@@ -1122,6 +1126,8 @@ justify-content: space-around !important;
     padding: 0 !important;
   }
  
+
+ 
 }
 
 
@@ -1150,7 +1156,11 @@ justify-content: space-around !important;
     padding-right: 1px !important;
     justify-content: space-around !important;
     }
-  
+    /* .filter-div{
+      position: absolute;
+       top: 4.37rem;
+        left: 10.9rem;
+    } */
 }
 
 
@@ -1243,6 +1253,11 @@ display: none !important;
   padding: 0 !important;
 }
 
+/* .filter-div{
+  position: absolute;
+   top: 4.37rem;
+    left: 9.9rem;
+} */
 
 }
 
@@ -1325,6 +1340,12 @@ display: none !important;
         height: 100%;
         padding: 0 !important;
       }
+
+      /* .filter-div{
+        position: absolute;
+         top: 4.37rem;
+          left: 6rem;
+      } */
 }
 
 @media screen and (max-width: 375px) {
@@ -1333,4 +1354,9 @@ display: none !important;
     padding: 5.5px !important;
     height: 42px !important;
 }
+/* .filter-div{
+  position: absolute;
+   top: 4.37rem;
+    left: 4.5rem;
+} */
 }
