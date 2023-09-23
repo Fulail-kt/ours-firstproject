@@ -10,6 +10,7 @@ const categoryModel = require('../models/category')
 const mongoose = require('mongoose');
 const Coupons = require('../models/coupon')
 const Banner = require('../models/banner')
+
 const crypto=require('crypto')
 require('dotenv').config();
 
@@ -643,6 +644,11 @@ const update_quantity = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    const id= new mongoose.Types.ObjectId(productId)
+    const product =await Product.findById(id)
+
+    console.log(product)
+    const stock= product.stock
     const cartItem = user.cart.find(item => item.product.toString() === productId);
 
   
@@ -651,7 +657,7 @@ const update_quantity = async (req, res) => {
       return res.status(404).json({ error: 'Product not found in cart' });
     }
 
-    if (action === 'increase') {
+    if (action === 'increase' && cartItem.quantity < stock) {
       cartItem.quantity++;
      
     } else if (action === 'decrease' && cartItem.quantity > 1) {
