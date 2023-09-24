@@ -541,6 +541,7 @@ const deleteUser = async (req, res) => {
   
 
     await user.findOneAndDelete({ userId });
+    
 
     res.redirect("/admin/customers");
   } catch (error) {
@@ -641,14 +642,15 @@ const unListCoupons = async (req, res) => {
 
 const orderStatus = async (req, res) => {
   const orderId = req.params.id;
-  const userId = req.session.userId;
+  // const userId = req.session.userId;
   const newStatus = req.body.newValue;
 
 
   try {
     // Find the order by orderId and update the status
-    const userData = await user.findById(userId)
     const orderData = await order.findById(orderId)
+    
+    const userData = orderData.customer;
 
     const totalAmount = orderData.totalAmount;
 
@@ -664,7 +666,7 @@ const orderStatus = async (req, res) => {
 
       
       await user.updateOne(
-        { _id: userData._id },
+        { _id: userData },
         { $inc: { "wallet.balance": totalAmount },
           $push: { "wallet.transactions": orderData._id.toString() } }
       );
@@ -681,10 +683,29 @@ const orderStatus = async (req, res) => {
 
       
       await user.updateOne(
-        { _id: userData._id },
+        { _id: userData },
         { $inc: { "wallet.balance": totalAmount },
           $push: { "wallet.transactions": orderData._id.toString() } }
       );
+
+
+      const cancelledOrder= await order.findById(orderId);
+      const productsToUpdate = cancelledOrder.products;
+
+      // Update the stock for each product in the productsToUpdate array
+      for (const productData of productsToUpdate) {
+        const productId = productData.product;
+        const quantity = productData.quantity;
+  
+        // Find the product in the products collection
+        const products = await product.findById(productId);
+  
+        if (products) {
+          // Increment the stock by the canceled quantity
+          products.stock += quantity;
+          await products.save();
+        }
+      }
 
     }else if(newStatus==="refund" && orderData.payment ==="ONLINE" ){
 
@@ -693,6 +714,8 @@ const orderStatus = async (req, res) => {
         { $set: { status: "returned" } },
         { new: true }
       );
+
+
     }else if(newStatus==="refund & returned" ){
 
       const updatedOrder = await order.findByIdAndUpdate(
@@ -700,6 +723,25 @@ const orderStatus = async (req, res) => {
         { $set: { status: "returned" } },
         { new: true }
       );
+
+
+      const cancelledOrder= await order.findById(orderId);
+      const productsToUpdate = cancelledOrder.products;
+
+      // Update the stock for each product in the productsToUpdate array
+      for (const productData of productsToUpdate) {
+        const productId = productData.product;
+        const quantity = productData.quantity;
+  
+        // Find the product in the products collection
+        const products = await product.findById(productId);
+  
+        if (products) {
+          // Increment the stock by the canceled quantity
+          products.stock += quantity;
+          await products.save();
+        }
+      }
     }else{
 
       const updatedOrder = await order.findByIdAndUpdate(

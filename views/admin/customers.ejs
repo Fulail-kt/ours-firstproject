@@ -85,21 +85,46 @@
                                   </button>
                                 </form> -->
                               </td> 
-                              <td scope="col" class="col-3"><form action="/admin/updatestatus/<%=user._id%>" method="post">
+                              <td scope="col" class="col-3">
                                 <input type="hidden" name="userId" value="<%= user._id %>">
-                                <button type="submit" class="btn btn-<%= user.isBlocked ? 'danger' : 'success' %> p-1 rounded" style="width: 70px;">
+                                <button data-bs-toggle="modal" data-bs-target="#Modaluserblk<%= user._id %>" class="btn btn-<%= user.isBlocked ? 'danger' : 'success' %> p-1 rounded" style="width: 70px;">
                                   <%= user.isBlocked ? 'Blocked' : 'Active' %>
                                 </button>
-                              </form></td>
+                              </td>
                               <td scope="col" class="col-3">
                                  
-                                  <a data-bs-toggle="modal" data-bs-target="#Modaluserdlt" href=""  class="p-1 m-3"><i class=" bx bxs-trash-alt "></i> </a> 
+                                  <a data-bs-toggle="modal" data-bs-target="#Modaluserdlt<%= user._id %>" href=""  class="p-1 m-3"><i class=" bx bxs-trash-alt "></i> </a> 
                               </td>
                           </tr>
+
+
+
+                          <div class="modal fade" id="Modaluserblk<%= user._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog d-flex justify-content-center">
+                              <form action="/admin/updatestatus/<%=user._id%>" method="post">
+                              <div class="modal-content " style="width: 24rem; border-radius: 10px;">
+                                <div class="modal-header d-flex  bg-danger">
+                                  <h5 class="modal-title text-white" style="margin-left: 30%;" id="exampleModalLabel">CONFIRMATION</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body  d-flex justify-content-center">
+                                 <p><u>Are you Sure Want to  <%= user.isBlocked ? 'Active' : 'Block' %> <%=user.name%> ?</u></p>
+                                </div>
+                                <div class="modal-footer d-flex m-0 p-0 justify-content-around" >
+                                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">NO</button>
+                                  <button type="submit" class="btn btn-outline-danger waves-effect custom-button">
+                                  Yes
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
                           <%})%>
                       </tbody>
                   </table>
                    
+                  
                   
                   
 
